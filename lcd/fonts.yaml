@@ -1,0 +1,117 @@
+font:
+  - file:
+      type: gfonts
+      family: Montserrat
+      weight: bold
+    bpp: 4
+    id: font_time
+    size: 60
+    glyphs: [
+      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ' ' ]
+    extras:
+      - file: "fonts/materialdesignicons-webfont.ttf"
+        glyphs: [
+          "$mdi_weather_clear_night",
+          "$mdi_weather_cloudy",
+          "$mdi_weather_fog",
+          "$mdi_weather_partly_cloudy",
+          "$mdi_weather_rainy",
+          "$mdi_weather_snow_rain",
+          "$mdi_weather_snow",
+          "$mdi_weather_sunny",
+          "$mdi_weather_windy",
+        ]
+  - file:
+      type: gfonts
+      family: Montserrat
+      weight: bold
+    bpp: 4
+    id: font_mid
+    size: 24
+    glyphsets: GF_Latin_Core
+    glyphs: [ "äöüÄÖÜß" ]
+    extras:
+      - file: "fonts/materialdesignicons-webfont.ttf"
+        glyphs: [
+          "$mdi_arrow_bottom_left_thin_circle_outline",
+          "$mdi_arrow_bottom_right_thin_circle_outline",
+          "$mdi_arrow_down_thin_circle_outline",
+          "$mdi_arrow_left_thin_circle_outline",
+          "$mdi_arrow_right_thin_circle_outline",
+          "$mdi_arrow_top_left_thin_circle_outline",
+          "$mdi_arrow_top_right_thin_circle_outline",
+          "$mdi_arrow_up_thin_circle_outline",
+          "$mdi_calendar_today_outline",
+          "$mdi_car_battery",
+          "$mdi_car_clock",
+          "$mdi_car_door_lock",
+          "$mdi_car_door_lock_open",
+          "$mdi_cat",
+          "$mdi_clock_outline",
+          "$mdi_cloud_arrow_down_outline",
+          "$mdi_cloud_arrow_up_outline",
+          "$mdi_cloud_cog_outline",
+          "$mdi_compass",
+          "$mdi_database_outline",
+          "$mdi_download",
+          "$mdi_ev_plug_type2",
+          "$mdi_ev_station",
+          "$mdi_file_up_down_outline",
+          "$mdi_power_plug",
+          "$mdi_solar_power",
+          "$mdi_solar_power_variant",
+          "$mdi_speedometer_slow",
+          "$mdi_sun_angle_outline",
+          "$mdi_sun_shield_outline",
+          "$mdi_thermometer",
+          "$mdi_thermometer_low",
+          "$mdi_thermometer_water",
+          "$mdi_transmission_tower_import",
+          "$mdi_upload",
+          "$mdi_water_percent",
+          "$mdi_weather_clear_night",
+          "$mdi_weather_cloudy",
+          "$mdi_weather_fog",
+          "$mdi_weather_partly_cloudy",
+          "$mdi_weather_rainy",
+          "$mdi_weather_snow_rain",
+          "$mdi_weather_snow",
+          "$mdi_weather_sunny",
+          "$mdi_weather_windy",
+          "$mdi_web_sync",
+          "$mdi_wifi",
+          "$mdi_wifi_arrow_left_right",
+          "$mdi_wifi_strength_alert",
+          "$mdi_wifi_strength1",
+          "$mdi_wifi_strength2",
+          "$mdi_wifi_strength3",
+          "$mdi_wifi_strength4",
+          "$mdi_wifi_strength_off",
+          "$mdi_wind",
+        ]
+  - file: "gfonts://Montserrat@medium"
+    id: font_small
+    size: 14
+    bpp: 4
+    extras:
+      - file: "gfonts://Montserrat@medium"
+        glyphs: [ "ä", "ö", "ü", "ß", "Ä", "Ö", "Ü" ]
+      - file: "fonts/materialdesignicons-webfont.ttf"
+        glyphs: [
+          "$mdi_weather_cloudy",
+          "$mdi_weather_partly_cloudy",
+          "$mdi_weather_pouring",
+          
+          "$mdi_cloud_cog_outline",
+          ]
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: font_footer
+    bpp: 4
+    size: 22
+    glyphs: [
+      "$mdi_play",
+      "$mdi_stop",
+      "$mdi_home",
+      "$mdi_chevron_left",
+      "$mdi_chevron_right",
+    ]

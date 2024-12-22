@@ -1,0 +1,296 @@
+sensor:
+  - platform: homeassistant
+    id: tintenfullstand_black_bk
+    entity_id: sensor.tintenfullstand_black_bk
+    on_value:
+      then:
+        - lvgl.bar.update:
+            id: drucker_black_bk
+            value: !lambda return x;
+  - platform: homeassistant
+    id: tintenfullstand_cyan
+    entity_id: sensor.tintenfullstand_cyan
+    on_value:
+      then:
+        - lvgl.bar.update:
+            id: drucker_cyan
+            value: !lambda return x;
+  - platform: homeassistant
+    id: tintenfullstand_magenta
+    entity_id: sensor.tintenfullstand_magenta
+    on_value:
+      then:
+        - lvgl.bar.update:
+            id: drucker_magenta
+            value: !lambda return x;
+  - platform: homeassistant
+    id: tintenfullstand_yellow
+    entity_id: sensor.tintenfullstand_yellow
+    on_value:
+      then:
+        - lvgl.bar.update:
+            id: drucker_yellow
+            value: !lambda return x;
+  - platform: homeassistant
+    id: tintenfullstand_black_pgbk
+    entity_id: sensor.tintenfullstand_black_pgbk
+    on_value:
+      then:
+        - lvgl.bar.update:
+            id: drucker_black_pgbk
+            value: !lambda return x;
+  - platform: homeassistant
+    id: druckervorrat_black_bk
+    entity_id: input_number.druckervorrat_black_bk
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: drucker_vorrat_black_bk
+            text:
+              format: "%.0f"
+              args: [ 'x' ]
+  - platform: homeassistant
+    id: druckervorrat_cyan
+    entity_id: input_number.druckervorrat_cyan
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: drucker_vorrat_cyan
+            text:
+              format: "%.0f"
+              args: [ 'x' ]
+  - platform: homeassistant
+    id: druckervorrat_magenta
+    entity_id: input_number.druckervorrat_magenta
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: drucker_vorrat_magenta
+            text:
+              format: "%.0f"
+              args: [ 'x' ]
+  - platform: homeassistant
+    id: druckervorrat_yellow
+    entity_id: input_number.druckervorrat_yellow
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: drucker_vorrat_yellow
+            text:
+              format: "%.0f"
+              args: [ 'x' ]
+  - platform: homeassistant
+    id: druckervorrat_black_pgbk
+    entity_id: input_number.druckervorrat_black_pgbk
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: drucker_vorrat_black_pgbk
+            text:
+              format: "%.0f"
+              args: [ 'x' ]
+
+text_sensor:
+  - platform: homeassistant
+    id: canon_ts6300_series
+    entity_id: sensor.canon_ts6300_series
+    filters:
+      - map:
+        - unavailable ->  
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: drucker_state
+            text: !lambda return x;
+
+image:
+  - file: "images/printer.png"
+    id: image_printer
+    type: RGB565
+    use_transparency: true
+
+
+lvgl:
+  pages:
+    - id: printer_page
+      widgets:
+        - image:
+            x: 260
+            y: 150
+            src: image_printer
+        - obj:
+            width: 200
+            height: 170
+            x: 20
+            y: 150
+            border_side: NONE
+            pad_all: 10px
+            bg_color: black
+            bg_opa: 40%
+            text_color: white
+            layout:
+              type: flex
+              flex_flow: COLUMN
+              pad_row: 4px
+            widgets:
+              - obj:
+                  pad_all: 0px
+                  bg_color: gray
+                  bg_opa: 50%
+                  border_side: NONE
+                  width: 165
+                  height: 45
+                  text_color: white
+                  layout:
+                    type: flex
+                    flex_flow: ROW
+                    flex_align_main: CENTER
+                  widgets:
+                    - bar:
+                        id: drucker_black_bk
+                        height: 40
+                        width: 20
+                        value: 0
+                        bg_color: black
+                        bg_opa: 30%
+                        radius: 0
+                        indicator:
+                          radius: 0
+                          bg_color: black
+                    - bar:
+                        id: drucker_cyan
+                        height: 40
+                        width: 20
+                        value: 0
+                        bg_color: cyan
+                        bg_opa: 30%
+                        radius: 0
+                        indicator:
+                          radius: 0
+                          bg_color: cyan
+                    - bar:
+                        id: drucker_magenta
+                        height: 40
+                        width: 20
+                        value: 0
+                        bg_color: magenta
+                        bg_opa: 30%
+                        radius: 0
+                        indicator:
+                          radius: 0
+                          bg_color: magenta
+                    - bar:
+                        id: drucker_yellow
+                        height: 40
+                        width: 20
+                        value: 0
+                        bg_color: yellow
+                        bg_opa: 30%
+                        radius: 0
+                        indicator:
+                          radius: 0
+                          bg_color: yellow
+                    - bar:
+                        id: drucker_black_pgbk
+                        height: 40
+                        width: 25
+                        value: 0
+                        bg_color: black
+                        bg_opa: 30%
+                        radius: 0
+                        indicator:
+                          radius: 0
+                          bg_color: black
+              - obj:
+                  pad_all: 0px
+                  bg_opa: TRANSP
+                  border_side: NONE
+                  width: 165
+                  height: 40
+                  layout:
+                    type: flex
+                    flex_flow: ROW
+                    flex_align_main: CENTER
+                  widgets:
+                    - label:
+                        text: "BK"
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        text: "C"
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        text: "M"
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        text: "Y"
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        text: "PGBK"
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 25
+              - obj:
+                  pad_all: 0px
+                  bg_opa: TRANSP
+                  border_side: NONE
+                  width: 165
+                  height: 23
+                  layout:
+                    type: flex
+                    flex_flow: ROW
+                    flex_align_main: CENTER
+                  widgets:
+                    - label:
+                        id: drucker_vorrat_black_bk
+                        text: " "
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        id: drucker_vorrat_cyan
+                        text: " "
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        id: drucker_vorrat_magenta
+                        text: " "
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        id: drucker_vorrat_yellow
+                        text: " "
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 20
+                    - label:
+                        id: drucker_vorrat_black_pgbk
+                        text: " "
+                        text_font: font_small
+                        text_align: CENTER
+                        text_color: white
+                        width: 25
+              - label:
+                  id: drucker_state
+                  text: " "
+                  text_align: CENTER
+                  text_font: font_mid
+                  width: 165

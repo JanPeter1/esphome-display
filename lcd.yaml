@@ -1,0 +1,225 @@
+substitutions:
+  device_name:   "lcd"
+  friendly_name: "LCD"
+  api_key:       "q6nhoXIFO0nNlsok7Mvik5K43ZjUw08h/sAzO91TxfA="
+  ota_password:  "b004e6cefde7b06b0e28302a69caa6eb"
+  wifi_fallback_password: "ZyVkT5QxJUN9"
+
+packages:
+  const:    !include common/const.yaml
+  base:     !include common/base.yaml
+  image:    !include lcd/image.yaml
+  fonts:    !include lcd/fonts.yaml
+  main:     !include lcd/main.yaml
+  motion:   !include lcd/motion.yaml
+  time:     !include lcd/page_time.yaml
+  weather:  !include lcd/page_weather.yaml
+  weather2: !include lcd/page_weather2.yaml
+  messages: !include lcd/page_messages.yaml
+  car:      !include lcd/page_car.yaml
+  solar:    !include lcd/page_solar.yaml
+  printer:  !include lcd/page_printer.yaml
+  internet: !include lcd/page_internet.yaml
+  nas:      !include lcd/page_nas.yaml
+  debug:    !include lcd/page_debug.yaml
+
+esphome:
+  platformio_options:
+    build_flags: "-DBOARD_HAS_PSRAM -DCONFIG_SPIRAM_CACHE_WORKAROUND"
+    board_build.arduino.memory_type: qio_opi
+    board_build.flash_mode: dio
+    board_upload.maximum_ram_size: 524288
+  build_path: "../config/esphome/${device_name}_build"
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  framework:
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: y
+      CONFIG_ESP32S3_DATA_CACHE_64KB: y
+      CONFIG_SPIRAM_FETCH_INSTRUCTIONS: y
+      CONFIG_SPIRAM_RODATA: y
+      CONFIG_SPIRAM_MODE_OCT: y
+      CONFIG_IDF_EXPERIMENTAL_FEATURES: y
+      CONFIG_SPIRAM_SPEED_120M: y
+      CONFIG_COMPILER_OPTIMIZATION_PERF: y
+      CONFIG_LV_MEM_CUSTOM: y
+      CONFIG_LV_MEMCPY_MEMSET_STD: y
+      CONFIG_LV_ATTRIBUTE_FAST_MEM: y
+
+      CONFIG_ESP_MAIN_TASK_AFFINITY_CPU1: y
+      CONFIG_FREERTOS_HZ: '1000'
+      CONFIG_LV_DISP_DEF_REFR_PERIOD: '10'
+
+psram:
+  mode: octal
+  speed: 80MHz
+
+ota:
+  - platform: esphome
+    id: !extend ota_esphome
+    on_begin:
+      then:
+        switch.turn_off: display_backlight
+
+http_request:
+  verify_ssl: false
+  timeout: 30s
+
+button:
+  - platform: restart
+    name: "Restart Device"
+
+ch422g:
+  - id: io_ex
+
+switch:
+  - platform: gpio
+    id: display_backlight
+    name: CH422G Pin 2
+    restore_mode: ALWAYS_ON
+    pin:
+      ch422g: io_ex
+      number: 2
+      mode:
+        output: true
+      inverted: false
+      allow_other_uses: true
+
+number:
+  - platform: template
+    name: LVGL Screen timeout
+    optimistic: true
+    id: display_timeout
+    unit_of_measurement: "s"
+    initial_value: 120
+    restore_value: false
+    min_value: 10
+    max_value: 500
+    step: 5
+    mode: box
+
+# from: https://community.home-assistant.io/t/esp32-s3-4-3inch-capacitive-touch-display-from-waveshare/658279/19
+display:
+  - platform: rpi_dpi_rgb
+    id: my_display
+    auto_clear_enabled: false
+    update_interval: never
+    color_order: RGB
+    pclk_frequency: 14MHz
+    dimensions:
+      width: 800
+      height: 480
+    de_pin:
+      number: 5
+    hsync_pin:
+      number: 46
+      ignore_strapping_warning: true
+    vsync_pin:
+      number: 3
+      ignore_strapping_warning: true
+    pclk_pin: 7
+    pclk_inverted: false
+    hsync_back_porch: 10 #30
+    hsync_front_porch: 20 #210 
+    hsync_pulse_width: 10 #30
+    vsync_back_porch: 10 #4
+    vsync_front_porch: 10 #4
+    vsync_pulse_width: 10 #4
+    reset_pin:
+      ch422g: io_ex
+      number: 3
+    enable_pin:
+      ch422g: io_ex
+      number: 2
+      allow_other_uses: true
+    data_pins:
+      red:
+        - 1         #r3
+        - 2         #r4
+        - 42        #r5
+        - 41        #r6
+        - 40        #r7
+      blue:
+        - 14        #b3
+        - 38        #b4
+        - 18        #b5
+        - 17        #b6
+        - 10        #b7
+      green:
+        - 39        #g2
+        - 0         #g3
+        - 45        #g4
+        - 48        #g5
+        - 47        #g6
+        - 21        #g7
+
+i2c:
+  sda: GPIO08
+  scl: GPIO09
+  scan: True
+  id: bus_a
+
+touchscreen:
+  platform: gt911
+  id: my_touch
+  interrupt_pin:
+    number: GPIO4
+  reset_pin:
+    ch422g: io_ex
+    number: 1
+  on_touch:
+    - switch.turn_on: display_backlight
+#    - lambda: |-
+#          ESP_LOGI("cal", "x=%d, y=%d, x_raw=%d, y_raw=%0d",
+#              touch.x,
+#              touch.y,
+#              touch.x_raw,
+#              touch.y_raw
+#              );
+
+lvgl:
+  displays:
+    - my_display
+  touchscreens:
+    - my_touch
+  buffer_size: 25%
+  bg_opa: TRANSP
+
+time:
+  - platform: homeassistant
+    id: time_comp
+
+binary_sensor:
+  - platform: homeassistant
+    id: prevent_deep_sleep
+    name: Prevent Deep Sleep
+    entity_id: input_boolean.prevent_deep_sleep
+
+deep_sleep:
+  id: deep_sleep_control
+#  run_duration: 5min
+  sleep_duration: 30min
+#  touch_wakeup: true
+  wakeup_pin: 
+    number: GPIO06
+    allow_other_uses: true
+  wakeup_pin_mode: KEEP_AWAKE
+
+script:
+  - id: consider_deep_sleep
+    mode: queued
+    then:
+      - delay: 5min
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_deep_sleep
+          then:
+            - logger.log: 
+                format: 'Skipping sleep, prevent_deep_sleep=%d'
+                args: [ 'id(prevent_deep_sleep).state' ]
+          else:
+              - deep_sleep.enter: deep_sleep_control
+      - script.execute: consider_deep_sleep

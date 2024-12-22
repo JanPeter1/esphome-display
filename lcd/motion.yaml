@@ -1,0 +1,33 @@
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: GPIO06
+      allow_other_uses: true
+    id: bewegungssensor
+    name: "Bewegungssensor"
+    device_class: motion
+    on_press:
+      then:
+        - logger.log: "motion detected"
+        - switch.turn_on: display_backlight
+        - lvgl.resume:
+    on_release:
+      then:
+        - logger.log: "no motion"
+        - switch.turn_off: display_backlight
+        - lvgl.pause:
+
+
+lvgl:
+  on_idle:
+    timeout: !lambda "return (id(display_timeout).state * 1000);"
+    then:
+      if:
+        condition:
+          binary_sensor.is_off: bewegungssensor
+        then:
+          - logger.log: "LVGL is idle"
+          - switch.turn_off: display_backlight
+          - lvgl.pause:
+        else:
+          - logger.log: "LVGL idle, but still motion detected"

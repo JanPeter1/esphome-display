@@ -1,0 +1,538 @@
+text_sensor:
+  - platform: homeassistant
+    id: daily_forecast
+    name: Temperaturvorschau
+    entity_id: sensor.daily_forecast
+    on_value:
+      then:
+        - lambda: |-
+            std::vector<std::string> days;
+            std::vector<float> templowf;
+            std::vector<std::string> temps;
+            std::vector<float> tempsf;
+            std::vector<float> rain;
+            std::vector<std::string> symbol;
+            static std::map<std::string, std::string> daymapping = {{"Mon", "Mo"}, {"Tue", "Di"}, {"Wed", "Mi"}, {"Thu", "Do"}, {"Fri", "Fr"}, {"Sat", "Sa"}, {"Sun", "So"}};
+            char *save;
+            char *save2;
+            //ESP_LOGD("main", x.c_str());
+
+            char* input = (char*) malloc(sizeof(char)*x.size()+1);
+            strcpy(input, x.data());
+            char *token = strtok_r(input, "#", &save);
+
+            while(token) {
+              std::vector<std::string> forecast;
+              std::string val(token);
+              val.erase(0, val.find_first_not_of(" \n\r\t"));
+              val.erase(val.find_last_not_of(" \n\r\t")+1);
+
+              char* input2 = (char*) malloc(sizeof(char)*val.size()+1);
+              strcpy(input2, val.data());
+              char *token2 = strtok_r(input2, ";", &save2);
+              while(token2) {
+                std::string val2(token2);
+                val2.erase(0, val2.find_first_not_of(" \n\r\t"));
+                val2.erase(val2.find_last_not_of(" \n\r\t")+1);
+
+                forecast.push_back(val2);
+                token2 = strtok_r(NULL, ";", &save2);
+              }
+              free(input2);
+              while(forecast.size() < 5) forecast.push_back("");
+              auto daysearch = daymapping.find(forecast[0]);
+              if (daysearch == daymapping.end()) {
+                days.push_back(forecast[0]);
+              } else {
+                days.push_back(daymapping[forecast[0]]);
+              }
+              templowf.push_back(atof(forecast[1].c_str()));
+              temps.push_back(forecast[2]);
+              tempsf.push_back(atof(forecast[2].c_str()));
+              rain.push_back(atof(forecast[3].c_str()));
+              symbol.push_back(forecast[4]);
+              token = strtok_r(NULL, "#", &save);
+            }
+            free (input);
+            static lv_obj_t * ldays[] =  { fc0_day, fc1_day, fc2_day, fc3_day, fc4_day };
+            static lv_obj_t * ltemps[] = { fc0_temp, fc1_temp, fc2_temp, fc3_temp, fc4_temp };
+            static lv_obj_t * ltempslow[] = { fc0_templow, fc1_templow, fc2_templow, fc3_templow, fc4_templow };
+            static lv_obj_t * lrains[] = { fc0_rain, fc1_rain, fc2_rain, fc3_rain, fc4_rain };
+            static lv_obj_t * lsyms[] =  { fc0_sym, fc1_sym, fc2_sym, fc3_sym, fc4_sym };
+            // correct would be starting at 0 and ending at 220
+            static lv_point_t mlv_point_t_id[] = {{0, 75}, {70, 75}, {120, 75}, {170, 75}, {242, 75}};
+            static lv_point_t mlv_pointlow_t_id[] = {{0, 75}, {70, 75}, {120, 75}, {170, 75}, {242, 75}};
+            for (int i=0; i<5; i++) {
+              if (i < tempsf.size()) {
+                mlv_point_t_id[i].y    = (lv_coord_t)(75 - 2.3 * tempsf[i]);
+                mlv_pointlow_t_id[i].y = (lv_coord_t)(75 - 2.3 * templowf[i]);
+                lv_label_set_text(ltempslow[i], str_sprintf("%.1f°", templowf[i]).c_str());
+              }
+              if (i < days.size())   lv_label_set_text(ldays[i],  (days[i]).c_str());
+              if (i < temps.size())  lv_label_set_text(ltemps[i], (temps[i] + "°").c_str());
+              if (i < rain.size())   lv_label_set_text(lrains[i], str_sprintf("%.0fmm", rain[i]).c_str());
+              if (i < symbol.size()) lv_label_set_text(lsyms[i],  (symbol[i]).c_str());
+            }
+            lv_line_set_points(temp_line, mlv_point_t_id, 5);
+            lv_line_set_points(templow_line, mlv_pointlow_t_id, 5);
+
+  - platform: homeassistant
+    id: hourly_forecast
+    name: Temperaturheute
+    entity_id: sensor.hourly_forecast
+    on_value:
+      then:
+        - lambda: |-
+            std::vector<int> time;
+            std::vector<float> tempsf;
+            char *save;
+            char *save2;
+            static lv_obj_t * lhours[] = { fc0_hour, fc1_hour, fc2_hour, fc3_hour, fc4_hour };
+
+            char* input = (char*) malloc(sizeof(char)*x.size()+1);
+            strcpy(input, x.data());
+            char *token = strtok_r(input, "#", &save);
+
+            while(token) {
+              std::vector<std::string> forecast;
+              std::string val(token);
+              val.erase(0, val.find_first_not_of(" \n\r\t"));
+              val.erase(val.find_last_not_of(" \n\r\t")+1);
+
+              char* input2 = (char*) malloc(sizeof(char)*val.size()+1);
+              strcpy(input2, val.data());
+              char *token2 = strtok_r(input2, ";", &save2);
+              while(token2) {
+                std::string val2(token2);
+                val2.erase(0, val2.find_first_not_of(" \n\r\t"));
+                val2.erase(val2.find_last_not_of(" \n\r\t")+1);
+
+                forecast.push_back(val2);
+                token2 = strtok_r(NULL, ";", &save2);
+              }
+              free(input2);
+              while(forecast.size() < 24) forecast.push_back("");
+              time.push_back(atoi(forecast[0].c_str()));
+              tempsf.push_back(atof(forecast[1].c_str()));
+              token = strtok_r(NULL, "#", &save);
+            }
+            free (input);
+            static lv_point_t mlv_pointhour_t_id[] = {{00, 75},  {30, 75},  {40, 75},  {50, 75},  {60, 75},
+                                                      {70, 75},  {80, 75},  {90, 75},  {100, 75}, {110, 75},
+                                                      {120, 75}, {130, 75}, {140, 75}, {150, 75}, {160, 75},
+                                                      {170, 75}, {180, 75}, {190, 75}, {200, 75}, {210, 75},
+                                                      {242, 75}};
+            for (int i=0; i<21; i++) {
+              if (i < tempsf.size()) {
+                mlv_pointhour_t_id[i].y = (lv_coord_t)(75 - 2.3 * tempsf[i]);
+              }
+            }
+            lv_line_set_points(temphour_line, mlv_pointhour_t_id, 21);
+            lv_label_set_text(lhours[0],  str_sprintf("%2d:00", time[0]).c_str());
+            lv_label_set_text(lhours[1],  str_sprintf("%2d:00", time[6]).c_str());
+            lv_label_set_text(lhours[2],  str_sprintf("%2d:00", time[12]).c_str());
+            lv_label_set_text(lhours[3],  str_sprintf("%2d:00", time[18]).c_str());
+            lv_label_set_text(lhours[4],  str_sprintf("%2d:00", time[23]).c_str());
+
+
+lvgl:
+  pages:
+    - id: weather2_page
+      widgets:
+          - obj: # container
+              width: 335
+              height: 285
+              x: 20
+              y: 130
+              pad_all: 10px
+              pad_right: 40px
+              border_width: 0
+              bg_color: 0x000000
+              bg_opa: 40%
+              text_font: font_small
+              text_color: white
+              layout:
+                type: grid
+                grid_rows: [ 25, 80, 13, 20, 13, 13, 13 ]
+                grid_columns: [ 20, 40, 40, 40, 40, 40 ]
+                grid_column_align: CENTER
+              widgets:
+                - label:
+                    grid_cell_row_pos: 0
+                    grid_cell_column_span: 6
+                    grid_cell_column_pos: 0
+                    text_color: white
+                    grid_cell_x_align: CENTER
+                    text: "Wettervorhersage"
+                - label:
+                    grid_cell_row_pos: 1
+                    grid_cell_column_pos: 0
+                    grid_cell_x_align: END
+                    text_font: font_small
+                    text_align: CENTER
+                    y: -10
+                    text: "30\n21\n12\n3\n-5"
+                - line:
+                    grid_cell_row_pos: 1
+                    grid_cell_column_pos: 1
+                    grid_cell_column_span: 6
+                    id: temp_line
+                    points:
+                      - 0, 75
+                      - 245, 75
+                    line_width: 3
+                    line_color: white
+                    line_rounded: true
+                    bg_color: red
+                    bg_grad_color: blue
+                    bg_grad_dir: VER
+                    bg_opa: 60%
+                    width: 245
+                    height: 90
+                - line:
+                    grid_cell_row_pos: 1
+                    grid_cell_column_pos: 1
+                    grid_cell_column_span: 6
+                    id: templow_line
+                    points:
+                      - 0, 75
+                      - 245, 75
+                    line_width: 3
+                    line_color: white
+                    line_rounded: true
+                - line:
+                    grid_cell_row_pos: 1
+                    grid_cell_column_pos: 1
+                    grid_cell_column_span: 6
+                    points:
+                      - 0, 75
+                      - 245, 75
+                    line_width: 1
+                    line_color: blue
+
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 0
+                    grid_cell_x_align: END
+                    text: "$mdi_calendar_today_outline"
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 1
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc0_day
+                    text: Mo
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 2
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc1_day
+                    text: Mo
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 3
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc2_day
+                    text: Mo
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 4
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc3_day
+                    text: Mo
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 5
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc4_day
+                    text: Mo
+
+                - label:
+                    grid_cell_row_pos: 3
+                    grid_cell_column_pos: 1
+                    text_align: CENTER
+                    width: 48
+                    id: fc0_sym
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 3
+                    grid_cell_column_pos: 2
+                    text_align: CENTER
+                    width: 48
+                    id: fc1_sym
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 3
+                    grid_cell_column_pos: 3
+                    text_align: CENTER
+                    width: 48
+                    id: fc2_sym
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 3
+                    grid_cell_column_pos: 4
+                    text_align: CENTER
+                    width: 48
+                    id: fc3_sym
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 3
+                    grid_cell_column_pos: 5
+                    text_align: CENTER
+                    width: 48
+                    id: fc4_sym
+                    text: " "
+
+                - label:
+                    grid_cell_row_pos: 4
+                    grid_cell_column_pos: 0
+                    grid_cell_x_align: END
+                    text: "$mdi_thermometer"
+                - label:
+                    grid_cell_row_pos: 4
+                    grid_cell_column_pos: 1
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc0_temp
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 4
+                    grid_cell_column_pos: 2
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc1_temp
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 4
+                    grid_cell_column_pos: 3
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc2_temp
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 4
+                    grid_cell_column_pos: 4
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc3_temp
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 4
+                    grid_cell_column_pos: 5
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc4_temp
+                    text: " "
+
+                - label:
+                    grid_cell_row_pos: 5
+                    grid_cell_column_pos: 0
+                    grid_cell_x_align: END
+                    text: "$mdi_thermometer_low"
+                - label:
+                    grid_cell_row_pos: 5
+                    grid_cell_column_pos: 1
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc0_templow
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 5
+                    grid_cell_column_pos: 2
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc1_templow
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 5
+                    grid_cell_column_pos: 3
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc2_templow
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 5
+                    grid_cell_column_pos: 4
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc3_templow
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 5
+                    grid_cell_column_pos: 5
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc4_templow
+                    text: " "
+
+                - label:
+                    grid_cell_row_pos: 6
+                    grid_cell_column_pos: 0
+                    grid_cell_x_align: END
+                    text: "$mdi_weather_rainy"
+                - label:
+                    grid_cell_row_pos: 6
+                    grid_cell_column_pos: 1
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc0_rain
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 6
+                    grid_cell_column_pos: 2
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc1_rain
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 6
+                    grid_cell_column_pos: 3
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc2_rain
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 6
+                    grid_cell_column_pos: 4
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc3_rain
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 6
+                    grid_cell_column_pos: 5
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc4_rain
+                    text: " "
+
+          - obj: # container
+              width: 335
+              height: 180
+              x: 370
+              y: 235
+              pad_all: 10px
+              pad_right: 40px
+              border_width: 0
+              bg_color: 0x000000
+              bg_opa: 40%
+              text_font: font_small
+              text_color: white
+              layout:
+                type: grid
+                grid_rows: [ 25, 80, 13 ]
+                grid_columns: [ 20, 40, 40, 40, 40, 40 ]
+                grid_column_align: CENTER
+              widgets:
+                - label:
+                    grid_cell_row_pos: 0
+                    grid_cell_column_span: 6
+                    grid_cell_column_pos: 0
+                    text_color: white
+                    grid_cell_x_align: CENTER
+                    text: "Nächste 24h"
+
+                - label:
+                    grid_cell_row_pos: 1
+                    grid_cell_column_pos: 0
+                    grid_cell_x_align: END
+                    text_font: font_small
+                    text_align: CENTER
+                    y: -10
+                    text: "30\n21\n12\n3\n-5"
+                - line:
+                    grid_cell_row_pos: 1
+                    grid_cell_column_pos: 1
+                    grid_cell_column_span: 6
+                    id: temphour_line
+                    points:
+                      - 0, 75
+                      - 245, 75
+                    line_width: 3
+                    line_color: white
+                    bg_color: red
+                    bg_grad_color: blue
+                    bg_grad_dir: VER
+                    bg_opa: 60%
+                    line_rounded: true
+                    width: 245
+                    height: 90
+                - line:
+                    grid_cell_row_pos: 1
+                    grid_cell_column_pos: 1
+                    grid_cell_column_span: 6
+                    points:
+                      - 0, 75
+                      - 245, 75
+                    line_width: 1
+                    line_color: blue
+
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 0
+                    grid_cell_x_align: END
+                    text: "$mdi_clock_outline"
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 1
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc0_hour
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 2
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc1_hour
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 3
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc2_hour
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 4
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc3_hour
+                    text: " "
+                - label:
+                    grid_cell_row_pos: 2
+                    grid_cell_column_pos: 5
+                    text_font: font_small
+                    text_align: CENTER
+                    width: 48
+                    id: fc4_hour
+                    text: " "

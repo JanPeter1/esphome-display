@@ -1,0 +1,115 @@
+globals:
+  - id: auto_pages
+    type: bool
+    restore_value: yes
+    initial_value: 'true'
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - script.execute: update_footer
+
+lvgl:
+  id: lvglmain
+  theme:
+    label:
+      text_font: font_mid
+  style_definitions:
+    - id: header_footer
+      bg_color: 0x2F8CD8
+      bg_grad_color: 0x005782
+      bg_grad_dir: VER
+      bg_opa: 60%
+      #bg_opa: COVER
+      border_side: NONE
+      radius: 0
+      pad_all: 0
+      pad_row: 0
+      pad_column: 0
+      text_color: 0xFFFFFF
+      width: 100%
+      height: 30
+    - id: heading_label
+      bg_color: 0x2F8CD8
+      bg_grad_color: 0x005782
+      bg_grad_dir: VER
+      bg_opa: COVER
+      border_opa: TRANSP
+      radius: 5
+      text_color: 0xFFFFFF
+      text_align: CENTER
+      width: 165
+      pad_left: 0
+      pad_right: 0
+  disp_bg_color: black
+  disp_bg_image: bg_image
+  top_layer:
+    bg_opa: TRANSP
+    widgets:
+      - obj:
+         <<: !include card_time.yaml
+
+      - obj:
+          <<: !include card_weather.yaml
+
+      - obj:
+          <<: !include card_messages.yaml
+
+      - buttonmatrix:
+          align: bottom_mid
+          styles: header_footer
+          pad_all: 0
+          border_side: NONE
+          items:
+            styles: header_footer
+            text_font: font_footer
+          rows:
+            - buttons:
+              - id: page_prev
+                text: "$mdi_chevron_left"
+                width: 1
+                on_press:
+                  then:
+                    - lvgl.page.previous:
+              - id: page_home
+                text: "$mdi_home"
+                width: 10
+                on_press:
+                  then:
+                    lvgl.page.show: start_page
+              - id: page_autoplay
+                text: "$mdi_stop"
+                width: 1
+                on_press:
+                  then:
+                    - lambda: |-
+                        id(auto_pages) = !id(auto_pages);
+                        if (id(auto_pages)) id(lvglmain)->show_next_page(LV_SCR_LOAD_ANIM_NONE, 50);
+                    - script.execute: update_footer
+              - id: page_next
+                text: "$mdi_chevron_right"
+                width: 1
+                on_press:
+                  then:
+                    lvgl.page.next:
+
+  pages:
+    - id: start_page
+
+script:
+  - id: update_footer
+    then:
+      lambda: |-
+        static const char * button_texts[] = {"$mdi_chevron_left", "$mdi_home", "$mdi_stop", "$mdi_chevron_right", nullptr};
+        button_texts[page_autoplay] = id(auto_pages)?"$mdi_stop":"$mdi_play";
+        lv_btnmatrix_set_map(lvbuttonmatrixtype_id->obj, button_texts);
+
+interval:
+  - interval: 15s
+    then:
+      if:
+        condition:
+          lambda: return id(auto_pages);
+        then:
+          - lvgl.page.next:

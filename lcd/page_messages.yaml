@@ -1,0 +1,12 @@
+text_sensor:
+  - platform: homeassistant
+    id: katzenklo_dienst
+    name: Katzenklodienst
+    entity_id: sensor.katzenklo_dienst
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: label_message_1
+            text:
+              format: "%s"
+              args: [ 'x.c_str()' ]

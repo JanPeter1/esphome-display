@@ -1,0 +1,252 @@
+text_sensor:
+  # WiFi
+  - platform: wifi_info
+    ip_address:
+      name: IP Address
+      id: ip_adress
+      on_value:
+        then:
+          - lvgl.label.update:
+              id: wifi_text2
+              text:
+                format: "%s"
+                args: [ 'id(ip_adress).state.c_str()' ]
+    ssid:
+      name: Connected SSID
+      id: ssid
+      on_value:
+        then:
+          - lvgl.label.update:
+              id: wifi_text1
+              text:
+                format: "%s"
+                args: [ 'id(ssid).state.c_str()' ]
+    bssid:
+      name: Connected BSSID
+    mac_address:
+      name: Mac Wifi Address
+    scan_results:
+      name: Latest Scan Results
+
+sensor:
+  - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
+    name: "$device_name WiFi Signal Quality"
+    id: wifi_signal_db
+    update_interval: 60s
+    entity_category: "diagnostic"
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: wifi_text3
+            text:
+              format: "%.1f db"
+              args: [ 'id(wifi_signal_db).state' ]
+        - if:
+            condition:
+              sensor.in_range:
+                id: wifi_signal_db
+                above: -50
+            then:
+              - lvgl.label.update:
+                  id: wifi_text3
+                  text:
+                    format: "$mdi_wifi_strength4 %.1f db"
+                    args: [ 'id(wifi_signal_db).state' ]
+        - if:
+            condition:
+              sensor.in_range:
+                id: wifi_signal_db
+                above: -55
+                below: -50
+            then:
+              - lvgl.label.update:
+                  id: wifi_text3
+                  text:
+                    format: "$mdi_wifi_strength3 %.1f db"
+                    args: [ 'id(wifi_signal_db).state' ]
+        - if:
+            condition:
+              sensor.in_range:
+                id: wifi_signal_db
+                above: -60
+                below: -55
+            then:
+              - lvgl.label.update:
+                  id: wifi_text3
+                  text:
+                    format: "$mdi_wifi_strength2 %.1f db"
+                    args: [ 'id(wifi_signal_db).state' ]
+        - if:
+            condition:
+              sensor.in_range:
+                id: wifi_signal_db
+                above: -67
+                below: -60
+            then:
+              - lvgl.label.update:
+                  id: wifi_text3
+                  text:
+                    format: "$mdi_wifi_strength1 %.1f db"
+                    args: [ 'id(wifi_signal_db).state' ]
+        - if:
+            condition:
+              sensor.in_range:
+                id: wifi_signal_db
+                above: -100
+                below: -67
+            then:
+              - lvgl.label.update:
+                  id: wifi_text3
+                  text:
+                    format: "$mdi_wifi_strength_alert %.1f db"
+                    args: [ 'id(wifi_signal_db).state' ]
+        - if:
+            condition:
+              sensor.in_range:
+                id: wifi_signal_db
+                below: -100
+            then:
+              - lvgl.label.update:
+                  id: wifi_text3
+                  text:
+                    format: "$mdi_wifi_strength_off %.1f db"
+                    args: [ 'id(wifi_signal_db).state' ]
+
+  - platform: homeassistant
+    id: fritz_box_7530_ax_download_durchsatz
+    entity_id: sensor.fritz_box_7530_ax_download_durchsatz
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: wifi_text4
+            text:
+              format: "%.1f kB/s"
+              args: [ 'id(fritz_box_7530_ax_download_durchsatz).state' ]
+
+  - platform: homeassistant
+    id: fritz_box_7530_ax_upload_durchsatz
+    entity_id: sensor.fritz_box_7530_ax_upload_durchsatz
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: wifi_text5
+            text:
+              format: "%.1f kB/s"
+              args: [ 'id(fritz_box_7530_ax_upload_durchsatz).state' ]
+
+  - platform: homeassistant
+    id: fritz_box_7530_ax_link_download_durchsatz
+    entity_id: sensor.fritz_box_7530_ax_link_download_durchsatz
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: wifi_text6
+            text:
+              format: "%.0f/%.0f MB/s"
+              args: [ 'id(fritz_box_7530_ax_link_download_durchsatz).state / 1000',  'id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000' ]
+
+  - platform: homeassistant
+    id: fritz_box_7530_ax_link_upload_durchsatz
+    entity_id: sensor.fritz_box_7530_ax_link_upload_durchsatz
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: wifi_text6
+            text:
+              format: "%.0f/%.0f MB/s"
+              args: [ 'id(fritz_box_7530_ax_link_download_durchsatz).state / 1000',  'id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000' ]
+
+  - platform: homeassistant
+    id: gb_heute_empfangen
+    entity_id: sensor.gb_heute_empfangen
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: wifi_text7
+            text:
+              format: "%.0f/%.0f GB"
+              args: [ 'id(gb_heute_empfangen).state',  'id(gb_heute_gesendet).state' ]
+
+  - platform: homeassistant
+    id: gb_heute_gesendet
+    entity_id: sensor.gb_heute_gesendet
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: wifi_text7
+            text:
+              format: "%.0f/%.0f GB"
+              args: [ 'id(gb_heute_empfangen).state',  'id(gb_heute_gesendet).state' ]
+
+lvgl:
+  pages:
+    - id: internet_page
+      widgets:
+        - obj:
+            width: 525
+            height: 300
+            x: 20
+            y: 140
+            border_side: NONE
+            pad_all: 10px
+            pad_top: 5px
+            bg_color: 0x000000
+            bg_opa: 40%
+            layout:
+                type: grid
+                grid_rows: [ 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
+                grid_columns: [220, 30, 255 ]
+            widgets:
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 0, col: 0, text: "SSID"}}
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+            - label:
+                id: wifi_text1
+                <<: !include { file: cell_text.yaml, vars: { row: 0, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 1, col: 0, text: "IP-Adresse"}}
+            - label:
+                id: wifi_text2
+                <<: !include { file: cell_text.yaml, vars: { row: 1, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 2, col: 0, text: "WLAN Stärke"}}
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 2, col: 1, text: "$mdi_wifi"}}
+            - label:
+                id: wifi_text3
+                <<: !include { file: cell_text.yaml, vars: { row: 2, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 3, col: 0, text: "Download"}}
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 3, col: 1, text: "$mdi_download"}}
+            - label:
+                id: wifi_text4
+                <<: !include { file: cell_text.yaml, vars: { row: 3, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 4, col: 0, text: "Upload"}}
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 4, col: 1, text: "$mdi_upload"}}
+            - label:
+                id: wifi_text5
+                <<: !include { file: cell_text.yaml, vars: { row: 4, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 5, col: 0, text: "Leitung"}}
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 5, col: 1, text: "$mdi_web_sync"}}
+            - label:
+                id: wifi_text6
+                <<: !include { file: cell_text.yaml, vars: { row: 5, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 6, col: 0, text: "Daten übertragen"}}
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 6, col: 1, text: "$mdi_wifi_arrow_left_right"}}
+            - label:
+                id: wifi_text7
+                <<: !include { file: cell_text.yaml, vars: { row: 6, col: 2, text: " "}}

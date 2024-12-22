@@ -1,0 +1,182 @@
+debug:
+  update_interval: 60s
+
+text_sensor:
+  - platform: debug
+    device:
+      name: "Device Info"
+      on_value:
+        # '2024.12.2|Chip: ESP32-S3 Features:WIFI_BGN,BLE, Cores:2 Revision:2|ESP-IDF: 5.1.5|EFuse MAC: F0:F5:BD:4B:95:B0|Reset: Software Reset Digital Core|Wakeup: Unknown'
+        then: !
+          lambda: |-
+            std::string txt(x);
+            int pos;
+            // ESPHome version
+            lv_label_set_text(debug_text1t, "ESPHome");
+            pos = txt.find('|');
+            lv_label_set_text(debug_text1, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+1);
+
+            // Chip
+            pos = txt.find(":");
+            lv_label_set_text(debug_text2t, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+2);
+            pos = txt.find(' ');
+            lv_label_set_text(debug_text2, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+1);
+
+            // Features
+            pos = txt.find(':');
+            lv_label_set_text(debug_text3t, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+1);
+            pos = txt.find(", ");
+            lv_label_set_text(debug_text3, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+2);
+
+            // Cores and Revision
+            pos = txt.find(':');
+            lv_label_set_text(debug_text4t, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+1);
+            pos = txt.find('|');
+            lv_label_set_text(debug_text4, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+1);
+
+            // ESP-IDF
+            pos = txt.find(':');
+            lv_label_set_text(debug_text5t, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+2);
+            pos = txt.find('|');
+            lv_label_set_text(debug_text5, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+1);
+
+            // skip EFuse MAC
+            pos = txt.find('|');
+            txt = txt.substr(pos+1);
+
+            // Reset reason
+            pos = txt.find(':');
+            lv_label_set_text(debug_text6t, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+2);
+            pos = txt.find('|');
+            lv_label_set_text(debug_text6, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+1);
+
+            // Wakeup reason
+            pos = txt.find(':');
+            lv_label_set_text(debug_text7t, txt.substr(0, pos).c_str());
+            txt = txt.substr(pos+2);
+            pos = txt.find('|');
+            lv_label_set_text(debug_text7, txt.substr(0, pos).c_str());
+
+
+#    reset_reason:
+#      name: "Reset Reason"
+
+sensor:
+  - platform: debug
+    free:
+      name: "Heap Free"
+      on_value:
+        - lvgl.label.update:
+            id: debug_text8
+            text:
+              format: "%.0f kB"
+              args: [ 'x / 1024' ]
+#    fragmentation:
+#      name: "Heap Fragmentation"
+#    block:
+#      name: "Heap Max Block"
+#    loop_time:
+#      name: "Loop Time"
+    psram:
+      name: "Free PSRAM"
+      on_value:
+        - lvgl.label.update:
+            id: debug_text9
+            text:
+              format: "%.0f kB"
+              args: [ 'x / 1024' ]
+
+#logger:
+#  level: debug
+
+lvgl:
+  pages:
+    - id: debug_page
+      widgets:
+        - obj:
+            width: 525
+            height: 300
+            x: 20
+            y: 140
+            border_side: NONE
+            pad_all: 10px
+            pad_top: 5px
+            bg_color: 0x000000
+            bg_opa: 40%
+            layout:
+                type: grid
+                grid_rows: [ 25, 25, 25, 25, 25, 25, 25, 25, 25 ]
+                grid_columns: [190, 335 ]
+                pad_row: 4px
+            widgets:
+            - label:
+                id: debug_text1t
+                <<: !include { file: cell_text.yaml, vars: { row: 0, col: 0, text: ""}}
+            - label:
+                id: debug_text1
+                <<: !include { file: cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+
+            - label:
+                id: debug_text2t
+                <<: !include { file: cell_text.yaml, vars: { row: 1, col: 0, text: " "}}
+            - label:
+                id: debug_text2
+                <<: !include { file: cell_text.yaml, vars: { row: 1, col: 1, text: " "}}
+
+            - label:
+                id: debug_text3t
+                <<: !include { file: cell_text.yaml, vars: { row: 2, col: 0, text: " "}}
+            - label:
+                id: debug_text3
+                <<: !include { file: cell_text.yaml, vars: { row: 2, col: 1, text: " "}}
+
+            - label:
+                id: debug_text4t
+                <<: !include { file: cell_text.yaml, vars: { row: 3, col: 0, text: " "}}
+            - label:
+                id: debug_text4
+                <<: !include { file: cell_text.yaml, vars: { row: 3, col: 1, text: " "}}
+
+            - label:
+                id: debug_text5t
+                <<: !include { file: cell_text.yaml, vars: { row: 4, col: 0, text: " "}}
+            - label:
+                id: debug_text5
+                <<: !include { file: cell_text.yaml, vars: { row: 4, col: 1, text: " "}}
+
+            - label:
+                id: debug_text6t
+                <<: !include { file: cell_text.yaml, vars: { row: 5, col: 0, text: " "}}
+            - label:
+                id: debug_text6
+                <<: !include { file: cell_text.yaml, vars: { row: 5, col: 1, text: " "}}
+
+            - label:
+                id: debug_text7t
+                <<: !include { file: cell_text.yaml, vars: { row: 6, col: 0, text: " "}}
+            - label:
+                id: debug_text7
+                <<: !include { file: cell_text.yaml, vars: { row: 6, col: 1, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 7, col: 0, text: "Heap Frei"}}
+            - label:
+                id: debug_text8
+                <<: !include { file: cell_text.yaml, vars: { row: 7, col: 1, text: " "}}
+
+            - label:
+                <<: !include { file: cell_text.yaml, vars: { row: 8, col: 0, text: "PSRAM Frei"}}
+            - label:
+                id: debug_text9
+                <<: !include { file: cell_text.yaml, vars: { row: 8, col: 1, text: " "}}

@@ -1,0 +1,75 @@
+api:
+  on_client_connected:
+    - logger.log: "connected WIFI"
+    - delay: 15s
+    - script.execute: update_bg_image
+
+online_image:
+  - id: bg_image
+    url: "http://homeassistant.local:8123/local/bg_images/black.png"
+    format: PNG
+    type: RGB565
+    resize: 800x480
+    on_download_finished:
+      - logger.log: "bg_image downloaded!"
+      - lvgl.update:
+          disp_bg_image: bg_image
+#      - online_image.release: bg_image
+    on_error: 
+      - logger.log: "bg_image download failed!"
+      - online_image.release: bg_image
+#      - delay: 5s
+#        ...free memory...
+#      - component.update: bg_image
+
+interval:
+  - interval: 500s
+    then:
+      - script.execute: update_bg_image
+
+script:
+  - id: update_bg_image
+    then:
+      - online_image.set_url:
+          id: bg_image
+          url: !lambda |-
+            std::string base = "http://homeassistant.local:8123/local/bg_images/"; 
+            std::string urls[33] = {
+              "100_4992.png",
+              "100_5157.png",
+              "160808-IMG_20160806_201619.png",
+              "20190822_123628.png",
+              "20220313_162442.png",
+              "20220424_193309.png",
+              "20220516_204024.png",
+              "20220803_203219.png",
+              "20230213_181606.png",
+              "20230517_204054.png",
+              "20230910_161418.png",
+              "20240102_101712.png",
+              "20240401_191928.png",
+              "20240511_210534.png",
+              "20240713_182227.png",
+              "20240717_210702.png",
+              "20240820_193422.png",
+              "20240824_190439.png",
+              "2024_Japan_057_P1160092.png",
+              "IMG-20220731-WA0000.png",
+              "IMG-20230321-WA0009.png",
+              "IMG-20230410-WA0009.png",
+              "IMG_20240510_213941.png",
+              "IMG_20240819_145308.png",
+              "P1030621.png",
+              "P1070973.png",
+              "P1110217.png",
+              "P1130087.png",
+              "P1130226.png",
+              "P1170309.png",
+              "P1170433.png",
+              "P1320990.png",
+              "P1330303.png"
+            };
+            std::srand(std::time(0));
+            return base + urls[rand() % 33];
+      - component.update: bg_image
+
