@@ -48,13 +48,13 @@ lvgl:
     bg_opa: TRANSP
     widgets:
       - obj:
-         <<: !include card_time.yaml
+         <<: !include time/time_card.yaml
 
       - obj:
-          <<: !include card_weather.yaml
+          <<: !include weather/weather_card.yaml
 
       - obj:
-          <<: !include card_messages.yaml
+          <<: !include messages/messages_card.yaml
 
       - buttonmatrix:
           align: bottom_mid

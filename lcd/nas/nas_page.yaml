@@ -1,0 +1,50 @@
+lvgl:
+  pages:
+    - id: nas_page
+      widgets:
+        - obj:
+            width: 525
+            height: 300
+            x: 20
+            y: 140
+            border_side: NONE
+            pad_all: 10px
+            pad_top: 5px
+            bg_color: 0x000000
+            bg_opa: 40%
+            layout:
+                type: grid
+                grid_rows: [ 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
+                grid_columns: [220, 30, 255 ]
+            widgets:
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "Speicher belegt"}}
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: "$mdi_database_outline"}}
+            - label:
+                id: nas_text1
+                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: "Speicher belegt %"}}
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: "$mdi_database_outline"}}
+            - label:
+                id: nas_text2
+                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: "Durchsatz"}}
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: "$mdi_file_up_down_outline"}}
+            - label:
+                id: nas_text3
+                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 2, text: " "}}
+
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: "CPU last"}}
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: "$mdi_speedometer_slow"}}
+            - label:
+                id: nas_text4
+                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 2, text: " "}}

@@ -1,0 +1,86 @@
+substitutions:
+  devicename: "temp1"
+  upper_devicename: "Temperature Sensor 1"
+
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: d1_mini
+  on_boot:
+    then:
+      - script.execute: consider_deep_sleep
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Fallback Hotspot"
+    password: !secret fallback_password
+
+captive_portal:
+
+logger:
+
+api:
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+deep_sleep:
+  id: deep_sleep_control
+  sleep_duration: 5min
+
+binary_sensor:
+  - platform: homeassistant
+    id: prevent_deep_sleep
+    name: Prevent Deep Sleep
+    entity_id: input_boolean.prevent_deep_sleep
+    
+sensor:
+  - platform: wifi_signal
+    name: "$devicename WiFi Signal Quality"
+
+  - platform: dht
+    pin: D2
+    model: DHT22
+    temperature:
+      name: "$devicename Temperature"
+    humidity:
+      name: "$devicename Humidity"
+    update_interval: 10s
+    
+script:
+  - id: consider_deep_sleep
+    mode: queued
+    then:
+      - delay: 30s
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_deep_sleep
+          then:
+            - logger.log: 
+                format: 'Skipping sleep, prevent_deep_sleep=%d'
+                args: [ 'id(prevent_deep_sleep).state' ]
+          else:
+              - deep_sleep.enter: deep_sleep_control
+      - script.execute: consider_deep_sleep
+
+#switch:
+#  - platform: gpio
+#    id: blue_led
+#    pin:
+#      number: GPIO2
+#      inverted: true
+      
+#interval:
+#  - interval: 1s
+#    then:
+#      if:
+#        condition:
+#          wifi.connected:
+#        then:
+#          - switch.turn_on: blue_led
+#        else:
+#          - switch.turn_off: blue_led

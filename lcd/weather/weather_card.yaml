@@ -18,14 +18,14 @@ widgets:
   - label:
       grid_cell_row_span: 3
       id: label_weather_icon
-      <<: !include { file: cell_text.yaml, vars: { row: 0, col: 0, text: "$mdi_weather_sunny"}}
+      <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "$mdi_weather_sunny"}}
       text_font: font_time
   - label:
       id: label_weather_1
-      <<: !include { file: cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+      <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
   - label:
       id: label_weather_2
-      <<: !include { file: cell_text.yaml, vars: { row: 1, col: 1, text: " "}}
+      <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: " "}}
   - label:
       id: label_weather_3
-      <<: !include { file: cell_text.yaml, vars: { row: 2, col: 1, text: " "}}
+      <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: " "}}

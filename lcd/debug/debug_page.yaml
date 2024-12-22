@@ -1,0 +1,80 @@
+lvgl:
+  pages:
+    - id: debug_page
+      widgets:
+        - obj:
+            width: 525
+            height: 300
+            x: 20
+            y: 140
+            border_side: NONE
+            pad_all: 10px
+            pad_top: 5px
+            bg_color: 0x000000
+            bg_opa: 40%
+            layout:
+                type: grid
+                grid_rows: [ 25, 25, 25, 25, 25, 25, 25, 25, 25 ]
+                grid_columns: [190, 335 ]
+                pad_row: 4px
+            widgets:
+            - label:
+                id: debug_text1t
+                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: ""}}
+            - label:
+                id: debug_text1
+                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+
+            - label:
+                id: debug_text2t
+                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: " "}}
+            - label:
+                id: debug_text2
+                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: " "}}
+
+            - label:
+                id: debug_text3t
+                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: " "}}
+            - label:
+                id: debug_text3
+                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: " "}}
+
+            - label:
+                id: debug_text4t
+                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: " "}}
+            - label:
+                id: debug_text4
+                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: " "}}
+
+            - label:
+                id: debug_text5t
+                <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 0, text: " "}}
+            - label:
+                id: debug_text5
+                <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 1, text: " "}}
+
+            - label:
+                id: debug_text6t
+                <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 0, text: " "}}
+            - label:
+                id: debug_text6
+                <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 1, text: " "}}
+
+            - label:
+                id: debug_text7t
+                <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 0, text: " "}}
+            - label:
+                id: debug_text7
+                <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 1, text: " "}}
+
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 7, col: 0, text: "Heap Frei"}}
+            - label:
+                id: debug_text8
+                <<: !include { file: ../cell_text.yaml, vars: { row: 7, col: 1, text: " "}}
+
+            - label:
+                <<: !include { file: ../cell_text.yaml, vars: { row: 8, col: 0, text: "PSRAM Frei"}}
+            - label:
+                id: debug_text9
+                <<: !include { file: ../cell_text.yaml, vars: { row: 8, col: 1, text: " "}}

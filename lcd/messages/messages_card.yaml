@@ -15,7 +15,7 @@ layout:
   pad_column: 10px
 widgets:
   - label:
-      <<: !include { file: cell_text.yaml, vars: { row: 0, col: 0, text: "$mdi_cat"}}
+      <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "$mdi_cat"}}
   - label:
       id: label_message_1
-      <<: !include { file: cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+      <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
