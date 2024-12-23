@@ -2,6 +2,8 @@ lvgl:
   pages:
     - id: solar_page
       widgets:
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "PV"}}
         - image:
             src: image_solar
             x: 560

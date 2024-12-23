@@ -2,6 +2,8 @@ lvgl:
   pages:
     - id: internet_page
       widgets:
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "Internet"}}
         - obj:
             width: 525
             height: 300

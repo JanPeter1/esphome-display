@@ -163,6 +163,17 @@ sensor:
                   id: page_car3
                   text: "-"
 
+  - platform: homeassistant
+    id: myenergi_zappi_16097935_charge_added_session
+    entity_id: sensor.myenergi_zappi_16097935_charge_added_session
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: page_car9
+            text:
+              format: "%.1f kWh"
+              args: [ 'x' ]
+
 number:
   - platform: homeassistant
     id: ioniq_ev_16_19_dc_charging_limit

@@ -195,6 +195,7 @@ touchscreen:
 #              touch.y_raw
 #              );
 
+
 lvgl:
   displays:
     - my_display

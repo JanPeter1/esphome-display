@@ -1,0 +1,5 @@
+x: 530
+y: 447
+text_font: font_mid
+text_color: white
+text: "${text}"

@@ -2,6 +2,8 @@ lvgl:
   pages:
     - id: nas_page
       widgets:
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "NAS"}}
         - obj:
             width: 525
             height: 300

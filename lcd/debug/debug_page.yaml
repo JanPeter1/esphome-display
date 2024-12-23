@@ -2,6 +2,8 @@ lvgl:
   pages:
     - id: debug_page
       widgets:
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "Debug"}}
         - obj:
             width: 525
             height: 300
@@ -68,13 +70,13 @@ lvgl:
                 <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 1, text: " "}}
 
             - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 7, col: 0, text: "Heap Frei"}}
+                <<: !include { file: ../cell_text.yaml, vars: { row: 7, col: 0, text: "Heap frei"}}
             - label:
                 id: debug_text8
                 <<: !include { file: ../cell_text.yaml, vars: { row: 7, col: 1, text: " "}}
 
             - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 8, col: 0, text: "PSRAM Frei"}}
+                <<: !include { file: ../cell_text.yaml, vars: { row: 8, col: 0, text: "PSRAM frei"}}
             - label:
                 id: debug_text9
                 <<: !include { file: ../cell_text.yaml, vars: { row: 8, col: 1, text: " "}}

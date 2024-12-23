@@ -2,6 +2,8 @@ lvgl:
   pages:
     - id: printer_page
       widgets:
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "Drucker"}}
         - image:
             x: 260
             y: 150

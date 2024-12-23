@@ -34,42 +34,8 @@ script:
           id: bg_image
           url: !lambda |-
             std::string base = "http://homeassistant.local:8123/local/bg_images/"; 
-            std::string urls[33] = {
-              "100_4992.png",
-              "100_5157.png",
-              "160808-IMG_20160806_201619.png",
-              "20190822_123628.png",
-              "20220313_162442.png",
-              "20220424_193309.png",
-              "20220516_204024.png",
-              "20220803_203219.png",
-              "20230213_181606.png",
-              "20230517_204054.png",
-              "20230910_161418.png",
-              "20240102_101712.png",
-              "20240401_191928.png",
-              "20240511_210534.png",
-              "20240713_182227.png",
-              "20240717_210702.png",
-              "20240820_193422.png",
-              "20240824_190439.png",
-              "2024_Japan_057_P1160092.png",
-              "IMG-20220731-WA0000.png",
-              "IMG-20230321-WA0009.png",
-              "IMG-20230410-WA0009.png",
-              "IMG_20240510_213941.png",
-              "IMG_20240819_145308.png",
-              "P1030621.png",
-              "P1070973.png",
-              "P1110217.png",
-              "P1130087.png",
-              "P1130226.png",
-              "P1170309.png",
-              "P1170433.png",
-              "P1320990.png",
-              "P1330303.png"
-            };
             std::srand(std::time(0));
-            return base + urls[rand() % 33];
-      - component.update: bg_image
+            auto filename = base + "bg_image_" + std::to_string(rand() % 31 + 1) + ".png";
+            ESP_LOGD("main", filename.c_str());
+            return filename;
 

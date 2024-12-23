@@ -7,7 +7,7 @@ sensor:
         - lvgl.label.update:
             id: nas_text1
             text:
-              format: "%.2f/%.2f TB"
+              format: "%.2f+%.2f TB"
               args: [ 'id(data_volume_1_belegter_speicherplatz).state', 'id(data_volume_1_belegter_speicherplatz).state' ]
 
   - platform: homeassistant
@@ -18,7 +18,7 @@ sensor:
         - lvgl.label.update:
             id: nas_text1
             text:
-              format: "%.2f/%.2f TB"
+              format: "%.2f+%.2f TB"
               args: [ 'id(data_volume_2_belegter_speicherplatz).state', 'id(data_volume_2_belegter_speicherplatz).state' ]
 
   - platform: homeassistant
@@ -29,7 +29,7 @@ sensor:
         - lvgl.label.update:
             id: nas_text2
             text:
-              format: "%.2f/%.2f %%"
+              format: "%.2f+%.2f %%"
               args: [ 'id(data_volume_1_verwendetes_volumen).state', 'id(data_volume_2_verwendetes_volumen).state' ]
 
   - platform: homeassistant
@@ -40,7 +40,7 @@ sensor:
         - lvgl.label.update:
             id: nas_text2
             text:
-              format: "%.2f/%.2f %%"
+              format: "%.2f+%.2f %%"
               args: [ 'id(data_volume_1_verwendetes_volumen).state', 'id(data_volume_2_verwendetes_volumen).state' ]
 
   - platform: homeassistant

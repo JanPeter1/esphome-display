@@ -2,400 +2,404 @@ lvgl:
   pages:
     - id: weather_page2
       widgets:
-          - obj: # container
-              width: 335
-              height: 285
-              x: 20
-              y: 130
-              pad_all: 10px
-              pad_right: 40px
-              border_width: 0
-              bg_color: 0x000000
-              bg_opa: 40%
-              text_font: font_small
-              text_color: white
-              layout:
-                type: grid
-                grid_rows: [ 25, 80, 13, 20, 13, 13, 13 ]
-                grid_columns: [ 20, 40, 40, 40, 40, 40 ]
-                grid_column_align: CENTER
-              widgets:
-                - label:
-                    grid_cell_row_pos: 0
-                    grid_cell_column_span: 6
-                    grid_cell_column_pos: 0
-                    text_color: white
-                    grid_cell_x_align: CENTER
-                    text: "Wettervorhersage"
-                - label:
-                    grid_cell_row_pos: 1
-                    grid_cell_column_pos: 0
-                    grid_cell_x_align: END
-                    text_font: font_small
-                    text_align: CENTER
-                    y: -10
-                    text: "30\n21\n12\n3\n-5"
-                - line:
-                    grid_cell_row_pos: 1
-                    grid_cell_column_pos: 1
-                    grid_cell_column_span: 6
-                    id: temp_line
-                    points:
-                      - 0, 75
-                      - 245, 75
-                    line_width: 3
-                    line_color: white
-                    line_rounded: true
-                    bg_color: red
-                    bg_grad_color: blue
-                    bg_grad_dir: VER
-                    bg_opa: 60%
-                    width: 245
-                    height: 90
-                - line:
-                    grid_cell_row_pos: 1
-                    grid_cell_column_pos: 1
-                    grid_cell_column_span: 6
-                    id: templow_line
-                    points:
-                      - 0, 75
-                      - 245, 75
-                    line_width: 3
-                    line_color: white
-                    line_rounded: true
-                - line:
-                    grid_cell_row_pos: 1
-                    grid_cell_column_pos: 1
-                    grid_cell_column_span: 6
-                    points:
-                      - 0, 75
-                      - 245, 75
-                    line_width: 1
-                    line_color: blue
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "Vorhersage"}}
+        - obj: # container
+            width: 335
+            height: 285
+            x: 20
+            y: 130
+            pad_all: 10px
+            pad_right: 40px
+            border_width: 0
+            bg_color: 0x000000
+            bg_opa: 40%
+            text_font: font_small
+            text_color: white
+            scrollable : false
+            layout:
+              type: grid
+              grid_rows: [ 25, 80, 13, 20, 13, 13, 13 ]
+              grid_columns: [ 20, 40, 40, 40, 40, 40 ]
+              grid_column_align: CENTER
+            widgets:
+              - label:
+                  grid_cell_row_pos: 0
+                  grid_cell_column_span: 6
+                  grid_cell_column_pos: 0
+                  text_color: white
+                  grid_cell_x_align: CENTER
+                  text: "Wettervorhersage"
+              - label:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: END
+                  text_font: font_small
+                  text_align: CENTER
+                  y: -10
+                  text: "30\n21\n12\n3\n-5"
+              - line:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_column_span: 6
+                  id: temp_line
+                  points:
+                    - 0, 75
+                    - 245, 75
+                  line_width: 3
+                  line_color: white
+                  line_rounded: true
+                  bg_color: red
+                  bg_grad_color: blue
+                  bg_grad_dir: VER
+                  bg_opa: 60%
+                  width: 245
+                  height: 90
+              - line:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_column_span: 6
+                  id: templow_line
+                  points:
+                    - 0, 75
+                    - 245, 75
+                  line_width: 3
+                  line_color: white
+                  line_rounded: true
+              - line:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_column_span: 6
+                  points:
+                    - 0, 75
+                    - 245, 75
+                  line_width: 1
+                  line_color: blue
 
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 0
-                    grid_cell_x_align: END
-                    text: "$mdi_calendar_today_outline"
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 1
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc0_day
-                    text: Mo
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 2
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc1_day
-                    text: Mo
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 3
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc2_day
-                    text: Mo
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 4
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc3_day
-                    text: Mo
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 5
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc4_day
-                    text: Mo
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: END
+                  text: "$mdi_calendar_today_outline"
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 1
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc0_day
+                  text: Mo
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 2
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc1_day
+                  text: Mo
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 3
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc2_day
+                  text: Mo
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 4
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc3_day
+                  text: Mo
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 5
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc4_day
+                  text: Mo
 
-                - label:
-                    grid_cell_row_pos: 3
-                    grid_cell_column_pos: 1
-                    text_align: CENTER
-                    width: 48
-                    id: fc0_sym
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 3
-                    grid_cell_column_pos: 2
-                    text_align: CENTER
-                    width: 48
-                    id: fc1_sym
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 3
-                    grid_cell_column_pos: 3
-                    text_align: CENTER
-                    width: 48
-                    id: fc2_sym
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 3
-                    grid_cell_column_pos: 4
-                    text_align: CENTER
-                    width: 48
-                    id: fc3_sym
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 3
-                    grid_cell_column_pos: 5
-                    text_align: CENTER
-                    width: 48
-                    id: fc4_sym
-                    text: " "
+              - label:
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 1
+                  text_align: CENTER
+                  width: 48
+                  id: fc0_sym
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 2
+                  text_align: CENTER
+                  width: 48
+                  id: fc1_sym
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 3
+                  text_align: CENTER
+                  width: 48
+                  id: fc2_sym
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 4
+                  text_align: CENTER
+                  width: 48
+                  id: fc3_sym
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 3
+                  grid_cell_column_pos: 5
+                  text_align: CENTER
+                  width: 48
+                  id: fc4_sym
+                  text: " "
 
-                - label:
-                    grid_cell_row_pos: 4
-                    grid_cell_column_pos: 0
-                    grid_cell_x_align: END
-                    text: "$mdi_thermometer"
-                - label:
-                    grid_cell_row_pos: 4
-                    grid_cell_column_pos: 1
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc0_temp
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 4
-                    grid_cell_column_pos: 2
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc1_temp
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 4
-                    grid_cell_column_pos: 3
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc2_temp
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 4
-                    grid_cell_column_pos: 4
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc3_temp
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 4
-                    grid_cell_column_pos: 5
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc4_temp
-                    text: " "
+              - label:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: END
+                  text: "$mdi_thermometer"
+              - label:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 1
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc0_temp
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 2
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc1_temp
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 3
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc2_temp
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 4
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc3_temp
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 4
+                  grid_cell_column_pos: 5
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc4_temp
+                  text: " "
 
-                - label:
-                    grid_cell_row_pos: 5
-                    grid_cell_column_pos: 0
-                    grid_cell_x_align: END
-                    text: "$mdi_thermometer_low"
-                - label:
-                    grid_cell_row_pos: 5
-                    grid_cell_column_pos: 1
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc0_templow
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 5
-                    grid_cell_column_pos: 2
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc1_templow
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 5
-                    grid_cell_column_pos: 3
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc2_templow
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 5
-                    grid_cell_column_pos: 4
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc3_templow
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 5
-                    grid_cell_column_pos: 5
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc4_templow
-                    text: " "
+              - label:
+                  grid_cell_row_pos: 5
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: END
+                  text: "$mdi_thermometer_low"
+              - label:
+                  grid_cell_row_pos: 5
+                  grid_cell_column_pos: 1
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc0_templow
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 5
+                  grid_cell_column_pos: 2
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc1_templow
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 5
+                  grid_cell_column_pos: 3
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc2_templow
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 5
+                  grid_cell_column_pos: 4
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc3_templow
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 5
+                  grid_cell_column_pos: 5
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc4_templow
+                  text: " "
 
-                - label:
-                    grid_cell_row_pos: 6
-                    grid_cell_column_pos: 0
-                    grid_cell_x_align: END
-                    text: "$mdi_weather_rainy"
-                - label:
-                    grid_cell_row_pos: 6
-                    grid_cell_column_pos: 1
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc0_rain
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 6
-                    grid_cell_column_pos: 2
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc1_rain
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 6
-                    grid_cell_column_pos: 3
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc2_rain
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 6
-                    grid_cell_column_pos: 4
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc3_rain
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 6
-                    grid_cell_column_pos: 5
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc4_rain
-                    text: " "
+              - label:
+                  grid_cell_row_pos: 6
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: END
+                  text: "$mdi_weather_rainy"
+              - label:
+                  grid_cell_row_pos: 6
+                  grid_cell_column_pos: 1
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc0_rain
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 6
+                  grid_cell_column_pos: 2
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc1_rain
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 6
+                  grid_cell_column_pos: 3
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc2_rain
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 6
+                  grid_cell_column_pos: 4
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc3_rain
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 6
+                  grid_cell_column_pos: 5
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc4_rain
+                  text: " "
 
-          - obj: # container
-              width: 335
-              height: 180
-              x: 370
-              y: 235
-              pad_all: 10px
-              pad_right: 40px
-              border_width: 0
-              bg_color: 0x000000
-              bg_opa: 40%
-              text_font: font_small
-              text_color: white
-              layout:
-                type: grid
-                grid_rows: [ 25, 80, 13 ]
-                grid_columns: [ 20, 40, 40, 40, 40, 40 ]
-                grid_column_align: CENTER
-              widgets:
-                - label:
-                    grid_cell_row_pos: 0
-                    grid_cell_column_span: 6
-                    grid_cell_column_pos: 0
-                    text_color: white
-                    grid_cell_x_align: CENTER
-                    text: "Nächste 24h"
+        - obj: # container
+            width: 335
+            height: 180
+            x: 370
+            y: 235
+            pad_all: 10px
+            pad_right: 40px
+            border_width: 0
+            bg_color: 0x000000
+            bg_opa: 40%
+            text_font: font_small
+            text_color: white
+            scrollable : false
+            layout:
+              type: grid
+              grid_rows: [ 25, 80, 13 ]
+              grid_columns: [ 20, 40, 40, 40, 40, 40 ]
+              grid_column_align: CENTER
+            widgets:
+              - label:
+                  grid_cell_row_pos: 0
+                  grid_cell_column_span: 6
+                  grid_cell_column_pos: 0
+                  text_color: white
+                  grid_cell_x_align: CENTER
+                  text: "Nächste 24h"
 
-                - label:
-                    grid_cell_row_pos: 1
-                    grid_cell_column_pos: 0
-                    grid_cell_x_align: END
-                    text_font: font_small
-                    text_align: CENTER
-                    y: -10
-                    text: "30\n21\n12\n3\n-5"
-                - line:
-                    grid_cell_row_pos: 1
-                    grid_cell_column_pos: 1
-                    grid_cell_column_span: 6
-                    id: temphour_line
-                    points:
-                      - 0, 75
-                      - 245, 75
-                    line_width: 3
-                    line_color: white
-                    bg_color: red
-                    bg_grad_color: blue
-                    bg_grad_dir: VER
-                    bg_opa: 60%
-                    line_rounded: true
-                    width: 245
-                    height: 90
-                - line:
-                    grid_cell_row_pos: 1
-                    grid_cell_column_pos: 1
-                    grid_cell_column_span: 6
-                    points:
-                      - 0, 75
-                      - 245, 75
-                    line_width: 1
-                    line_color: blue
+              - label:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: END
+                  text_font: font_small
+                  text_align: CENTER
+                  y: -10
+                  text: "30\n21\n12\n3\n-5"
+              - line:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_column_span: 6
+                  id: temphour_line
+                  points:
+                    - 0, 75
+                    - 245, 75
+                  line_width: 3
+                  line_color: white
+                  bg_color: red
+                  bg_grad_color: blue
+                  bg_grad_dir: VER
+                  bg_opa: 60%
+                  line_rounded: true
+                  width: 245
+                  height: 90
+              - line:
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_column_span: 6
+                  points:
+                    - 0, 75
+                    - 245, 75
+                  line_width: 1
+                  line_color: blue
 
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 0
-                    grid_cell_x_align: END
-                    text: "$mdi_clock_outline"
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 1
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc0_hour
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 2
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc1_hour
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 3
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc2_hour
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 4
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc3_hour
-                    text: " "
-                - label:
-                    grid_cell_row_pos: 2
-                    grid_cell_column_pos: 5
-                    text_font: font_small
-                    text_align: CENTER
-                    width: 48
-                    id: fc4_hour
-                    text: " "
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: END
+                  text: "$mdi_clock_outline"
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 1
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc0_hour
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 2
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc1_hour
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 3
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc2_hour
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 4
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc3_hour
+                  text: " "
+              - label:
+                  grid_cell_row_pos: 2
+                  grid_cell_column_pos: 5
+                  text_font: font_small
+                  text_align: CENTER
+                  width: 48
+                  id: fc4_hour
+                  text: " "

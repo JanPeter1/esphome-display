@@ -6,6 +6,8 @@ lvgl:
             src: image_car
             x: 520
             y: 320
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "Auto"}}
         - obj:
             width: 420
             height: 280
@@ -17,51 +19,52 @@ lvgl:
             bg_opa: 40%
             layout:
               type: grid
-              grid_rows: [30px, 30px, 30px, 50px, 30px, 30px, 50px]
+              grid_rows: [30px, 30px, 30px, 30px, 30px, 30px, 30px, 30px]
               grid_columns: [200px, 40px, 120px]
               grid_row_align: CENTER
               pad_row: 0px
               pad_column: 10px
             widgets:
               - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "Ladestand"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 0, col: 0, text: "Ladestand"}}
               - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: "$mdi_car_battery"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 0, col: 1, text: "$mdi_car_battery"}}
               - label:
                   id: page_car1
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 2, text: " "}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 0, col: 2, text: " "}}
 
               - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: "Reichweite"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 1, col: 0, text: "Reichweite"}}
               - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: "$mdi_ev_station"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 1, col: 1, text: "$mdi_ev_station"}}
               - label:
                   id: page_car2
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 2, text: " "}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 1, col: 2, text: " "}}
 
               - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: "Ladezeit"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 2, col: 0, text: "Ladezeit"}}
               - label:
                   id: page_car3i
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: "$mdi_car_clock"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 2, col: 1, text: "$mdi_car_clock"}}
               - label:
                   id: page_car3
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 2, text: " "}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 2, col: 2, text: " "}}
 
               - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: "Türen"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 3, col: 0, text: "Türen"}}
               - label:
                   id: car_locki
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: "$mdi_car_door_lock"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 3, col: 1, text: "$mdi_car_door_lock"}}
               - button:
                   grid_cell_row_pos: 3
                   grid_cell_column_pos: 2
                   height: 30
+                  bg_opa: 60%
                   widgets:
                     - label:
                         id: car_lockb
                         align: center
-                        text: "Öffnen"
+                        text: "öffnen"
     #                        on_value:
     #                          then:
     #                            - lock.lock: ioniq_ev_16_19_door_lock
@@ -69,7 +72,8 @@ lvgl:
               - label:
                   id: dc_charging
                   grid_cell_column_span: 2
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 0, text: "DC-Ladelimit"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 4, col: 0, text: "DC-Ladelimit"}}
+                  grid_cell_y_align: START
               - slider:
                   grid_cell_row_pos: 4
                   grid_cell_column_pos: 2
@@ -78,6 +82,7 @@ lvgl:
                   y: 5
                   width: 120
                   id: slider_dc_charging
+                  bg_opa: 60%
                   on_release:
                     - homeassistant.action:
                         action: number.set_value
@@ -92,7 +97,8 @@ lvgl:
               - label:
                   id: ac_charging
                   grid_cell_column_span: 2
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 0, text: "DC-Ladelimit"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 5, col: 0, text: "DC-Ladelimit"}}
+                  grid_cell_y_align: START
               - slider:
                   grid_cell_row_pos: 5
                   grid_cell_column_pos: 2
@@ -101,6 +107,7 @@ lvgl:
                   y: 10
                   width: 120
                   id: slider_ac_charging
+                  bg_opa: 60%
                   on_release:
                     - homeassistant.action:
                         action: number.set_value
@@ -115,14 +122,16 @@ lvgl:
 
               - label:
                   id: page_car8t
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 0, text: "Last update"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 6, col: 0, text: "Last update"}}
                   height: 50
+                  grid_cell_y_align: START
               - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 1, text: "$mdi_clock_outline"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 6, col: 1, text: "$mdi_clock_outline"}}
               - button:
                   grid_cell_row_pos: 6
                   grid_cell_column_pos: 2
                   height: 30
+                  bg_opa: 60%
                   widgets:
                   - label:
                       align: center
@@ -131,3 +140,11 @@ lvgl:
                     then:
                       - homeassistant.action:
                           action: kia_uvo.force_update
+
+              - label:
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 7, col: 0, text: "Wallbox"}}
+              - label:
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 7, col: 1, text: "$mdi_ev_station"}}
+              - label:
+                  id: page_car9
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 7, col: 2, text: " "}}

@@ -2,6 +2,8 @@ lvgl:
   pages:
     - id: weather_page1
       widgets:
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "Wetter"}}
         - obj:
             width: 525
             height: 300

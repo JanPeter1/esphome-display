@@ -6,8 +6,8 @@ font:
     bpp: 4
     id: font_time
     size: 60
-    glyphs: [
-      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ' ' ]
+    glyphsets:
+    glyphs: [ "0123456789: " ]
     extras:
       - file: "fonts/materialdesignicons-webfont.ttf"
         glyphs: [
@@ -21,6 +21,7 @@ font:
           "$mdi_weather_sunny",
           "$mdi_weather_windy",
         ]
+
   - file:
       type: gfonts
       family: Montserrat
@@ -89,6 +90,7 @@ font:
           "$mdi_wifi_strength_off",
           "$mdi_wind",
         ]
+        
   - file: "gfonts://Montserrat@medium"
     id: font_small
     size: 14
