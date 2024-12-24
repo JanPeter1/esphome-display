@@ -1,0 +1,3 @@
+packages:
+  printer_sensors: !include printer_sensors.yaml
+  printer_page:    !include printer_page.yaml

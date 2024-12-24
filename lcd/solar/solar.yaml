@@ -1,0 +1,3 @@
+packages:
+  solar_sensors: !include solar_sensors.yaml
+  solar_page:    !include solar_page.yaml

@@ -9,6 +9,7 @@ esphome:
     priority: -100.0
     then:
       - script.execute: update_footer
+      - script.execute: consider_deep_sleep
 
 lvgl:
   id: lvglmain
@@ -78,6 +79,13 @@ lvgl:
                 on_press:
                   then:
                     lvgl.page.show: start_page
+              - id: page_refresh
+                text: "$mdi_refresh"
+                width: 1
+                on_press:
+                  then:
+                    - online_image.release: bg_image
+                    - script.execute: update_bg_image
               - id: page_autoplay
                 text: "$mdi_stop"
                 width: 1
@@ -101,7 +109,7 @@ script:
   - id: update_footer
     then:
       lambda: |-
-        static const char * button_texts[] = {"$mdi_chevron_left", "$mdi_home", "$mdi_stop", "$mdi_chevron_right", nullptr};
+        static const char * button_texts[] = {"$mdi_chevron_left", "$mdi_home", "$mdi_refresh", "$mdi_stop", "$mdi_chevron_right", nullptr};
         button_texts[page_autoplay] = id(auto_pages)?"$mdi_stop":"$mdi_play";
         lv_btnmatrix_set_map(lvbuttonmatrixtype_id->obj, button_texts);
 

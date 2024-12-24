@@ -6,7 +6,7 @@ lvgl:
             <<: !include {file: ../info_label.yaml, vars: { text: "PV"}}
         - image:
             src: image_solar
-            x: 560
+            x: 565
             y: 320
         - obj:
             width: 525

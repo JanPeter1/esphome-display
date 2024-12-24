@@ -12,31 +12,16 @@ packages:
   fonts:     !include lcd/fonts.yaml
   main:      !include lcd/main.yaml
   motion:    !include lcd/motion.yaml
-  time:      !include lcd/time/time_sensors.yaml
-
-  weather:   !include lcd/weather/weather_sensors.yaml
-  weatherp1: !include lcd/weather/weather_page1.yaml
-  weatherp2: !include lcd/weather/weather_page2.yaml
-
-  messages:  !include lcd/messages/messages_sensors.yaml
-
-  car:       !include lcd/car/car_sensors.yaml
-  carp:      !include lcd/car/car_page.yaml
-
-  solar:     !include lcd/solar/solar_sensors.yaml
-  solarp:    !include lcd/solar/solar_page.yaml
-
-  printer:   !include lcd/printer/printer_sensors.yaml
-  printerp:  !include lcd/printer/printer_page.yaml
-
-  internet:  !include lcd/internet/internet_sensors.yaml
-  internetp: !include lcd/internet/internet_page.yaml
-
-  nas:       !include lcd/nas/nas_sensors.yaml
-  nasp:      !include lcd/nas/nas_page.yaml
-
-  debug:     !include lcd/debug/debug_page.yaml
-  debugp:    !include lcd/debug/debug_sensors.yaml
+  time:      !include lcd/time/time.yaml
+  # pages
+  weather:   !include lcd/weather/weather.yaml
+  messages:  !include lcd/messages/messages.yaml
+  car:       !include lcd/car/car.yaml
+  solar:     !include lcd/solar/solar.yaml
+  printer:   !include lcd/printer/printer.yaml
+  internet:  !include lcd/internet/internet.yaml
+  nas:       !include lcd/nas/nas.yaml
+  # debug:     !include lcd/debug/debug.yaml
 
 esphome:
   platformio_options:

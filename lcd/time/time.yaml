@@ -1,0 +1,2 @@
+packages:
+  time_sensors: !include time_sensors.yaml

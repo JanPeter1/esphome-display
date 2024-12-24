@@ -1,0 +1,3 @@
+packages:
+  debug_page:    !include debug_page.yaml
+  debug_sensors: !include debug_sensors.yaml

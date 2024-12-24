@@ -1,0 +1,3 @@
+packages:
+  nas_sensors: !include nas_sensors.yaml
+  nas_page:    !include nas_page.yaml

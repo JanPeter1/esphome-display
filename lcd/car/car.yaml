@@ -1,0 +1,3 @@
+packages:
+  car_sensors: !include car_sensors.yaml
+  car_page:    !include car_page.yaml

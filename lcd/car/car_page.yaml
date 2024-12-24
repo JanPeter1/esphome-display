@@ -4,12 +4,12 @@ lvgl:
       widgets:
         - image:
             src: image_car
-            x: 520
+            x: 530
             y: 320
         - label:
             <<: !include {file: ../info_label.yaml, vars: { text: "Auto"}}
         - obj:
-            width: 420
+            width: 440
             height: 280
             x: 20
             y: 150
@@ -19,9 +19,9 @@ lvgl:
             bg_opa: 40%
             layout:
               type: grid
-              grid_rows: [30px, 30px, 30px, 30px, 30px, 30px, 30px, 30px]
-              grid_columns: [200px, 40px, 120px]
-              grid_row_align: CENTER
+              grid_rows: [30px, 30px, 30px, 30px, 30px, 30px, 30px, 30px, 30px]
+              grid_columns: [210px, 40px, 130px]
+#              grid_row_align: CENTER
               pad_row: 0px
               pad_column: 10px
             widgets:
@@ -79,8 +79,8 @@ lvgl:
                   grid_cell_column_pos: 2
                   min_value: 0
                   max_value: 10
-                  y: 5
                   width: 120
+                  grid_cell_y_align: CENTER
                   id: slider_dc_charging
                   bg_opa: 60%
                   on_release:
@@ -104,8 +104,8 @@ lvgl:
                   grid_cell_column_pos: 2
                   min_value: 0
                   max_value: 10
-                  y: 10
                   width: 120
+                  grid_cell_y_align: CENTER
                   id: slider_ac_charging
                   bg_opa: 60%
                   on_release:

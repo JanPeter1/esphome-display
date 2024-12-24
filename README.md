@@ -42,3 +42,4 @@ It is using a copy of the materialdesignicons-webfont.ttf font downloaded from [
 * _font_time:_ A big font used to show the clock on the top-right of the screen. This font just consists of digits an a colon.
 * _font_mid:_ The default font in this project. It is a 25 point font with the normal characters, German umlauts and many idons from the Material Design Icons font.
 * _font_small:_ A small font to show short texts eg. for the weather forecast.
+* _font_footer:_ 15pt font used in the footer only.

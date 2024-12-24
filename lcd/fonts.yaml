@@ -64,6 +64,7 @@ font:
           "$mdi_speedometer_slow",
           "$mdi_sun_angle_outline",
           "$mdi_sun_shield_outline",
+          "$mdi_refresh",
           "$mdi_thermometer",
           "$mdi_thermometer_low",
           "$mdi_thermometer_water",
@@ -90,7 +91,7 @@ font:
           "$mdi_wifi_strength_off",
           "$mdi_wind",
         ]
-        
+
   - file: "gfonts://Montserrat@medium"
     id: font_small
     size: 14
@@ -116,4 +117,5 @@ font:
       "$mdi_home",
       "$mdi_chevron_left",
       "$mdi_chevron_right",
+      "$mdi_refresh",
     ]

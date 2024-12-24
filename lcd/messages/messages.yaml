@@ -1,0 +1,2 @@
+packages:
+  messages_sensors:  !include messages_sensors.yaml

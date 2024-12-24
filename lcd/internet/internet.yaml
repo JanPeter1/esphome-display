@@ -1,0 +1,3 @@
+packages:
+  internet_sensors: !include internet_sensors.yaml
+  internet_page:    !include internet_page.yaml

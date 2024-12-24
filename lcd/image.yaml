@@ -23,7 +23,7 @@ online_image:
 #      - component.update: bg_image
 
 interval:
-  - interval: 500s
+  - interval: 10min
     then:
       - script.execute: update_bg_image
 
@@ -35,7 +35,7 @@ script:
           url: !lambda |-
             std::string base = "http://homeassistant.local:8123/local/bg_images/"; 
             std::srand(std::time(0));
-            auto filename = base + "bg_image_" + std::to_string(rand() % 31 + 1) + ".png";
+            auto filename = base + "bg_image_" + std::to_string(rand() % 87 + 1) + ".png";
             ESP_LOGD("main", filename.c_str());
             return filename;
 

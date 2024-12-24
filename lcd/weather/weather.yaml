@@ -1,0 +1,4 @@
+packages:
+  weather_sensors: !include weather_sensors.yaml
+  weather_page1:   !include weather_page1.yaml
+  weather_page2:   !include weather_page2.yaml
