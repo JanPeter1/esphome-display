@@ -40,7 +40,7 @@ sensor:
             id: wifi_text3
             text:
               format: "%.1f db"
-              args: [ 'id(wifi_signal_db).state' ]
+              args: [ 'x' ]
         - if:
             condition:
               sensor.in_range:
@@ -48,10 +48,8 @@ sensor:
                 above: -50
             then:
               - lvgl.label.update:
-                  id: wifi_text3
-                  text:
-                    format: "$mdi_wifi_strength4 %.1f db"
-                    args: [ 'id(wifi_signal_db).state' ]
+                  id: wifi_text3i
+                  text: "$mdi_wifi_strength4"
         - if:
             condition:
               sensor.in_range:
@@ -60,10 +58,8 @@ sensor:
                 below: -50
             then:
               - lvgl.label.update:
-                  id: wifi_text3
-                  text:
-                    format: "$mdi_wifi_strength3 %.1f db"
-                    args: [ 'id(wifi_signal_db).state' ]
+                  id: wifi_text3i
+                  text: "$mdi_wifi_strength3"
         - if:
             condition:
               sensor.in_range:
@@ -72,10 +68,8 @@ sensor:
                 below: -55
             then:
               - lvgl.label.update:
-                  id: wifi_text3
-                  text:
-                    format: "$mdi_wifi_strength2 %.1f db"
-                    args: [ 'id(wifi_signal_db).state' ]
+                  id: wifi_text3i
+                  text: "$mdi_wifi_strength2"
         - if:
             condition:
               sensor.in_range:
@@ -84,10 +78,8 @@ sensor:
                 below: -60
             then:
               - lvgl.label.update:
-                  id: wifi_text3
-                  text:
-                    format: "$mdi_wifi_strength1 %.1f db"
-                    args: [ 'id(wifi_signal_db).state' ]
+                  id: wifi_text3i
+                  text: "$mdi_wifi_strength1"
         - if:
             condition:
               sensor.in_range:
@@ -96,10 +88,8 @@ sensor:
                 below: -67
             then:
               - lvgl.label.update:
-                  id: wifi_text3
-                  text:
-                    format: "$mdi_wifi_strength_alert %.1f db"
-                    args: [ 'id(wifi_signal_db).state' ]
+                  id: wifi_text3i
+                  text: "$mdi_wifi_strength_alert"
         - if:
             condition:
               sensor.in_range:
@@ -107,10 +97,8 @@ sensor:
                 below: -100
             then:
               - lvgl.label.update:
-                  id: wifi_text3
-                  text:
-                    format: "$mdi_wifi_strength_off %.1f db"
-                    args: [ 'id(wifi_signal_db).state' ]
+                  id: wifi_text3i
+                  text: "$mdi_wifi_strength_off"
 
   - platform: homeassistant
     id: fritz_box_7530_ax_download_durchsatz

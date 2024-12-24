@@ -23,7 +23,7 @@ online_image:
 #      - component.update: bg_image
 
 interval:
-  - interval: 10min
+  - interval: 30min
     then:
       - script.execute: update_bg_image
 

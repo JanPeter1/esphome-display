@@ -36,6 +36,7 @@ lvgl:
             - label:
                 <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: "WLAN Stärke"}}
             - label:
+                id: wifi_text3i
                 <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: "$mdi_wifi"}}
             - label:
                 id: wifi_text3
