@@ -20,8 +20,8 @@ This projects shows the status of my HomeAssistant system on a [Waveshare 7" LCD
 ### Printer
 
 ### Solar
-![Solar screenshot](solar/screenshot1.jpg)
-See page [solar](solar/README.md).
+![Solar screenshot](lcd/solar/screenshot1.jpg)
+See page [solar](lcd/solar/README.md).
 
 ### Time
 
