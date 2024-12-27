@@ -3,6 +3,8 @@
 ## Introduction
 This projects shows the status of my HomeAssistant system on a [Waveshare 7" LCD](https://www.waveshare.com/wiki/ESP32-S3-Touch-LCD-7) display.
 
+![Screenshot](lcd/screenshot1.jpg)
+
 ## Set-Up
 
 ## Pages
@@ -21,11 +23,15 @@ This projects shows the status of my HomeAssistant system on a [Waveshare 7" LCD
 
 ### Solar
 ![Solar screenshot](lcd/solar/screenshot1.jpg)
+
 See page [solar](lcd/solar/README.md).
 
 ### Time
 
 ### Weather
+![Weather screenshot](lcd/weather/screenshot2.jpg)
+
+See page [weather](lcd/weather/README.md).
 
 ## Additional functions
 

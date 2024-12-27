@@ -19,7 +19,7 @@ sensor:
 
   - platform: homeassistant
     id: weather_cloud_coverage
-    name: Windgeschwindigkeit
+    name: Bewölkungsgrad
     entity_id: weather.forecast_home
     attribute: cloud_coverage
     on_value:
