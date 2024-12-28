@@ -21,7 +21,7 @@ packages:
   printer:   !include lcd/printer/printer.yaml
   internet:  !include lcd/internet/internet.yaml
   nas:       !include lcd/nas/nas.yaml
-  # debug:     !include lcd/debug/debug.yaml
+  debug:     !include lcd/debug/debug.yaml
 
 esphome:
   platformio_options:

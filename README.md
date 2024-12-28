@@ -13,6 +13,8 @@ This projects shows the status of my HomeAssistant system on a [Waveshare 7" LCD
 
 ### Debug
 
+See page [debug](lcd/debug/README.md).
+
 ### Internet
 
 ### Messages
@@ -43,9 +45,110 @@ See page [weather](lcd/weather/README.md).
 
 ### background image
 
+The changing background image probably is one of the highlights of the display. The images to show in the background are hosted on the Home Assistant server and a new image gets downloaded every now and then. Unfortunately, the online_image component uses a lot of memory which is not always available - in that case, only a black background image will be visible.
+I hope that the situation gets better with the latest changes to the online_image component and LVGL version 9.
+```Yaml
+api:
+  on_client_connected:
+    - logger.log: "connected WIFI"
+    - delay: 15s
+    - script.execute: update_bg_image
+    
+interval:
+  - interval: 30min
+    then:
+      - script.execute: update_bg_image
+
+script:
+  - id: update_bg_image
+    then:
+      - online_image.set_url:
+          id: bg_image
+          url: !lambda |-
+            std::string base = "http://homeassistant.local:8123/local/bg_images/"; 
+            std::srand(std::time(0));
+            auto filename = base + "bg_image_" + std::to_string(rand() % 87 + 1) + ".png";
+            ESP_LOGD("main", filename.c_str());
+            return filename;
+```
+The update_bg_image script gets called every 30 minutes and when the display connects to the Home Assistant server. It fetches a random image named bg_image_N.png where N is a number from 1 to currently 87. All the images are scaled to 800x480 and are put in the directory /www/bg_images on the Home Assistant server. No additional integration is reqired in HA (just a restart if the directory /www was newly created).
+
 ### motion sensor
+Most of the GPIO pins of the ESP32 are already used for the display itself. The most natural choice for the available GPIO is to attach a motion sensor. I used a HC-SR501 sensor which just runs out of the box. The display is configured to turn black when no motion is detected and even go to deep-sleep mode, when there is no motion for a longer period of time. When a motion is detected, the display is turned on again and also the motion sensor can wake the display from deep-sleep.
+
+```Yaml
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: GPIO06
+      allow_other_uses: true
+    id: bewegungssensor
+    name: "Bewegungssensor"
+    device_class: motion
+    on_press:
+      then:
+        - logger.log: "motion detected"
+        - switch.turn_on: display_backlight
+        - lvgl.resume:
+    on_release:
+      then:
+        - logger.log: "no motion"
+        - switch.turn_off: display_backlight
+        - lvgl.pause:
+
+
+lvgl:
+  on_idle:
+    timeout: !lambda "return (id(display_timeout).state * 1000);"
+    then:
+      if:
+        condition:
+          binary_sensor.is_off: bewegungssensor
+        then:
+          - logger.log: "LVGL is idle"
+          - switch.turn_off: display_backlight
+          - lvgl.pause:
+        else:
+          - logger.log: "LVGL idle, but still motion detected"
+```
 
 ### deep sleep
+Deep sleep is easy to configure and since we have an ESP32-S3, any GPIO pin can be used to wake-up from deep sleep (ie. the motion sensor in this case). I'm using an additional switch on my Home Assistant server to prevent any ESPHome device to go to deep sleep. This sometimes comes in handy when you want to (re-)flash the devices.
+
+```Yaml
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - script.execute: update_footer
+      - script.execute: consider_deep_sleep
+
+deep_sleep:
+  id: deep_sleep_control
+  sleep_duration: 30min
+#  touch_wakeup: true
+  wakeup_pin: 
+    number: GPIO06
+    allow_other_uses: true
+  wakeup_pin_mode: KEEP_AWAKE
+
+script:
+  - id: consider_deep_sleep
+    mode: queued
+    then:
+      - delay: 5min
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_deep_sleep
+          then:
+            - logger.log: 
+                format: 'Skipping sleep, prevent_deep_sleep=%d'
+                args: [ 'id(prevent_deep_sleep).state' ]
+          else:
+              - deep_sleep.enter: deep_sleep_control
+      - script.execute: consider_deep_sleep
+```
+
 
 ### fonts
 
