@@ -30,6 +30,7 @@ See page [printer](lcd/printer/README.md)
 See page [solar](lcd/solar/README.md).
 
 ### Time
+![Screenshot time](lcd/time/screenshot1.jpg)
 
 See page [time](./lcd/time/README.md).
 
