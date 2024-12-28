@@ -2,6 +2,7 @@ The Weather information is spread between three different areas: the top-left sh
 
 #### Short info
 The short weather information is shown on all pages and gives a quick weather overview. It contains of a weather icon in a bigger font (weather.forecast_home), the current temperature (weather.forecast_home.temperature), the humidity (weather.forecast_home.humidity), and the cloud coverage (weather.forecast_home.cloud_coverage).
+
 ![Screenshot](./screenshot1.jpg)
 
 #### Current weather
@@ -9,6 +10,7 @@ The short weather information is shown on all pages and gives a quick weather ov
 
 #### Weather forecast
 ![Screenshot](./screenshot2.jpg)
+
 This page uses the LVGL line widget to show the weather forecast. In addition, it uses two template sensors that I have defined in my Home-Assistent sever to query a weather forecast and send the corresponding data as text_sensor. Here is the template definition:
 ```Yaml
 template:

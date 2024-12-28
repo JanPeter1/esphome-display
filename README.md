@@ -28,6 +28,8 @@ See page [solar](lcd/solar/README.md).
 
 ### Time
 
+See page [time](./lcd/time/README.md).
+
 ### Weather
 ![Weather screenshot](lcd/weather/screenshot2.jpg)
 
