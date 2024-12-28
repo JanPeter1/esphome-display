@@ -1,0 +1,1 @@
+There's nothing special in this folder. It uses simple lambda expressions to convert the current date into German abbreviations. A time_update script is called every 60 seconds to update the three time labels.

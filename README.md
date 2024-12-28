@@ -20,6 +20,9 @@ This projects shows the status of my HomeAssistant system on a [Waveshare 7" LCD
 ### NAS
 
 ### Printer
+![Printer screenshot](lcd/printer/screenshot1.jpg)
+
+See page [printer](lcd/printer/README.md)
 
 ### Solar
 ![Solar screenshot](lcd/solar/screenshot1.jpg)
