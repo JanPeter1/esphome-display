@@ -6,20 +6,26 @@ This projects shows the status of my HomeAssistant system on a [Waveshare 7" LCD
 ![Screenshot](lcd/screenshot1.jpg)
 
 ## Set-Up
+I found the basic set-up for my Waveshare 7" display in the [HA forum](https://community.home-assistant.io/t/esp32-s3-4-3inch-capacitive-touch-display-from-waveshare/658279/19) and adapted it a bit. See [lcd.yaml](lcd.yaml) for the main configuration.
 
 ## Pages
+I decided to show the most basic information always, and add additional data as pages. Most basic are the time, the current weather condition, and a messages window (which currently only contains our "cat toiled cleaning duty" message). Switching through the pages is done automatically, or via the buttons in the footer bar at the bottom.
 
 ### Car
+Since we have an electrical vehicle, it is interesting to have some information about the battery state. This page is using the [Kia Uvo / Hyundai Bluelink](https://github.com/Hyundai-Kia-Connect/hyundai_kia_connect_api) integration via [HACS](https://www.hacs.xyz/). Additionally, the current charging amount from our wallbox is shown using the [MyEnergy](https://github.com/cjne/ha-myenergi) integration and some data from the device internal wifi sensor.
 
 ### Debug
 
 See page [debug](lcd/debug/README.md).
 
 ### Internet
+The Internet page shows some information about uploads and downloads and the capacity of our DSL line. It uses the [Fritz!](https://www.home-assistant.io/integrations/fritz) integration.
 
 ### Messages
+I plan to add some more messages here (eg. birthday reminder, weather warnings, etc.), but currently this area just shows our "cat-sensor" (indicating who has to clean the cat toilet today).
 
 ### NAS
+Since we use a Synology NAS, the corresponding [integration](https://www.home-assistant.io/integrations/synology_dsm) is used to show some information about the used space and CPU load.
 
 ### Printer
 ![Printer screenshot](lcd/printer/screenshot1.jpg)
@@ -72,6 +78,16 @@ script:
             return filename;
 ```
 The update_bg_image script gets called every 30 minutes and when the display connects to the Home Assistant server. It fetches a random image named bg_image_N.png where N is a number from 1 to currently 87. All the images are scaled to 800x480 and are put in the directory /www/bg_images on the Home Assistant server. No additional integration is reqired in HA (just a restart if the directory /www was newly created).
+I'm using [ImageMagick](https://imagemagick.org/index.php) to convert my photographs to PNG images and resize and rename them accordingly:
+```bash
+#!/usr/bin/bash
+rm -f png/*
+for f in *.jpg *.JPG
+do
+  ((i++))
+  magick.exe $f -adaptive-resize 800x480! -quality 95 PNG24:png/bg_image_$i.png
+done
+```
 
 ### motion sensor
 Most of the GPIO pins of the ESP32 are already used for the display itself. The most natural choice for the available GPIO is to attach a motion sensor. I used a HC-SR501 sensor which just runs out of the box. The display is configured to turn black when no motion is detected and even go to deep-sleep mode, when there is no motion for a longer period of time. When a motion is detected, the display is turned on again and also the motion sensor can wake the display from deep-sleep.
