@@ -21,11 +21,11 @@ packages:
   printer:   !include lcd/printer/printer.yaml
   internet:  !include lcd/internet/internet.yaml
   nas:       !include lcd/nas/nas.yaml
-  debug:     !include lcd/debug/debug.yaml
+#  debug:     !include lcd/debug/debug.yaml
 
 esphome:
   platformio_options:
-    build_flags: "-DBOARD_HAS_PSRAM -DCONFIG_SPIRAM_CACHE_WORKAROUND"
+    build_flags: "-DBOARD_HAS_PSRAM -DCONFIG_SPIRAM_CACHE_WORKAROUND -O2"
     board_build.arduino.memory_type: qio_opi
     board_build.flash_mode: dio
     board_upload.maximum_ram_size: 524288

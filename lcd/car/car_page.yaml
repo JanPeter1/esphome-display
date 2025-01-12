@@ -1,3 +1,9 @@
+image:
+  - file: "images/car.png"
+    id: image_car
+    type: RGB565
+    use_transparency: true
+
 lvgl:
   pages:
     - id: car_page
@@ -51,6 +57,7 @@ lvgl:
                   <<: !include {file: ../cell_text.yaml, vars: {row: 2, col: 2, text: " "}}
 
               - label:
+                  id: car_lock
                   <<: !include {file: ../cell_text.yaml, vars: {row: 3, col: 0, text: "Türen"}}
               - label:
                   id: car_locki
@@ -65,9 +72,9 @@ lvgl:
                         id: car_lockb
                         align: center
                         text: "öffnen"
-    #                        on_value:
-    #                          then:
-    #                            - lock.lock: ioniq_ev_16_19_door_lock
+                        on_value:
+                          then:
+                            - switch.toggle: ioniq_door_lock
 
               - label:
                   id: dc_charging
@@ -99,7 +106,7 @@ lvgl:
               - label:
                   id: ac_charging
                   grid_cell_column_span: 2
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 5, col: 0, text: "DC-Ladelimit"}}
+                  <<: !include {file: ../cell_text.yaml, vars: {row: 5, col: 0, text: "AC-Ladelimit"}}
                   grid_cell_y_align: START
               - slider:
                   grid_cell_row_pos: 5

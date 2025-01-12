@@ -1,2 +1,3 @@
 packages:
   messages_sensors:  !include messages_sensors.yaml
+  messages_page:     !include messages_page.yaml

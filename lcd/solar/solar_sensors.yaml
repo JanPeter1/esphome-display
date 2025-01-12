@@ -116,9 +116,3 @@ text_sensor:
             id: page_solar4
             text: !lambda |-
               return x.substr(11, 5).c_str();
-
-image:
-  - file: "images/solar.png"
-    id: image_solar
-    type: RGB565
-    use_transparency: true

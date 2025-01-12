@@ -42,6 +42,9 @@ font:
           "$mdi_arrow_top_left_thin_circle_outline",
           "$mdi_arrow_top_right_thin_circle_outline",
           "$mdi_arrow_up_thin_circle_outline",
+          "$mdi_cake_variant_outline",
+          "$mdi_calendar",
+          "$mdi_calendar_check",
           "$mdi_calendar_today_outline",
           "$mdi_car_battery",
           "$mdi_car_clock",
@@ -58,6 +61,7 @@ font:
           "$mdi_ev_plug_type2",
           "$mdi_ev_station",
           "$mdi_file_up_down_outline",
+          "$mdi_plane_car",
           "$mdi_power_plug",
           "$mdi_solar_power",
           "$mdi_solar_power_variant",
@@ -68,6 +72,7 @@ font:
           "$mdi_thermometer",
           "$mdi_thermometer_low",
           "$mdi_thermometer_water",
+          "$mdi_trash_can",
           "$mdi_transmission_tower_import",
           "$mdi_upload",
           "$mdi_water_percent",
@@ -119,3 +124,10 @@ font:
       "$mdi_chevron_right",
       "$mdi_refresh",
     ]
+
+
+  - file: "gfonts://Montserrat@medium"
+    id: font_mid2
+    size: 20
+    bpp: 4
+    glyphsets: GF_Latin_Core

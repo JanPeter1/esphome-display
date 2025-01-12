@@ -1,3 +1,9 @@
+image:
+  - file: "images/solar.png"
+    id: image_solar
+    type: RGB565
+    use_transparency: true
+
 lvgl:
   pages:
     - id: solar_page

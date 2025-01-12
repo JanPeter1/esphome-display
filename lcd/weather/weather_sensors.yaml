@@ -1,3 +1,7 @@
+esphome:
+  includes:
+    - common/my_utils.hpp
+
 sensor:
   - platform: homeassistant
     id: weather_humidity
@@ -303,72 +307,36 @@ text_sensor:
     on_value:
       then:
         - lambda: |-
-            std::vector<std::string> days;
-            std::vector<float> templowf;
-            std::vector<std::string> temps;
-            std::vector<float> tempsf;
-            std::vector<float> rain;
-            std::vector<std::string> symbol;
             static std::map<std::string, std::string> daymapping = {{"Mon", "Mo"}, {"Tue", "Di"}, {"Wed", "Mi"}, {"Thu", "Do"}, {"Fri", "Fr"}, {"Sat", "Sa"}, {"Sun", "So"}};
-            char *save;
-            char *save2;
-            //ESP_LOGD("main", x.c_str());
-
-            char* input = (char*) malloc(sizeof(char)*x.size()+1);
-            strcpy(input, x.data());
-            char *token = strtok_r(input, "#", &save);
-
-            while(token) {
-              std::vector<std::string> forecast;
-              std::string val(token);
-              val.erase(0, val.find_first_not_of(" \n\r\t"));
-              val.erase(val.find_last_not_of(" \n\r\t")+1);
-
-              char* input2 = (char*) malloc(sizeof(char)*val.size()+1);
-              strcpy(input2, val.data());
-              char *token2 = strtok_r(input2, ";", &save2);
-              while(token2) {
-                std::string val2(token2);
-                val2.erase(0, val2.find_first_not_of(" \n\r\t"));
-                val2.erase(val2.find_last_not_of(" \n\r\t")+1);
-
-                forecast.push_back(val2);
-                token2 = strtok_r(NULL, ";", &save2);
-              }
-              free(input2);
-              while(forecast.size() < 5) forecast.push_back("");
-              auto daysearch = daymapping.find(forecast[0]);
-              if (daysearch == daymapping.end()) {
-                days.push_back(forecast[0]);
-              } else {
-                days.push_back(daymapping[forecast[0]]);
-              }
-              templowf.push_back(atof(forecast[1].c_str()));
-              temps.push_back(forecast[2]);
-              tempsf.push_back(atof(forecast[2].c_str()));
-              rain.push_back(atof(forecast[3].c_str()));
-              symbol.push_back(forecast[4]);
-              token = strtok_r(NULL, "#", &save);
-            }
-            free (input);
             static lv_obj_t * ldays[] =  { fc0_day, fc1_day, fc2_day, fc3_day, fc4_day };
             static lv_obj_t * ltemps[] = { fc0_temp, fc1_temp, fc2_temp, fc3_temp, fc4_temp };
             static lv_obj_t * ltempslow[] = { fc0_templow, fc1_templow, fc2_templow, fc3_templow, fc4_templow };
             static lv_obj_t * lrains[] = { fc0_rain, fc1_rain, fc2_rain, fc3_rain, fc4_rain };
             static lv_obj_t * lsyms[] =  { fc0_sym, fc1_sym, fc2_sym, fc3_sym, fc4_sym };
-            // correct would be starting at 0 and ending at 220
+            // correct would be starting at 20 and ending at 220
             static lv_point_t mlv_point_t_id[] = {{0, 75}, {70, 75}, {120, 75}, {170, 75}, {242, 75}};
             static lv_point_t mlv_pointlow_t_id[] = {{0, 75}, {70, 75}, {120, 75}, {170, 75}, {242, 75}};
-            for (int i=0; i<5; i++) {
-              if (i < tempsf.size()) {
-                mlv_point_t_id[i].y    = (lv_coord_t)(75 - 2.3 * tempsf[i]);
-                mlv_pointlow_t_id[i].y = (lv_coord_t)(75 - 2.3 * templowf[i]);
-                lv_label_set_text(ltempslow[i], str_sprintf("%.1f°", templowf[i]).c_str());
-              }
-              if (i < days.size())   lv_label_set_text(ldays[i],  (days[i]).c_str());
-              if (i < temps.size())  lv_label_set_text(ltemps[i], (temps[i] + "°").c_str());
-              if (i < rain.size())   lv_label_set_text(lrains[i], str_sprintf("%.0fmm", rain[i]).c_str());
-              if (i < symbol.size()) lv_label_set_text(lsyms[i],  (symbol[i]).c_str());
+
+            auto forecast = split(x, "#");
+            auto cnt = 0;
+            for (auto part: forecast) {
+              //ESP_LOGD("main", part.c_str());
+              std::vector<std::string> parts = split(trim(part), ";");
+              auto day = GetWithDef(daymapping, parts[0], parts[0]);
+              lv_label_set_text(ldays[cnt], day.c_str());
+
+              auto templow = StringToFloat(parts[1]);
+              auto temp = StringToFloat(parts[2]);
+              auto rain = StringToFloat(parts[3]);
+              mlv_point_t_id[cnt].y    = (lv_coord_t)(75 - 2.3 * temp);
+              mlv_pointlow_t_id[cnt].y = (lv_coord_t)(75 - 2.3 * templow);
+              lv_label_set_text(ltempslow[cnt], str_sprintf("%.1f°", templow).c_str());
+
+              lv_label_set_text(ltemps[cnt], str_sprintf("%.1f°", temp).c_str());
+              lv_label_set_text(lrains[cnt], str_sprintf("%.0fmm", rain).c_str());
+              lv_label_set_text(lsyms[cnt],  parts[4].c_str());
+              cnt++;
+              if (cnt > 4) break;
             }
             lv_line_set_points(temp_line, mlv_point_t_id, 5);
             lv_line_set_points(templow_line, mlv_pointlow_t_id, 5);
@@ -380,53 +348,70 @@ text_sensor:
     on_value:
       then:
         - lambda: |-
-            std::vector<int> time;
-            std::vector<float> tempsf;
-            char *save;
-            char *save2;
-            static lv_obj_t * lhours[] = { fc0_hour, fc1_hour, fc2_hour, fc3_hour, fc4_hour };
+            static lv_point_t mlv_pointhour_t_id[] = {{00, 75},  {20, 75},  {30, 75},  {40, 75},  {50, 75},
+                                                      {60, 75},  {70, 75},  {80, 75},  {90, 75},  {100, 75},
+                                                      {110, 75}, {120, 75}, {130, 75}, {140, 75}, {150, 75},
+                                                      {160, 75}, {170, 75}, {180, 75}, {190, 75}, {200, 75},
+                                                      {210, 75}, {220, 75}, {230, 75}, {242, 75}};
 
-            char* input = (char*) malloc(sizeof(char)*x.size()+1);
-            strcpy(input, x.data());
-            char *token = strtok_r(input, "#", &save);
+            auto forecast = split(x, "#");
+            auto cnt = 0;
+            for (auto part: forecast) {
+              //ESP_LOGD("main", part.c_str());
+              std::vector<std::string> parts = split(trim(part), ";");
 
-            while(token) {
-              std::vector<std::string> forecast;
-              std::string val(token);
-              val.erase(0, val.find_first_not_of(" \n\r\t"));
-              val.erase(val.find_last_not_of(" \n\r\t")+1);
+              mlv_pointhour_t_id[cnt].y = (lv_coord_t)(75 - 2.3 * StringToFloat(parts[1]));
+              switch(cnt) {
+              case 0:
+                lv_label_set_text(fc0_hour, (parts[0] + ":00").c_str());
+                break;
 
-              char* input2 = (char*) malloc(sizeof(char)*val.size()+1);
-              strcpy(input2, val.data());
-              char *token2 = strtok_r(input2, ";", &save2);
-              while(token2) {
-                std::string val2(token2);
-                val2.erase(0, val2.find_first_not_of(" \n\r\t"));
-                val2.erase(val2.find_last_not_of(" \n\r\t")+1);
+              case 6:
+                lv_label_set_text(fc1_hour, (parts[0] + ":00").c_str());
+                break;
 
-                forecast.push_back(val2);
-                token2 = strtok_r(NULL, ";", &save2);
+              case 12:
+                lv_label_set_text(fc2_hour, (parts[0] + ":00").c_str());
+                break;
+
+              case 18:
+                lv_label_set_text(fc3_hour, (parts[0] + ":00").c_str());
+                break;
+
+              case 23:
+                lv_label_set_text(fc4_hour, (parts[0] + ":00").c_str());
+                break;
+
+              default:
+                break;
               }
-              free(input2);
-              while(forecast.size() < 24) forecast.push_back("");
-              time.push_back(atoi(forecast[0].c_str()));
-              tempsf.push_back(atof(forecast[1].c_str()));
-              token = strtok_r(NULL, "#", &save);
+              cnt++;
+              if (cnt > 23) break;
             }
-            free (input);
-            static lv_point_t mlv_pointhour_t_id[] = {{00, 75},  {30, 75},  {40, 75},  {50, 75},  {60, 75},
-                                                      {70, 75},  {80, 75},  {90, 75},  {100, 75}, {110, 75},
-                                                      {120, 75}, {130, 75}, {140, 75}, {150, 75}, {160, 75},
-                                                      {170, 75}, {180, 75}, {190, 75}, {200, 75}, {210, 75},
-                                                      {242, 75}};
-            for (int i=0; i<21; i++) {
-              if (i < tempsf.size()) {
-                mlv_pointhour_t_id[i].y = (lv_coord_t)(75 - 2.3 * tempsf[i]);
+            lv_line_set_points(temphour_line, mlv_pointhour_t_id, 24);
+
+  - platform: homeassistant
+    id: wetterwarnungen
+    name: Wetterwarnungen
+    entity_id: sensor.wetterwarnungen
+    on_value:
+      then:
+        - lambda: |-
+            static lv_obj_t * lab[] =  { warnings_t1, warnings_t2, warnings_t3, warnings_t4, warnings_t5, warnings_t6, warnings_t7 };
+            auto texts = split(x, "|");
+            int cnt = 0;
+            for (auto part: texts) {
+              ESP_LOGD("main", part.c_str());
+              if (cnt == 0) {
+                lv_label_set_text(lab[cnt], trim(part).c_str());
+              } else {
+                auto parts = split(part, ";");
+                lv_label_set_text(lab[cnt], (trim(parts[0]) + " " + parts[1] + "#\n" + parts[2] + "\n" + parts[3]).c_str());
+                //auto col = strtoul(trim(parts[0]).substr(1).c_str(), NULL, 16);
+                //lv_obj_set_style_text_color(lab[cnt], lv_color_make(col >> 16, (col >> 8) & 0xFF, col & 0xFF), LV_PART_MAIN);
+                //cnt++;
+                //lv_label_set_text(lab[cnt], (parts[2] + "\n" + parts[3]).c_str());
               }
+              cnt++;
+              if (cnt > 7) break;
             }
-            lv_line_set_points(temphour_line, mlv_pointhour_t_id, 21);
-            lv_label_set_text(lhours[0],  str_sprintf("%2d:00", time[0]).c_str());
-            lv_label_set_text(lhours[1],  str_sprintf("%2d:00", time[6]).c_str());
-            lv_label_set_text(lhours[2],  str_sprintf("%2d:00", time[12]).c_str());
-            lv_label_set_text(lhours[3],  str_sprintf("%2d:00", time[18]).c_str());
-            lv_label_set_text(lhours[4],  str_sprintf("%2d:00", time[23]).c_str());

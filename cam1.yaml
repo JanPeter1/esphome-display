@@ -1,0 +1,115 @@
+substitutions:
+  devicename: "cam1"
+  upper_devicename: "Camera 1"
+
+esphome:
+  name: $devicename
+  platform: ESP32
+  board: esp32cam
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Fallback Hotspot"
+    password: !secret fallback_password
+
+captive_portal:
+
+logger:
+
+api:
+  services:  # change camera parameters on-the-fly
+  - service: camera_set_param
+    variables:
+      name: string
+      value: int
+    then:
+      - lambda: |-
+          bool state_return = false;
+          if (("contrast" == name) && (value >= -2) && (value <= 2)) { id($devicename).set_contrast(value); state_return = true; }
+          if (("brightness" == name) && (value >= -2) && (value <= 2)) { id($devicename).set_brightness(value); state_return = true; }
+          if (("saturation" == name) && (value >= -2) && (value <= 2)) { id($devicename).set_saturation(value); state_return = true; }
+          if (("special_effect" == name) && (value >= 0U) && (value <= 6U)) { id($devicename).set_special_effect((esphome::esp32_camera::ESP32SpecialEffect)value); state_return = true; }
+          if (("aec_mode" == name) && (value >= 0U) && (value <= 1U)) { id($devicename).set_aec_mode((esphome::esp32_camera::ESP32GainControlMode)value); state_return = true; }
+          if (("aec2" == name) && (value >= 0U) && (value <= 1U)) { id($devicename).set_aec2(value); state_return = true; }
+          if (("ae_level" == name) && (value >= -2) && (value <= 2)) { id($devicename).set_ae_level(value); state_return = true; }
+          if (("aec_value" == name) && (value >= 0U) && (value <= 1200U)) { id($devicename).set_aec_value(value); state_return = true; }
+          if (("agc_mode" == name) && (value >= 0U) && (value <= 1U)) { id($devicename).set_agc_mode((esphome::esp32_camera::ESP32GainControlMode)value); state_return = true; }
+          if (("agc_value" == name) && (value >= 0U) && (value <= 30U)) { id($devicename).set_agc_value(value); state_return = true; }
+          if (("agc_gain_ceiling" == name) && (value >= 0U) && (value <= 6U)) { id($devicename).set_agc_gain_ceiling((esphome::esp32_camera::ESP32AgcGainCeiling)value); state_return = true; }
+          if (("wb_mode" == name) && (value >= 0U) && (value <= 4U)) { id($devicename).set_wb_mode((esphome::esp32_camera::ESP32WhiteBalanceMode)value); state_return = true; }
+          if (("test_pattern" == name) && (value >= 0U) && (value <= 1U)) { id($devicename).set_test_pattern(value); state_return = true; }
+          if (true == state_return) {
+            id($devicename).update_camera_parameters();
+          }
+          else {
+            ESP_LOGW("esp32_camera_set_param", "Error in name or data range");
+          }
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+    
+esp32_camera:
+  id: $devicename
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  horizontal_mirror: false
+  vertical_flip: false
+  name: $devicename
+  resolution: 800x600
+  max_framerate: 1.0 fps
+  idle_framerate: 0.05 fps
+  jpeg_quality: 35
+  brightness: 2 # -2 to 2
+  contrast: 1 # -2 to 2
+  special_effect: none
+  # exposure settings
+  aec_mode: auto
+  aec2: false
+  ae_level: 0
+  aec_value: 300
+  # gain settings
+  agc_mode: auto
+  agc_gain_ceiling: 2x
+  agc_value: 0
+  # white balance setting
+  wb_mode: auto
+
+output:
+  # white LED
+  - platform: gpio
+    pin: GPIO4
+    id: gpio_4
+  # red status light
+  - platform: gpio
+    pin:
+      number: GPIO33
+      inverted: True
+    id: gpio_33
+
+light:
+  - platform: binary
+    output: gpio_4
+    name: $devicename light
+  - platform: binary
+    output: gpio_33
+    name: $devicename led
+
+switch:
+  - platform: restart
+    name: $devicename restart
+binary_sensor:
+  - platform: status
+    name: $devicename status

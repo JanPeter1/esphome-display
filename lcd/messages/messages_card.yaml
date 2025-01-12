@@ -19,3 +19,31 @@ widgets:
   - label:
       id: label_message_1
       <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+
+  - label:
+      id: label_message_2i
+      <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: " "}}
+  - label:
+      id: label_message_2
+      <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: " "}}
+
+  - label:
+      id: label_message_3i
+      <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: " "}}
+  - label:
+      id: label_message_3
+      <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: " "}}
+
+  - label:
+      id: label_message_4i
+      <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: " "}}
+  - label:
+      id: label_message_4
+      <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: " "}}
+
+  - label:
+      id: label_message_5i
+      <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 0, text: " "}}
+  - label:
+      id: label_message_5
+      <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 1, text: " "}}
