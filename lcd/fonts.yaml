@@ -3,24 +3,27 @@ font:
       type: gfonts
       family: Montserrat
       weight: bold
-    bpp: 4
     id: font_time
-    size: 60
+    bpp: 4
+    size: 50
     glyphsets:
     glyphs: [ "0123456789: " ]
-    extras:
-      - file: "fonts/materialdesignicons-webfont.ttf"
-        glyphs: [
-          "$mdi_weather_clear_night",
-          "$mdi_weather_cloudy",
-          "$mdi_weather_fog",
-          "$mdi_weather_partly_cloudy",
-          "$mdi_weather_rainy",
-          "$mdi_weather_snow_rain",
-          "$mdi_weather_snow",
-          "$mdi_weather_sunny",
-          "$mdi_weather_windy",
-        ]
+
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: font_weather
+    size: 70
+    bpp: 4
+    glyphs: [
+      "$mdi_weather_clear_night",
+      "$mdi_weather_cloudy",
+      "$mdi_weather_fog",
+      "$mdi_weather_partly_cloudy",
+      "$mdi_weather_rainy",
+      "$mdi_weather_snow_rain",
+      "$mdi_weather_snow",
+      "$mdi_weather_sunny",
+      "$mdi_weather_windy",
+    ]
 
   - file:
       type: gfonts
@@ -34,6 +37,7 @@ font:
     extras:
       - file: "fonts/materialdesignicons-webfont.ttf"
         glyphs: [
+          "$mdi_alert",
           "$mdi_arrow_bottom_left_thin_circle_outline",
           "$mdi_arrow_bottom_right_thin_circle_outline",
           "$mdi_arrow_down_thin_circle_outline",
@@ -78,6 +82,7 @@ font:
           "$mdi_water_percent",
           "$mdi_weather_clear_night",
           "$mdi_weather_cloudy",
+          "$mdi_weather_cloudy_alert",
           "$mdi_weather_fog",
           "$mdi_weather_partly_cloudy",
           "$mdi_weather_rainy",
@@ -88,6 +93,7 @@ font:
           "$mdi_web_sync",
           "$mdi_wifi",
           "$mdi_wifi_arrow_left_right",
+          "$mdi_wifi_settings",
           "$mdi_wifi_strength_alert",
           "$mdi_wifi_strength1",
           "$mdi_wifi_strength2",

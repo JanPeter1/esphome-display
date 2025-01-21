@@ -1,49 +1,55 @@
 x: 240
-y: 20
-width: 305
-height: 100
+y: 10
+width: 320
+height: 130
 border_side: NONE
 pad_all: 5px
 bg_color: 0x000000
 bg_opa: 40%
 layout:
   type: grid
-  grid_rows: [25px]
-  grid_columns: [25px, 200px]
+  grid_rows: [25px, 25px, 25px, 25px, 25px]
+  grid_columns: [25px, 190px]
   grid_row_align: START
   pad_row: 0px
   pad_column: 10px
 widgets:
   - label:
-      <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "$mdi_cat"}}
+      id: label_message_1i
+      <<: !include { file: ../cell.yaml, vars: { row: 0, col: 0, text: " "}}
   - label:
       id: label_message_1
-      <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 0, col: 1, text: " "}}
+      long_mode: WRAP
 
   - label:
       id: label_message_2i
-      <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 1, col: 0, text: " "}}
   - label:
       id: label_message_2
-      <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 1, col: 1, text: " "}}
+      long_mode: WRAP
 
   - label:
       id: label_message_3i
-      <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 2, col: 0, text: " "}}
   - label:
       id: label_message_3
-      <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 2, col: 1, text: " "}}
+      long_mode: WRAP
 
   - label:
       id: label_message_4i
-      <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 3, col: 0, text: " "}}
   - label:
       id: label_message_4
-      <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 3, col: 1, text: " "}}
+      long_mode: WRAP
 
   - label:
       id: label_message_5i
-      <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 0, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 4, col: 0, text: " "}}
   - label:
       id: label_message_5
-      <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 1, text: " "}}
+      <<: !include { file: ../cell.yaml, vars: { row: 4, col: 1, text: " "}}
+      long_mode: WRAP

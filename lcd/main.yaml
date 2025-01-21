@@ -10,12 +10,14 @@ esphome:
     then:
       - script.execute: update_footer
       - script.execute: consider_deep_sleep
+      - lambda: notif_initialize(weather_card);
 
 lvgl:
   id: lvglmain
   theme:
     label:
       text_font: font_mid
+      text_color: white
   style_definitions:
     - id: header_footer
       bg_color: 0x2F8CD8
@@ -121,3 +123,5 @@ interval:
           lambda: return id(auto_pages);
         then:
           - lvgl.page.next:
+              animation: FADE_OUT
+              time: 100ms

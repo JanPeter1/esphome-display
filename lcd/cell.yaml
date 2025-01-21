@@ -1,5 +1,3 @@
 grid_cell_row_pos: ${row}
 grid_cell_column_pos: ${col}
 text: "${text}"
-text_font: font_mid
-text_color: white

@@ -1,5 +1,6 @@
 substitutions:
   # MDI font glyphs
+  mdi_alert:                     "\U000F002A"
   mdi_arrow_down_thin_circle_outline:         "\U000F1599"
   mdi_arrow_left_thin_circle_outline:         "\U000F159A"
   mdi_arrow_right_thin_circle_outline:        "\U000F1598"
@@ -55,6 +56,7 @@ substitutions:
   mdi_upload_box_outline:        "\U000F1D11"
   mdi_water_percent:             "\U000F058E"
   mdi_weather_cloudy:            "\U000F0590"
+  mdi_weather_cloudy_alert:      "\U000F0F2F"
   mdi_weather_clear_night:       "\U000F0594"
   mdi_weather_fog:               "\U000F0591"
   mdi_weather_partly_cloudy:     "\U000F0595"
@@ -67,6 +69,7 @@ substitutions:
   mdi_web_sync:                  "\U000F1792"
   mdi_wifi:                      "\U000F05A9"
   mdi_wifi_arrow_left_right:     "\U000F16B8"
+  mdi_wifi_settings:             "\U000F16C6"
   mdi_wifi_strength_alert:       "\U000F092B"
   mdi_wifi_strength1:            "\U000F091F"
   mdi_wifi_strength2:            "\U000F0922"

@@ -19,57 +19,36 @@ lvgl:
                 grid_rows: [ 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
                 grid_columns: [220, 30, 255 ]
             widgets:
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "SSID"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
-            - label:
-                id: wifi_text1
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 0, text: "#internet.ssid.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "#internet.ssid.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#internet.ssid"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: "IP-Adresse"}}
-            - label:
-                id: wifi_text2
-                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 0, text: "#internet.ip_address.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "#internet.ip_address.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#internet.ip_address"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: "WLAN Stärke"}}
-            - label:
-                id: wifi_text3i
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: "$mdi_wifi"}}
-            - label:
-                id: wifi_text3
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 0, text: "#internet.signal.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#internet.signal.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#internet.signal"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: "Download"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: "$mdi_download"}}
-            - label:
-                id: wifi_text4
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 0, text: "#internet.download.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 1, text: "#internet.download.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 2, text: "#internet.download"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 0, text: "Upload"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 1, text: "$mdi_upload"}}
-            - label:
-                id: wifi_text5
-                <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 0, text: "#internet.upload.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 1, text: "#internet.upload.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 2, text: "#internet.upload"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 0, text: "Leitung"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 1, text: "$mdi_web_sync"}}
-            - label:
-                id: wifi_text6
-                <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 0, text: "#internet.rates.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 1, text: "#internet.rates.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 2, text: "#internet.rates"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 0, text: "Daten übertragen"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 1, text: "$mdi_wifi_arrow_left_right"}}
-            - label:
-                id: wifi_text7
-                <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 0, text: "#internet.today.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 1, text: "#internet.today.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 2, text: "#internet.today"}}
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: notif_initialize(internet_page);

@@ -1,0 +1,4 @@
+- label:
+    grid_cell_row_pos: ${row}
+    grid_cell_column_pos: ${col}
+    text: "${text}"

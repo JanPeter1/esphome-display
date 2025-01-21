@@ -4,74 +4,46 @@ sensor:
     entity_id: sensor.data_volume_1_belegter_speicherplatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: nas_text1
-            text:
-              format: "%.2f+%.2f TB"
-              args: [ 'id(data_volume_1_belegter_speicherplatz).state', 'id(data_volume_1_belegter_speicherplatz).state' ]
+        - lambda: notif_set("nas.used_space", "Speicher belegt", "$mdi_database_outline", string_format("%.2f+%.2f TB", id(data_volume_1_belegter_speicherplatz).state, id(data_volume_1_belegter_speicherplatz).state));
 
   - platform: homeassistant
     id: data_volume_2_belegter_speicherplatz
     entity_id: sensor.data_volume_2_belegter_speicherplatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: nas_text1
-            text:
-              format: "%.2f+%.2f TB"
-              args: [ 'id(data_volume_2_belegter_speicherplatz).state', 'id(data_volume_2_belegter_speicherplatz).state' ]
+        - lambda: notif_set("nas.used_space", "Speicher belegt", "$mdi_database_outline", string_format("%.2f+%.2f TB", id(data_volume_1_belegter_speicherplatz).state, id(data_volume_1_belegter_speicherplatz).state));
 
   - platform: homeassistant
     id: data_volume_1_verwendetes_volumen
     entity_id: sensor.data_volume_1_verwendetes_volumen
     on_value:
       then:
-        - lvgl.label.update:
-            id: nas_text2
-            text:
-              format: "%.2f+%.2f %%"
-              args: [ 'id(data_volume_1_verwendetes_volumen).state', 'id(data_volume_2_verwendetes_volumen).state' ]
+        - lambda: notif_set("nas.volumes", "Speicher belegt %", "$mdi_database_outline", string_format("%.2f+%.2f %%", id(data_volume_1_verwendetes_volumen).state, id(data_volume_2_verwendetes_volumen).state));
 
   - platform: homeassistant
     id: data_volume_2_verwendetes_volumen
     entity_id: sensor.data_volume_2_verwendetes_volumen
     on_value:
       then:
-        - lvgl.label.update:
-            id: nas_text2
-            text:
-              format: "%.2f+%.2f %%"
-              args: [ 'id(data_volume_1_verwendetes_volumen).state', 'id(data_volume_2_verwendetes_volumen).state' ]
+        - lambda: notif_set("nas.volumes", "Speicher belegt %", "$mdi_database_outline", string_format("%.2f+%.2f %%", id(data_volume_1_verwendetes_volumen).state, id(data_volume_2_verwendetes_volumen).state));
 
   - platform: homeassistant
     id: data_download_durchsatz
     entity_id: sensor.data_download_durchsatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: nas_text3
-            text:
-              format: "%.2f/%.2f kB/s"
-              args: [ 'id(data_download_durchsatz).state', 'id(data_upload_durchsatz).state' ]
+        - lambda: notif_set("nas.rates", "Durchsatz", "$mdi_file_up_down_outline", string_format("%.2f/%.2f kB/s", id(data_download_durchsatz).state, id(data_upload_durchsatz).state));
 
   - platform: homeassistant
     id: data_upload_durchsatz
     entity_id: sensor.data_upload_durchsatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: nas_text3
-            text:
-              format: "%.2f/%.2f kB/s"
-              args: [ 'id(data_download_durchsatz).state', 'id(data_upload_durchsatz).state' ]
+        - lambda: notif_set("nas.rates", "Durchsatz", "$mdi_file_up_down_outline", string_format("%.2f/%.2f kB/s", id(data_download_durchsatz).state, id(data_upload_durchsatz).state));
 
   - platform: homeassistant
     id: data_cpu_auslastung_gesamt
     entity_id: sensor.data_cpu_auslastung_gesamt
     on_value:
       then:
-        - lvgl.label.update:
-            id: nas_text4
-            text:
-              format: "%.0f %%"
-              args: [ 'id(data_cpu_auslastung_gesamt).state' ]
+        - lambda: notif_set("nas.cpu_load", "CPU last", "$mdi_speedometer_slow", string_format("%.0f %%", x));

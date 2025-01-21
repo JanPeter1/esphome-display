@@ -10,16 +10,7 @@ sensor:
     attribute: humidity
     on_value:
       then:
-        - lvgl.label.update:
-            id: label_weather_2
-            text:
-              format: "$mdi_thermometer_water %.0f%%"
-              args: [ 'x' ]
-        - lvgl.label.update:
-            id: page_weather3
-            text:
-              format: "%.0f%%"
-              args: [ 'x' ]
+        - lambda: notif_set("weather.humidity", "Luftfeuchtigkeit", "$mdi_water_percent", string_format("%.0f%%", x));
 
   - platform: homeassistant
     id: weather_cloud_coverage
@@ -28,16 +19,7 @@ sensor:
     attribute: cloud_coverage
     on_value:
       then:
-        - lvgl.label.update:
-            id: label_weather_3
-            text:
-              format: "$mdi_weather_cloudy %.0f%%"
-              args: [ 'x' ]
-        - lvgl.label.update:
-            id: page_weather9
-            text:
-              format: "%.0f%%"
-              args: [ 'x' ]
+        - lambda: notif_set("weather.cloud_coverage", "Bewölkung", "$mdi_weather_cloudy", string_format("%.0f%%", x));
 
   - platform: homeassistant
     id: weather_uv
@@ -46,11 +28,16 @@ sensor:
     attribute: uv_index
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_weather5
-            text:
-              format: "%.1f"
-              args: [ 'x' ]
+        - lambda: notif_set("weather.uv_index", "UV Index", "$mdi_sun_shield_outline", string_format("%.1f", x));
+        - if:
+            condition:
+              sensor.in_range:
+                id: weather_uv
+                below: 3
+            then:
+              - lambda: |-
+                  notif_set_color("weather.uv_index", white);
+                  warn_clear("weather.uv_index");
         - if:
             condition:
               sensor.in_range:
@@ -58,18 +45,18 @@ sensor:
                 above: 3
                 below: 5
             then:
-              - lvgl.label.update:
-                  id: page_weather5
-                  text_color: yellow
+              - lambda: |-
+                  notif_set_color("weather.uv_index", yellow);
+                  warn_set("weather.uv_index", string_format("UV Index: %.1f", x), "$mdi_sun_shield_outline", 4);
         - if:
             condition:
               sensor.in_range:
                 id: weather_uv
                 above: 5
             then:
-              - lvgl.label.update:
-                  id: page_weather5
-                  text_color: red
+              - lambda: |-
+                  notif_set_color("weather.uv_index", red);
+                  warn_set("weather.uv_index", string_format("UV Index: %.1f", x), "$mdi_sun_shield_outline", 7);
 
   - platform: homeassistant
     id: weather_pressure
@@ -77,29 +64,30 @@ sensor:
     name: "Luftdruck"
     attribute: pressure
     on_value:
-      then:
-        - lvgl.label.update:
-            id: page_weather6
-            text:
-              format: "%.0f hPa"
-              args: [ 'x' ]
-    on_value_range:
-      - below: 1010
-        then:
-          - lvgl.label.update:
-              id: page_weather6i
-              text: "$mdi_cloud_arrow_down_outline"
-      - above: 1010
-        below: 1020
-        then:
-          - lvgl.label.update:
-              id: page_weather6i
-              text: "$mdi_cloud_cog_outline"
-      - above: 1020
-        then:
-          - lvgl.label.update:
-              id: page_weather6i
-              text: "$mdi_cloud_arrow_up_outline"
+      - then:
+        - lambda: notif_set("weather.pressure", "Luftdruck", "$mdi_cloud_cog_outline", string_format("%.0f hPa", x));
+        - if:
+            condition:
+              sensor.in_range:
+                id: weather_pressure
+                below: 1010
+            then:
+              - lambda: notif_set_text("weather.pressure.icon", "$mdi_cloud_arrow_down_outline");
+        - if:
+            condition:
+              sensor.in_range:
+                id: weather_pressure
+                above: 1010.01
+                below: 1020
+            then:
+              - lambda: notif_set_text("weather.pressure.icon", "$mdi_cloud_cog_outline");
+        - if:
+            condition:
+              sensor.in_range:
+                id: weather_pressure
+                above: 1020.01
+            then:
+              - lambda: notif_set_text("weather.pressure.icon", "$mdi_cloud_arrow_up_outline");
 
   - platform: homeassistant
     id: weather_dew_point
@@ -108,11 +96,7 @@ sensor:
     attribute: dew_point
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_weather4
-            text:
-              format: "%.0f °C"
-              args: [ 'x' ]
+        - lambda: notif_set("weather.dew_point", "Taupunkt", "$mdi_thermometer_water", string_format("%.0f °C", x));
 
   - platform: homeassistant
     id: weather_wind_speed
@@ -121,30 +105,29 @@ sensor:
     attribute: wind_speed
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_weather7
-            text:
-              format: "%.0f km/h"
-              args: [ 'x' ]
+        - lambda: notif_set("weather.wind_speed", "Windgeschw.", "$mdi_wind", string_format("%.0f km/h", x));
         - if:
             condition:
               sensor.in_range:
                 id: weather_wind_speed
-                above: 50
+                above: 50.01
                 below: 88
             then:
-              - lvgl.label.update:
-                  id: page_weather7
-                  text_color: yellow
+              - lambda: notif_set_color("weather.wind_speed", yellow);
         - if:
             condition:
               sensor.in_range:
                 id: weather_wind_speed
-                above: 88
+                above: 88.01
             then:
-              - lvgl.label.update:
-                  id: page_weather7
-                  text_color: red
+              - lambda: notif_set_color("weather.wind_speed", red);
+        - if:
+            condition:
+              sensor.in_range:
+                id: weather_wind_speed
+                below: 50
+            then:
+              - lambda: notif_set_color("weather.wind_speed", white);
 
   - platform: homeassistant
     id: weather_wind_bearing
@@ -155,102 +138,38 @@ sensor:
       - above: 0
         below: 22.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "N (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_down_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_down_thin_circle_outline", string_format("N (%.0f°)", x));
       - above: 22.5
         below: 67.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "NO (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_bottom_left_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_bottom_left_thin_circle_outline", string_format("NO (%.0f°)", x));
       - above: 67.5
         below: 112.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "O (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_left_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_left_thin_circle_outline", string_format("O (%.0f°)", x));
       - above: 112.5
         below: 157.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "SO (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_top_left_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_top_left_thin_circle_outline", string_format("SO (%.0f°)", x));
       - above: 157.5
         below: 202.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "S (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_up_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_up_thin_circle_outline", string_format("S (%.0f°)", x));
       - above: 202.5
         below: 247.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "SW (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_top_right_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_top_right_thin_circle_outline", string_format("SW (%.0f°)", x));
       - above: 247.5
         below: 292.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "W (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_right_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_right_thin_circle_outline", string_format("W (%.0f°)", x));
       - above: 292.5
         below: 337.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "NW (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_bottom_right_thin_circle_outline"
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_bottom_right_thin_circle_outline", string_format("NW (%.0f°)", x));
       - above: 337.5
         then:
-          - lvgl.label.update:
-              id: page_weather8
-              text:
-                format: "N (%.0f°)"
-                args: [ 'x' ]
-          - lvgl.label.update:
-              id: page_weather8i
-              text: "$mdi_arrow_down_thin_circle_outline"
-
+          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_down_thin_circle_outline", string_format("N (%.0f°)", x));
 
 text_sensor:
   - platform: homeassistant
@@ -260,16 +179,7 @@ text_sensor:
     attribute: temperature
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_weather1
-            text:
-              format: "%s °C"
-              args: [ 'id(weather_temperature).state.c_str()' ]
-        - lvgl.label.update:
-            id: label_weather_1
-            text:
-              format: "$mdi_thermometer %s °C"
-              args: [ 'x.c_str()' ]
+        - lambda: notif_set("weather.temperature", "Temperatur", "$mdi_thermometer", string_format("%s °C", id(weather_temperature).state.c_str()));
 
   - platform: homeassistant
     id: weather_condition
@@ -289,16 +199,7 @@ text_sensor:
         - partlycloudy -> $mdi_weather_partly_cloudy Teilweise Bewölkt
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_weather2
-            text:
-              format: "%s"
-              args: [ 'x.substr(x.find(" ")+1).c_str()' ]
-        - lvgl.label.update:
-            id: label_weather_icon
-            text:
-              format: "%s"
-              args: [ 'x.substr(0, x.find(" ")).c_str()' ]
+        - lambda: notif_set("weather.state", "Wetter", x.substr(0, x.find(" ")), x.substr(x.find(" ") + 1));
 
   - platform: homeassistant
     id: daily_forecast
@@ -317,11 +218,15 @@ text_sensor:
             static lv_point_t mlv_point_t_id[] = {{0, 75}, {70, 75}, {120, 75}, {170, 75}, {242, 75}};
             static lv_point_t mlv_pointlow_t_id[] = {{0, 75}, {70, 75}, {120, 75}, {170, 75}, {242, 75}};
 
-            auto forecast = split(x, "#");
+            auto forecast = split_trim(x, "#");
             auto cnt = 0;
             for (auto part: forecast) {
               //ESP_LOGD("main", part.c_str());
-              std::vector<std::string> parts = split(trim(part), ";");
+              std::vector<std::string> parts = split_trim(part, ";");
+              if (parts.size() < 4) {
+                ESP_LOGD("main", (std::string("Wrong format: ") + trim(part)).c_str());
+                continue;
+              }
               auto day = GetWithDef(daymapping, parts[0], parts[0]);
               lv_label_set_text(ldays[cnt], day.c_str());
 
@@ -354,11 +259,15 @@ text_sensor:
                                                       {160, 75}, {170, 75}, {180, 75}, {190, 75}, {200, 75},
                                                       {210, 75}, {220, 75}, {230, 75}, {242, 75}};
 
-            auto forecast = split(x, "#");
+            auto forecast = split_trim(x, "#");
             auto cnt = 0;
             for (auto part: forecast) {
               //ESP_LOGD("main", part.c_str());
-              std::vector<std::string> parts = split(trim(part), ";");
+              std::vector<std::string> parts = split_trim(part, ";");
+              if (parts.size() < 2) {
+                ESP_LOGD("main", (std::string("Wrong format: ") + trim(part)).c_str());
+                continue;
+              }
 
               mlv_pointhour_t_id[cnt].y = (lv_coord_t)(75 - 2.3 * StringToFloat(parts[1]));
               switch(cnt) {
@@ -400,17 +309,49 @@ text_sensor:
             static lv_obj_t * lab[] =  { warnings_t1, warnings_t2, warnings_t3, warnings_t4, warnings_t5, warnings_t6, warnings_t7 };
             auto texts = split(x, "|");
             int cnt = 0;
+            warn_clear("weather.warning");
             for (auto part: texts) {
               ESP_LOGD("main", part.c_str());
               if (cnt == 0) {
                 lv_label_set_text(lab[cnt], trim(part).c_str());
               } else {
                 auto parts = split(part, ";");
+                if (parts.size() < 4) {
+                  ESP_LOGD("main", (std::string("Message should have 4 parts: ") + part).c_str());
+                  continue;
+                }
                 lv_label_set_text(lab[cnt], (trim(parts[0]) + " " + parts[1] + "#\n" + parts[2] + "\n" + parts[3]).c_str());
                 //auto col = strtoul(trim(parts[0]).substr(1).c_str(), NULL, 16);
                 //lv_obj_set_style_text_color(lab[cnt], lv_color_make(col >> 16, (col >> 8) & 0xFF, col & 0xFF), LV_PART_MAIN);
                 //cnt++;
                 //lv_label_set_text(lab[cnt], (parts[2] + "\n" + parts[3]).c_str());
+                std::string icon(" ");
+                int level = StringToInt(parts[4]);
+                switch (level) {
+                case 0:
+                case 1:
+                  icon = "\U000F0590";  // $mdi_weather_cloudy
+                  break;
+
+                case 2:
+                  icon = "\U000F0F2F";  // mdi_weather_cloudy_alert
+                  break;
+
+                case 3:
+                case 4:
+                  icon = "\U000F002A";  // $mdi_alert
+                  break;
+
+                default:
+                  break;
+                }
+                auto msgtext = parts[1];
+                if (startsWith(msgtext, "Amtliche WARNUNG vor ")) msgtext = std::string("Warnung: ") + msgtext.substr(21);
+                if (level > 2) {
+                  warn_add("weather.warning", msgtext, icon, 10);
+                } else if (level > 0) {
+                  warn_add("weather.warning", msgtext, icon, 5);
+                }
               }
               cnt++;
               if (cnt > 7) break;

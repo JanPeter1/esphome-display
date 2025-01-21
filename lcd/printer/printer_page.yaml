@@ -101,36 +101,29 @@ lvgl:
                     type: flex
                     flex_flow: ROW
                     flex_align_main: CENTER
+                  text_font: font_small
+                  text_align: CENTER
+                  text_color: white
                   widgets:
                     - label:
                         text: "BK"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
                         text: "C"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
                         text: "M"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
                         text: "Y"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
                         text: "PGBK"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 25
               - obj:
                   pad_all: 0px
@@ -142,45 +135,37 @@ lvgl:
                     type: flex
                     flex_flow: ROW
                     flex_align_main: CENTER
+                  text_align: CENTER
+                  text_color: white
                   widgets:
                     - label:
-                        id: drucker_vorrat_black_bk
-                        text: " "
+                        text: "#printer.vorrat_black_bk"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
-                        id: drucker_vorrat_cyan
-                        text: " "
+                        text: "#printer.vorrat_cyan"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
-                        id: drucker_vorrat_magenta
-                        text: " "
+                        text: "#printer.vorrat_magenta"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
-                        id: drucker_vorrat_yellow
-                        text: " "
+                        text: "#printer.vorrat_yellow"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 20
                     - label:
-                        id: drucker_vorrat_black_pgbk
-                        text: " "
+                        text: "#printer.vorrat_black_pgbk"
                         text_font: font_small
-                        text_align: CENTER
-                        text_color: white
                         width: 25
               - label:
-                  id: drucker_state
-                  text: " "
+                  text: "#printer.state"
                   text_align: CENTER
                   text_font: font_mid
                   width: 165
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: notif_initialize(printer_page);

@@ -3,24 +3,16 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: IP Address
-      id: ip_adress
+      id: ip_address
       on_value:
         then:
-          - lvgl.label.update:
-              id: wifi_text2
-              text:
-                format: "%s"
-                args: [ 'id(ip_adress).state.c_str()' ]
+          - lambda: notif_set("internet.ip_address", "IP-Adresse", "$mdi_wifi_settings", x);
     ssid:
       name: Connected SSID
       id: ssid
       on_value:
         then:
-          - lvgl.label.update:
-              id: wifi_text1
-              text:
-                format: "%s"
-                args: [ 'id(ssid).state.c_str()' ]
+          - lambda: notif_set("internet.ssid", "SSID", "$mdi_wifi_settings", x);
     bssid:
       name: Connected BSSID
     mac_address:
@@ -36,20 +28,14 @@ sensor:
     entity_category: "diagnostic"
     on_value:
       then:
-        - lvgl.label.update:
-            id: wifi_text3
-            text:
-              format: "%.1f db"
-              args: [ 'x' ]
+        - lambda: notif_set("internet.signal", "WLAN Stärke", "$mdi_wifi_strength_off", string_format("%.1f db", x));
         - if:
             condition:
               sensor.in_range:
                 id: wifi_signal_db
                 above: -50
             then:
-              - lvgl.label.update:
-                  id: wifi_text3i
-                  text: "$mdi_wifi_strength4"
+              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength4");
         - if:
             condition:
               sensor.in_range:
@@ -57,9 +43,7 @@ sensor:
                 above: -55
                 below: -50
             then:
-              - lvgl.label.update:
-                  id: wifi_text3i
-                  text: "$mdi_wifi_strength3"
+              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength3");
         - if:
             condition:
               sensor.in_range:
@@ -67,9 +51,7 @@ sensor:
                 above: -60
                 below: -55
             then:
-              - lvgl.label.update:
-                  id: wifi_text3i
-                  text: "$mdi_wifi_strength2"
+              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength2");
         - if:
             condition:
               sensor.in_range:
@@ -77,9 +59,7 @@ sensor:
                 above: -67
                 below: -60
             then:
-              - lvgl.label.update:
-                  id: wifi_text3i
-                  text: "$mdi_wifi_strength1"
+              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength1");
         - if:
             condition:
               sensor.in_range:
@@ -87,81 +67,53 @@ sensor:
                 above: -100
                 below: -67
             then:
-              - lvgl.label.update:
-                  id: wifi_text3i
-                  text: "$mdi_wifi_strength_alert"
+              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength_alert");
         - if:
             condition:
               sensor.in_range:
                 id: wifi_signal_db
                 below: -100
             then:
-              - lvgl.label.update:
-                  id: wifi_text3i
-                  text: "$mdi_wifi_strength_off"
+              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength_off");
 
   - platform: homeassistant
     id: fritz_box_7530_ax_download_durchsatz
     entity_id: sensor.fritz_box_7530_ax_download_durchsatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: wifi_text4
-            text:
-              format: "%.1f kB/s"
-              args: [ 'id(fritz_box_7530_ax_download_durchsatz).state' ]
+        - lambda: notif_set("internet.download", "Download", "$mdi_download", string_format("%.1f kB/s", x));
 
   - platform: homeassistant
     id: fritz_box_7530_ax_upload_durchsatz
     entity_id: sensor.fritz_box_7530_ax_upload_durchsatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: wifi_text5
-            text:
-              format: "%.1f kB/s"
-              args: [ 'id(fritz_box_7530_ax_upload_durchsatz).state' ]
+        - lambda: notif_set("internet.upload", "Upload", "$mdi_upload", string_format("%.1f kB/s", x));
 
   - platform: homeassistant
     id: fritz_box_7530_ax_link_download_durchsatz
     entity_id: sensor.fritz_box_7530_ax_link_download_durchsatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: wifi_text6
-            text:
-              format: "%.0f/%.0f MB/s"
-              args: [ 'id(fritz_box_7530_ax_link_download_durchsatz).state / 1000',  'id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000' ]
+        - lambda: notif_set("internet.rates", "Leitung", "$mdi_web_sync", string_format("%.0f/%.0f MB/s", id(fritz_box_7530_ax_link_download_durchsatz).state / 1000, id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000));
 
   - platform: homeassistant
     id: fritz_box_7530_ax_link_upload_durchsatz
     entity_id: sensor.fritz_box_7530_ax_link_upload_durchsatz
     on_value:
       then:
-        - lvgl.label.update:
-            id: wifi_text6
-            text:
-              format: "%.0f/%.0f MB/s"
-              args: [ 'id(fritz_box_7530_ax_link_download_durchsatz).state / 1000',  'id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000' ]
+        - lambda: notif_set("internet.rates", "Leitung", "$mdi_web_sync", string_format("%.0f/%.0f MB/s", id(fritz_box_7530_ax_link_download_durchsatz).state / 1000, id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000));
 
   - platform: homeassistant
     id: gb_heute_empfangen
     entity_id: sensor.gb_heute_empfangen
     on_value:
       then:
-        - lvgl.label.update:
-            id: wifi_text7
-            text:
-              format: "%.0f/%.0f GB"
-              args: [ 'id(gb_heute_empfangen).state',  'id(gb_heute_gesendet).state' ]
+        - lambda: notif_set("internet.today", "Daten übertragen", "$mdi_wifi_arrow_left_right", string_format("%.0f/%.0f GB", id(gb_heute_empfangen).state, id(gb_heute_gesendet).state));
 
   - platform: homeassistant
     id: gb_heute_gesendet
     entity_id: sensor.gb_heute_gesendet
     on_value:
       then:
-        - lvgl.label.update:
-            id: wifi_text7
-            text:
-              format: "%.0f/%.0f GB"
-              args: [ 'id(gb_heute_empfangen).state',  'id(gb_heute_gesendet).state' ]
+        - lambda: notif_set("internet.today", "Daten übertragen", "$mdi_wifi_arrow_left_right", string_format("%.0f/%.0f GB", id(gb_heute_empfangen).state, id(gb_heute_gesendet).state));

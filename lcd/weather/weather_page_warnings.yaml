@@ -5,10 +5,10 @@ lvgl:
         - label:
             <<: !include {file: ../info_label.yaml, vars: { text: "Warnungen"}}
         - obj:
-            width: 530
-            height: 300
-            x: 20
-            y: 140
+            width: 780
+            height: 290
+            x: 10
+            y: 150
             border_side: NONE
             pad_all: 10px
             pad_top: 5px
@@ -22,67 +22,73 @@ lvgl:
             widgets:
             - label:
                 id: warnings_i1
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 0, col: 0, text: " "}}
             - label:
                 id: warnings_t1
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 0, col: 1, text: " "}}
 
             - label:
                 id: warnings_i2
-                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 1, col: 0, text: " "}}
             - label:
                 id: warnings_t2
-                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 1, col: 1, text: " "}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
                 id: warnings_i3
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 2, col: 0, text: " "}}
             - label:
                 id: warnings_t3
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 2, col: 1, text: " "}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
                 id: warnings_i4
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 3, col: 0, text: " "}}
             - label:
                 id: warnings_t4
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 3, col: 1, text: " "}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
                 id: warnings_i5
-                <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 0, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 4, col: 0, text: " "}}
             - label:
                 id: warnings_t5
-                <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 1, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 4, col: 1, text: " "}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
                 id: warnings_i6
-                <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 0, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 5, col: 0, text: " "}}
             - label:
                 id: warnings_t6
-                <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 1, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 5, col: 1, text: " "}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
                 id: warnings_i7
-                <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 0, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 6, col: 0, text: " "}}
             - label:
                 id: warnings_t7
-                <<: !include { file: ../cell_text.yaml, vars: { row: 6, col: 1, text: " "}}
+                <<: !include { file: ../cell.yaml, vars: { row: 6, col: 1, text: " "}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: notif_initialize(weather_warnings_page);

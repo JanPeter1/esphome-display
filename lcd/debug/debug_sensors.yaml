@@ -12,41 +12,41 @@ text_sensor:
             std::string txt(x);
             int pos;
             // ESPHome version
-            lv_label_set_text(debug_text1t, "ESPHome");
+            notif_set_text("debug.version.text", "ESPHome");
             pos = txt.find('|');
-            lv_label_set_text(debug_text1, txt.substr(0, pos).c_str());
+            notif_set_text("debug.version", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // Chip
             pos = txt.find(":");
-            lv_label_set_text(debug_text2t, txt.substr(0, pos).c_str());
+            notif_set_text("debug.chip.text", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find(' ');
-            lv_label_set_text(debug_text2, txt.substr(0, pos).c_str());
+            notif_set_text("debug.chip", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // Features
             pos = txt.find(':');
-            lv_label_set_text(debug_text3t, txt.substr(0, pos).c_str());
+            notif_set_text("debug.features.text", txt.substr(0, pos));
             txt = txt.substr(pos+1);
             pos = txt.find(", ");
-            lv_label_set_text(debug_text3, txt.substr(0, pos).c_str());
+            notif_set_text("debug.features", txt.substr(0, pos));
             txt = txt.substr(pos+2);
 
             // Cores and Revision
             pos = txt.find(':');
-            lv_label_set_text(debug_text4t, txt.substr(0, pos).c_str());
+            notif_set_text("debug.cores.text", txt.substr(0, pos));
             txt = txt.substr(pos+1);
             pos = txt.find('|');
-            lv_label_set_text(debug_text4, txt.substr(0, pos).c_str());
+            notif_set_text("debug.cores", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // ESP-IDF
             pos = txt.find(':');
-            lv_label_set_text(debug_text5t, txt.substr(0, pos).c_str());
+            notif_set_text("debug.idf.text", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find('|');
-            lv_label_set_text(debug_text5, txt.substr(0, pos).c_str());
+            notif_set_text("debug.idf", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // skip EFuse MAC
@@ -55,18 +55,18 @@ text_sensor:
 
             // Reset reason
             pos = txt.find(':');
-            lv_label_set_text(debug_text6t, txt.substr(0, pos).c_str());
+            notif_set_text("debug.reset.text", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find('|');
-            lv_label_set_text(debug_text6, txt.substr(0, pos).c_str());
+            notif_set_text("debug.reset", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // Wakeup reason
             pos = txt.find(':');
-            lv_label_set_text(debug_text7t, txt.substr(0, pos).c_str());
+            notif_set_text("debug.wakeup.text", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find('|');
-            lv_label_set_text(debug_text7, txt.substr(0, pos).c_str());
+            notif_set_text("debug.wakeup", txt.substr(0, pos));
 
 
 #    reset_reason:
@@ -77,11 +77,10 @@ sensor:
     free:
       name: "Heap Free"
       on_value:
-        - lvgl.label.update:
-            id: debug_text8
-            text:
-              format: "%.0f kB"
-              args: [ 'x / 1024' ]
+        - lambda: |- 
+            notif_set_text("debug.heap", string_format("%.0f kB", x / 1024));
+            notif_set_text("debug.heap.text", "Heap frei");
+
 #    fragmentation:
 #      name: "Heap Fragmentation"
 #    block:
@@ -91,11 +90,6 @@ sensor:
     psram:
       name: "Free PSRAM"
       on_value:
-        - lvgl.label.update:
-            id: debug_text9
-            text:
-              format: "%.0f kB"
-              args: [ 'x / 1024' ]
-
-#logger:
-#  level: debug
+        - lambda: |-
+            notif_set_text("debug.psram", string_format("%.0f kB", x / 1024));
+            notif_set_text("debug.psram.text", "PSRAM frei");

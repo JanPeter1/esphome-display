@@ -19,34 +19,24 @@ lvgl:
                 grid_rows: [ 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
                 grid_columns: [220, 30, 255 ]
             widgets:
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "Speicher belegt"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: "$mdi_database_outline"}}
-            - label:
-                id: nas_text1
-                <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 0, text: "#nas.used_space.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "#nas.used_space.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#nas.used_space"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: "Speicher belegt %"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: "$mdi_database_outline"}}
-            - label:
-                id: nas_text2
-                <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 0, text: "#nas.volumes.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "#nas.volumes.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#nas.volumes"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: "Durchsatz"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: "$mdi_file_up_down_outline"}}
-            - label:
-                id: nas_text3
-                <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 0, text: "#nas.rates.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#nas.rates.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#nas.rates"}}
 
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: "CPU last"}}
-            - label:
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: "$mdi_speedometer_slow"}}
-            - label:
-                id: nas_text4
-                <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 2, text: " "}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 0, text: "#nas.cpu_load.name"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 1, text: "#nas.cpu_load.icon"}}
+            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 2, text: "#nas.cpu_load"}}
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: notif_initialize(nas_page);

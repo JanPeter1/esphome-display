@@ -31,52 +31,32 @@ lvgl:
               pad_row: 0px
               pad_column: 10px
             widgets:
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 0, text: "Solarertrag jetzt"}}
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 1, text: "$mdi_solar_power"}}
-              - label:
-                  id: page_solar1
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 0, col: 2, text: " "}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 0, text: "#solar.current_power.name"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "#solar.current_power.icon"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#solar.current_power"}}
 
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 0, text: "Solarertrag heute"}}
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 1, text: "$mdi_solar_power_variant"}}
-              - label:
-                  id: page_solar2
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 1, col: 2, text: " "}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 0, text: "#solar.energy_today.name"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "#solar.energy_today.icon"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#solar.energy_today"}}
 
-              - label:
-                  id: page_solar3t
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 0, text: "Netzstrom"}}
-              - label:
-                  id: page_solar3i
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 1, text: "$mdi_power_plug"}}
-              - label:
-                  id: page_solar3
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 2, col: 2, text: " "}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 0, text: "#solar.grid_power.name"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#solar.grid_power.icon"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#solar.grid_power"}}
 
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 0, text: "Spitzenleisung heute"}}
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 1, text: "$mdi_clock_outline"}}
-              - label:
-                  id: page_solar4
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 3, col: 2, text: " "}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 0, text: "#solar.peak_time_today.name"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 1, text: "#solar.peak_time_today.icon"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 2, text: "#solar.peak_time_today"}}
 
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 0, text: "Autakiegrad heute"}}
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 1, text: "$mdi_sun_angle_outline"}}
-              - label:
-                  id: page_solar6
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 4, col: 2, text: " "}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 0, text: "#solar.self_sufficiency.name"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 1, text: "#solar.self_sufficiency.icon"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 2, text: "#solar.self_sufficiency"}}
 
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 0, text: "Energie dieses Jahr"}}
-              - label:
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 1, text: "$mdi_solar_power_variant"}}
-              - label:
-                  id: page_solar5
-                  <<: !include { file: ../cell_text.yaml, vars: { row: 5, col: 2, text: " "}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 0, text: "#solar.energy_year.name"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 1, text: "#solar.energy_year.icon"}}
+              - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 2, text: "#solar.energy_year"}}
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: notif_initialize(solar_page);

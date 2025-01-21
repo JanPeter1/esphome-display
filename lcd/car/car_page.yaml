@@ -31,37 +31,24 @@ lvgl:
               pad_row: 0px
               pad_column: 10px
             widgets:
-              - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 0, col: 0, text: "Ladestand"}}
-              - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 0, col: 1, text: "$mdi_car_battery"}}
-              - label:
-                  id: page_car1
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 0, col: 2, text: " "}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 0, col: 0, text: "#car.battery_level.name"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 0, col: 1, text: "#car.battery_level.icon"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 0, col: 2, text: "#car.battery_level"}}
 
-              - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 1, col: 0, text: "Reichweite"}}
-              - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 1, col: 1, text: "$mdi_ev_station"}}
-              - label:
-                  id: page_car2
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 1, col: 2, text: " "}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 1, col: 0, text: "#car.ev_range.name"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 1, col: 1, text: "#car.ev_range.icon"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 1, col: 2, text: "#car.ev_range"}}
 
-              - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 2, col: 0, text: "Ladezeit"}}
-              - label:
-                  id: page_car3i
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 2, col: 1, text: "$mdi_car_clock"}}
-              - label:
-                  id: page_car3
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 2, col: 2, text: " "}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 2, col: 0, text: "#car.battery_charge.name"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 2, col: 1, text: "#car.battery_charge.icon"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 2, col: 2, text: "#car.battery_charge"}}
 
               - label:
                   id: car_lock
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 3, col: 0, text: "Türen"}}
+                  <<: !include {file: ../cell.yaml, vars: {row: 3, col: 0, text: "Türen"}}
               - label:
                   id: car_locki
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 3, col: 1, text: "$mdi_car_door_lock"}}
+                  <<: !include {file: ../cell.yaml, vars: {row: 3, col: 1, text: "$mdi_car_door_lock"}}
               - button:
                   grid_cell_row_pos: 3
                   grid_cell_column_pos: 2
@@ -79,7 +66,7 @@ lvgl:
               - label:
                   id: dc_charging
                   grid_cell_column_span: 2
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 4, col: 0, text: "DC-Ladelimit"}}
+                  <<: !include {file: ../cell.yaml, vars: {row: 4, col: 0, text: "DC-Ladelimit"}}
                   grid_cell_y_align: START
               - slider:
                   grid_cell_row_pos: 4
@@ -106,7 +93,7 @@ lvgl:
               - label:
                   id: ac_charging
                   grid_cell_column_span: 2
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 5, col: 0, text: "AC-Ladelimit"}}
+                  <<: !include {file: ../cell.yaml, vars: {row: 5, col: 0, text: "AC-Ladelimit"}}
                   grid_cell_y_align: START
               - slider:
                   grid_cell_row_pos: 5
@@ -133,11 +120,11 @@ lvgl:
 
               - label:
                   id: page_car8t
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 6, col: 0, text: "Last update"}}
+                  <<: !include {file: ../cell.yaml, vars: {row: 6, col: 0, text: "Last update"}}
                   height: 50
                   grid_cell_y_align: START
               - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 6, col: 1, text: "$mdi_clock_outline"}}
+                  <<: !include {file: ../cell.yaml, vars: {row: 6, col: 1, text: "$mdi_clock_outline"}}
               - button:
                   grid_cell_row_pos: 6
                   grid_cell_column_pos: 2
@@ -152,10 +139,12 @@ lvgl:
                       - homeassistant.action:
                           action: kia_uvo.force_update
 
-              - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 7, col: 0, text: "Wallbox"}}
-              - label:
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 7, col: 1, text: "$mdi_ev_station"}}
-              - label:
-                  id: page_car9
-                  <<: !include {file: ../cell_text.yaml, vars: {row: 7, col: 2, text: " "}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 7, col: 0, text: "#car.charge_added_session.name"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 7, col: 1, text: "#car.charge_added_session.icon"}}
+              - <<: !include {file: ../label_cell.yaml, vars: {row: 7, col: 2, text: "#car.charge_added_session"}}
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: notif_initialize(car_page);

@@ -5,21 +5,15 @@ sensor:
     entity_id: sensor.solaredge_aktuelle_leistung
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_solar1
-            text:
-              format: "%.0f W"
-              args: [ 'id(solaredge_current_power).state' ]
+        - lambda: notif_set("solar.current_power", "Solarertrag jetzt", "$mdi_solar_power", string_format("%.0f W", x));
+
   - platform: homeassistant
     id: solaredge_energy_today
     entity_id: sensor.solaredge_energie_heute
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_solar2
-            text:
-              format: "%.0f Wh"
-              args: [ 'id(solaredge_energy_today).state' ]
+        - lambda: notif_set("solar.energy_today", "Solarertrag heute", "$mdi_solar_power_variant", string_format("%.0f Wh", x));
+
   - platform: homeassistant
     id: solaredge_grid_power
     entity_id: sensor.solaredge_netzstrom
@@ -30,35 +24,14 @@ sensor:
               lambda: |-
                 return id(solaredge_grid_power).state > 0;
             then:
-              - lvgl.label.update:
-                  id: page_solar3t
-                  text: "Netzstrom"
-                  text_color: red
-              - lvgl.label.update:
-                  id: page_solar3i
-                  text: "$mdi_power_plug"
-                  text_color: red
-              - lvgl.label.update:
-                  id: page_solar3
-                  text:
-                    format: "%.0f W"
-                    args: [ 'id(solaredge_grid_power).state*1000' ]
-                  text_color: red
+              - lambda: |-
+                  notif_set("solar.grid_power", "Netzstrom", "$mdi_power_plug", string_format("%.0f W", x * 1000), red);
+                  warn_set("solar.grid_power", string_format("%.0f W", x * 1000),  "$mdi_power_plug", 1);
             else:
-              - lvgl.label.update:
-                  id: page_solar3t
-                  text: "Einspeisung"
-                  text_color: white
-              - lvgl.label.update:
-                  id: page_solar3i
-                  text: "$mdi_transmission_tower_import"
-                  text_color: white
-              - lvgl.label.update:
-                  id: page_solar3
-                  text:
-                    format: "%.0f W"
-                    args: [ '-id(solaredge_grid_power).state*1000' ]
-                  text_color: white
+              - lambda: |-
+                  notif_set("solar.grid_power", "Einspeisung", "$mdi_transmission_tower_import", string_format("%.0f W", -x * 1000));
+                  warn_clear("solar.grid_power");
+
   - platform: homeassistant
     id: solaredge_power_consumption
     entity_id: sensor.solaredge_power_consumption
@@ -68,43 +41,31 @@ sensor:
     entity_id: sensor.solaredge_energie_in_diesem_jahr
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_solar5
-            text:
-              format: "%.2f MWh"
-              args: [ 'id(solaredge_energie_in_diesem_jahr).state / 1000000' ]
+        - lambda: notif_set("solar.energy_year", "Energie dieses Jahr", "$mdi_solar_power_variant", string_format("%.2f MWh", x / 1000000));
 
   - platform: homeassistant
     id: solaredge_selbst_verbrauchte_energie
     entity_id: sensor.solaredge_selbst_verbrauchte_energie
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_solar6
-            text: !lambda |-
-              if (id(solaredge_verbrauchte_energie).state > 0) {
-                static char perc[6];
-                snprintf(perc, 6, "%.0f%%", id(solaredge_selbst_verbrauchte_energie).state * 100 / id(solaredge_verbrauchte_energie).state);
-                return perc;
-              } else {
-                return " ";
-              }
+        - lambda:
+            if (id(solaredge_verbrauchte_energie).state > 0) {
+              notif_set("solar.self_sufficiency", "Autakiegrad heute", "$mdi_sun_angle_outline", string_format("%.0f%%", id(solaredge_selbst_verbrauchte_energie).state * 100 / id(solaredge_verbrauchte_energie).state));
+            } else {
+              notif_set("solar.self_sufficiency", "Autakiegrad heute", "$mdi_sun_angle_outline", " ");
+            }
 
   - platform: homeassistant
     id: solaredge_verbrauchte_energie
     entity_id: sensor.solaredge_verbrauchte_energie
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_solar6
-            text: !lambda |-
-              if (id(solaredge_verbrauchte_energie).state > 0) {
-                static char perc[6];
-                snprintf(perc, 6, "%.0f%%", id(solaredge_selbst_verbrauchte_energie).state * 100 / id(solaredge_verbrauchte_energie).state);
-                return perc;
-              } else {
-                return " ";
-              }
+        - lambda:
+            if (id(solaredge_verbrauchte_energie).state > 0) {
+              notif_set("solar.self_sufficiency", "Autakiegrad heute", "$mdi_sun_angle_outline", string_format("%.0f%%", id(solaredge_selbst_verbrauchte_energie).state * 100 / id(solaredge_verbrauchte_energie).state));
+            } else {
+              notif_set("solar.self_sufficiency", "Autakiegrad heute", "$mdi_sun_angle_outline", " ");
+            }
 
 text_sensor:
   - platform: homeassistant
@@ -112,7 +73,4 @@ text_sensor:
     entity_id: sensor.power_highest_peak_time_today
     on_value:
       then:
-        - lvgl.label.update:
-            id: page_solar4
-            text: !lambda |-
-              return x.substr(11, 5).c_str();
+        - lambda: notif_set("solar.peak_time_today", "Spitzenleisung heute", "$mdi_clock_outline", x.substr(11, 5));
