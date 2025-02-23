@@ -14,10 +14,17 @@ static const lv_color_t black  = lv_color_make(0, 0, 0);
 static const lv_color_t gray   = lv_color_make(128, 128, 128);
 
 
+void set_label(lv_obj_t *label, const std::string &text, const lv_color_t color = white)
+{
+    lv_label_set_text(label, text.c_str());
+    lv_obj_set_style_text_color(label, color, LV_PART_MAIN);
+}
+
 /// Notifications (mapping from string to label)
 
 std::map<std::string, std::list<lv_obj_t *>> allNotifications = {};
 
+/*
 lv_obj_tree_walk_res_t _notif_initCallback(lv_obj_t *obj, void *userData) {
     if (lv_obj_check_type(obj, &lv_label_class)) {
         lv_label_t *label = reinterpret_cast<lv_label_t *>(obj);
@@ -36,6 +43,7 @@ void notif_initialize(lv_obj_t *root) {
 void notif_initialize(lvgl::LvPageType *page) {
     lv_obj_tree_walk(page->obj, _notif_initCallback, nullptr);
 }
+*/
 
 void notif_set_text(std::string id, std::string text, lv_color_t color = white) {
     for (auto label: allNotifications[id]) {
@@ -51,9 +59,15 @@ void notif_set_color(std::string id, lv_color_t color) {
 }
 
 void notif_set(std::string id, std::string name, std::string icon, std::string text, lv_color_t color = white) {
-    notif_set_text(id, text, color);
-    notif_set_text(id+".name", name, color);
-    notif_set_text(id+".icon", icon);
+    notif_set_text(id + "_name", name, color);
+    notif_set_text(id + "_icon", icon);
+    notif_set_text(id + "_text", text, color);
+}
+
+void notif_init(const std::string &id, lv_obj_t *lname = nullptr, lv_obj_t *licon = nullptr, lv_obj_t *ltext = nullptr) {
+    if (nullptr != lname) allNotifications[id + "_name"].push_back(lname);
+    if (nullptr != licon) allNotifications[id + "_icon"].push_back(licon);
+    if (nullptr != ltext) allNotifications[id + "_text"].push_back(ltext);
 }
 
 

@@ -19,15 +19,14 @@ layout:
 widgets:
   - label:
       grid_cell_row_span: 3
-      <<: !include { file: ../cell.yaml, vars: { row: 0, col: 0, text: "#weather.state.icon"}}
+      <<: !include { file: ../cell_id.yaml, vars: { row: 0, col: 0, id: card_weather_condition_icon}}
       text_font: font_weather
 
-  - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "$mdi_thermometer"}}
-  - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#weather.temperature"}}
+  - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 1, id: card_weather_temperature_icon}}
+  - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 2, id: card_weather_temperature_text}}
 
-  - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "$mdi_thermometer_water"}}
-  - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#weather.humidity"}}
+  - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 1, id: card_weather_humidity_icon}}
+  - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 2, id: card_weather_humidity_text}}
 
-  - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#weather.cloud_coverage.icon"}}
-  - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#weather.cloud_coverage"}}
-
+  - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 1, id: card_weather_cloudcoverage_icon}}
+  - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 2, id: card_weather_cloudcoverage_text}}

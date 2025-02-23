@@ -19,24 +19,28 @@ lvgl:
                 grid_rows: [ 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
                 grid_columns: [220, 30, 255 ]
             widgets:
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 0, text: "#nas.used_space.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "#nas.used_space.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#nas.used_space"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 0, id: nas_usedspace_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 1, id: nas_usedspace_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 2, id: nas_usedspace_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 0, text: "#nas.volumes.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "#nas.volumes.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#nas.volumes"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 0, id: nas_volumes_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 1, id: nas_volumes_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 2, id: nas_volumes_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 0, text: "#nas.rates.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#nas.rates.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#nas.rates"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 0, id: nas_rates_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 1, id: nas_rates_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 2, id: nas_rates_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 0, text: "#nas.cpu_load.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 1, text: "#nas.cpu_load.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 2, text: "#nas.cpu_load"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 0, id: nas_cpuload_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 1, id: nas_cpuload_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 2, id: nas_cpuload_text}}
 
 esphome:
   on_boot:
     priority: -100.0
     then:
-      - lambda: notif_initialize(nas_page);
+      - lambda: |-
+          notif_init("nas_usedspace", nas_usedspace_name, nas_usedspace_icon, nas_usedspace_text);
+          notif_init("nas_volumes",   nas_volumes_name,   nas_volumes_icon,   nas_volumes_text);
+          notif_init("nas_rates",     nas_rates_name,     nas_rates_icon,     nas_rates_text);
+          notif_init("nas_cpuload",   nas_cpuload_name,   nas_cpuload_icon,   nas_cpuload_text);

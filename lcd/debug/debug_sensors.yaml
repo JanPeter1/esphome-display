@@ -12,41 +12,41 @@ text_sensor:
             std::string txt(x);
             int pos;
             // ESPHome version
-            notif_set_text("debug.version.text", "ESPHome");
+            notif_set_text("debug_version_name", "ESPHome");
             pos = txt.find('|');
-            notif_set_text("debug.version", txt.substr(0, pos));
+            notif_set_text("debug_version_text", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // Chip
             pos = txt.find(":");
-            notif_set_text("debug.chip.text", txt.substr(0, pos));
+            notif_set_text("debug_chip_name", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find(' ');
-            notif_set_text("debug.chip", txt.substr(0, pos));
+            notif_set_text("debug_chip_text", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // Features
             pos = txt.find(':');
-            notif_set_text("debug.features.text", txt.substr(0, pos));
+            notif_set_text("debug_features_name", txt.substr(0, pos));
             txt = txt.substr(pos+1);
             pos = txt.find(", ");
-            notif_set_text("debug.features", txt.substr(0, pos));
+            notif_set_text("debug_features_text", txt.substr(0, pos));
             txt = txt.substr(pos+2);
 
             // Cores and Revision
             pos = txt.find(':');
-            notif_set_text("debug.cores.text", txt.substr(0, pos));
+            notif_set_text("debug_cores_name", txt.substr(0, pos));
             txt = txt.substr(pos+1);
             pos = txt.find('|');
-            notif_set_text("debug.cores", txt.substr(0, pos));
+            notif_set_text("debug_cores_text", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // ESP-IDF
             pos = txt.find(':');
-            notif_set_text("debug.idf.text", txt.substr(0, pos));
+            notif_set_text("debug_idf_name", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find('|');
-            notif_set_text("debug.idf", txt.substr(0, pos));
+            notif_set_text("debug_idf_text", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // skip EFuse MAC
@@ -55,18 +55,18 @@ text_sensor:
 
             // Reset reason
             pos = txt.find(':');
-            notif_set_text("debug.reset.text", txt.substr(0, pos));
+            notif_set_text("debug_reset_name", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find('|');
-            notif_set_text("debug.reset", txt.substr(0, pos));
+            notif_set_text("debug_reset_text", txt.substr(0, pos));
             txt = txt.substr(pos+1);
 
             // Wakeup reason
             pos = txt.find(':');
-            notif_set_text("debug.wakeup.text", txt.substr(0, pos));
+            notif_set_text("debug_wakeup_name", txt.substr(0, pos));
             txt = txt.substr(pos+2);
             pos = txt.find('|');
-            notif_set_text("debug.wakeup", txt.substr(0, pos));
+            notif_set_text("debug_wakeup_text", txt.substr(0, pos));
 
 
 #    reset_reason:
@@ -78,8 +78,8 @@ sensor:
       name: "Heap Free"
       on_value:
         - lambda: |- 
-            notif_set_text("debug.heap", string_format("%.0f kB", x / 1024));
-            notif_set_text("debug.heap.text", "Heap frei");
+            notif_set_text("debug_heap_name", "Heap frei");
+            notif_set_text("debug_heap_text", string_format("%.0f kB", x / 1024));
 
 #    fragmentation:
 #      name: "Heap Fragmentation"
@@ -91,5 +91,5 @@ sensor:
       name: "Free PSRAM"
       on_value:
         - lambda: |-
-            notif_set_text("debug.psram", string_format("%.0f kB", x / 1024));
-            notif_set_text("debug.psram.text", "PSRAM frei");
+            notif_set_text("debug_psram_name", "PSRAM frei");
+            notif_set_text("debug_psram_text", string_format("%.0f kB", x / 1024));

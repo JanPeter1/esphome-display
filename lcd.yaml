@@ -17,8 +17,9 @@ packages:
   weather:   !include lcd/weather/weather.yaml
   messages:  !include lcd/messages/messages.yaml
   car:       !include lcd/car/car.yaml
-  solar:     !include lcd/solar/solar.yaml
   printer:   !include lcd/printer/printer.yaml
+  #
+  solar:     !include lcd/solar/solar.yaml
   internet:  !include lcd/internet/internet.yaml
   nas:       !include lcd/nas/nas.yaml
   debug:     !include lcd/debug/debug.yaml

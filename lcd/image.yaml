@@ -6,8 +6,8 @@ api:
 
 online_image:
   - id: bg_image
-    url: "http://homeassistant.local:8123/local/bg_images/black.png"
-    format: PNG
+    url: "http://homeassistant.local:8123/local/bg_images/black.jpg"
+    format: JPG
     type: RGB565
     resize: 800x480
     on_download_finished:
@@ -35,7 +35,7 @@ script:
           url: !lambda |-
             std::string base = "http://homeassistant.local:8123/local/bg_images/"; 
             std::srand(std::time(0));
-            auto filename = base + "bg_image_" + std::to_string(rand() % 87 + 1) + ".png";
+            auto filename = base + "bg_image_" + std::to_string(rand() % 87 + 1) + ".jpg";
             ESP_LOGD("main", filename.c_str());
             return filename;
 

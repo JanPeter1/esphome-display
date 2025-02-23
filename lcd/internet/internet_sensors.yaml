@@ -6,13 +6,13 @@ text_sensor:
       id: ip_address
       on_value:
         then:
-          - lambda: notif_set("internet.ip_address", "IP-Adresse", "$mdi_wifi_settings", x);
+          - lambda: notif_set("internet_ipaddress", "IP-Adresse", "$mdi_wifi_settings", x);
     ssid:
       name: Connected SSID
       id: ssid
       on_value:
         then:
-          - lambda: notif_set("internet.ssid", "SSID", "$mdi_wifi_settings", x);
+          - lambda: notif_set("internet_ssid", "SSID", "$mdi_wifi_settings", x);
     bssid:
       name: Connected BSSID
     mac_address:
@@ -28,14 +28,14 @@ sensor:
     entity_category: "diagnostic"
     on_value:
       then:
-        - lambda: notif_set("internet.signal", "WLAN Stärke", "$mdi_wifi_strength_off", string_format("%.1f db", x));
+        - lambda: notif_set("internet_signal", "WLAN Stärke", "$mdi_wifi_strength_off", string_format("%.1f db", x));
         - if:
             condition:
               sensor.in_range:
                 id: wifi_signal_db
                 above: -50
             then:
-              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength4");
+              - lambda: notif_set_text("internet_signal_icon", "$mdi_wifi_strength4");
         - if:
             condition:
               sensor.in_range:
@@ -43,7 +43,7 @@ sensor:
                 above: -55
                 below: -50
             then:
-              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength3");
+              - lambda: notif_set_text("internet_signal_icon", "$mdi_wifi_strength3");
         - if:
             condition:
               sensor.in_range:
@@ -51,7 +51,7 @@ sensor:
                 above: -60
                 below: -55
             then:
-              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength2");
+              - lambda: notif_set_text("internet_signal_icon", "$mdi_wifi_strength2");
         - if:
             condition:
               sensor.in_range:
@@ -59,7 +59,7 @@ sensor:
                 above: -67
                 below: -60
             then:
-              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength1");
+              - lambda: notif_set_text("internet_signal_icon", "$mdi_wifi_strength1");
         - if:
             condition:
               sensor.in_range:
@@ -67,53 +67,53 @@ sensor:
                 above: -100
                 below: -67
             then:
-              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength_alert");
+              - lambda: notif_set_text("internet_signal_icon", "$mdi_wifi_strength_alert");
         - if:
             condition:
               sensor.in_range:
                 id: wifi_signal_db
                 below: -100
             then:
-              - lambda: notif_set_text("internet.signal.icon", "$mdi_wifi_strength_off");
+              - lambda: notif_set_text("internet_signal_icon", "$mdi_wifi_strength_off");
 
   - platform: homeassistant
     id: fritz_box_7530_ax_download_durchsatz
     entity_id: sensor.fritz_box_7530_ax_download_durchsatz
     on_value:
       then:
-        - lambda: notif_set("internet.download", "Download", "$mdi_download", string_format("%.1f kB/s", x));
+        - lambda: notif_set("internet_download", "Download", "$mdi_download", string_format("%.1f kB/s", x));
 
   - platform: homeassistant
     id: fritz_box_7530_ax_upload_durchsatz
     entity_id: sensor.fritz_box_7530_ax_upload_durchsatz
     on_value:
       then:
-        - lambda: notif_set("internet.upload", "Upload", "$mdi_upload", string_format("%.1f kB/s", x));
+        - lambda: notif_set("internet_upload", "Upload", "$mdi_upload", string_format("%.1f kB/s", x));
 
   - platform: homeassistant
     id: fritz_box_7530_ax_link_download_durchsatz
     entity_id: sensor.fritz_box_7530_ax_link_download_durchsatz
     on_value:
       then:
-        - lambda: notif_set("internet.rates", "Leitung", "$mdi_web_sync", string_format("%.0f/%.0f MB/s", id(fritz_box_7530_ax_link_download_durchsatz).state / 1000, id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000));
+        - lambda: notif_set("internet_rates", "Leitung", "$mdi_web_sync", string_format("%.0f/%.0f MB/s", id(fritz_box_7530_ax_link_download_durchsatz).state / 1000, id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000));
 
   - platform: homeassistant
     id: fritz_box_7530_ax_link_upload_durchsatz
     entity_id: sensor.fritz_box_7530_ax_link_upload_durchsatz
     on_value:
       then:
-        - lambda: notif_set("internet.rates", "Leitung", "$mdi_web_sync", string_format("%.0f/%.0f MB/s", id(fritz_box_7530_ax_link_download_durchsatz).state / 1000, id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000));
+        - lambda: notif_set("internet_rates", "Leitung", "$mdi_web_sync", string_format("%.0f/%.0f MB/s", id(fritz_box_7530_ax_link_download_durchsatz).state / 1000, id(fritz_box_7530_ax_link_upload_durchsatz).state / 1000));
 
   - platform: homeassistant
     id: gb_heute_empfangen
     entity_id: sensor.gb_heute_empfangen
     on_value:
       then:
-        - lambda: notif_set("internet.today", "Daten übertragen", "$mdi_wifi_arrow_left_right", string_format("%.0f/%.0f GB", id(gb_heute_empfangen).state, id(gb_heute_gesendet).state));
+        - lambda: notif_set("internet_today", "Daten übertragen", "$mdi_wifi_arrow_left_right", string_format("%.0f/%.0f GB", id(gb_heute_empfangen).state, id(gb_heute_gesendet).state));
 
   - platform: homeassistant
     id: gb_heute_gesendet
     entity_id: sensor.gb_heute_gesendet
     on_value:
       then:
-        - lambda: notif_set("internet.today", "Daten übertragen", "$mdi_wifi_arrow_left_right", string_format("%.0f/%.0f GB", id(gb_heute_empfangen).state, id(gb_heute_gesendet).state));
+        - lambda: notif_set("internet_today", "Daten übertragen", "$mdi_wifi_arrow_left_right", string_format("%.0f/%.0f GB", id(gb_heute_empfangen).state, id(gb_heute_gesendet).state));

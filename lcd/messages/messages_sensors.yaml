@@ -67,28 +67,25 @@ text_sensor:
                 tomorrow = true;
               }
 
+              
+              if (today) {
+                date = "Heute";
+              } else if (tomorrow) {
+                date = "Morgen";
+              } else if (diffSecs < 60*60*24*7) {
+                // less than one week - just show the weekday
+                date = string_format("%s", dayOfWeek[start_time.tm_wday]);
+              } else {
+                date = string_format("%s %02D.%02D.", dayOfWeek[start_time.tm_wday], start_time.tm_mday, start_time.tm_mon+1);
+              }
               if ((diffSecs == 60*60*24) || (diffSecs == 60*60*24 - 1) || (diffSecs == 60*60*24 - 1 - 60*60)) {
-                // exactly one day
-                if (today) {
-                  date = "Heute";
-                } else if (tomorrow) {
-                  date = "Morgen";
-                } else {
-                  date = string_format("%s %02D.%02D.", dayOfWeek[start_time.tm_wday], start_time.tm_mday, start_time.tm_mon+1);
-                }
+                // leave date as it is
               } else if (diffSecs > 60*60*24) {
                 // more than one day
                 date = string_format("%02D.%02D. - %02D.%02D", start_time.tm_mday, start_time.tm_mon+1, end_time.tm_mday, end_time.tm_mon+1);
               } else {
                 // less that one day
-                if (today) {
-                  date = string_format("Heute %02D:%02D-%02D:%02D", start_time.tm_hour, start_time.tm_min, end_time.tm_hour, end_time.tm_min);
-                } else if (tomorrow) {
-                  date = string_format("Morgen %02D:%02D-%02D:%02D", start_time.tm_hour, start_time.tm_min, end_time.tm_hour, end_time.tm_min);
-                } else {
-                  date = string_format("%s %02D.%02D. %02D:%02D-%02D:%02D", dayOfWeek[start_time.tm_wday], start_time.tm_mday, start_time.tm_mon+1, 
-                                       start_time.tm_hour, start_time.tm_min, end_time.tm_hour, end_time.tm_min);
-                }
+                date += string_format(" %02D:%02D-%02D:%02D", start_time.tm_hour, start_time.tm_min, end_time.tm_hour, end_time.tm_min);
               }
               // 2025-01-08T10:45:00+01:00 2025-01-08T12:00:00+01:00 󰭦 Arzt
               // 2025-01-07 2025-01-11 󱫿 Langer Termin

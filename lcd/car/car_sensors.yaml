@@ -37,9 +37,9 @@ binary_sensor:
               - binary_sensor.is_on: ioniq_ev_16_19_ev_battery_plug
               - binary_sensor.is_off: ioniq_ev_16_19_ev_battery_charge
             then:
-              - lambda: notif_set_text("car.battery_charge.icon", "$mdi_ev_plug_type2");
+              - lambda: notif_set_text("car_batterycharge_icon", "$mdi_ev_plug_type2");
             else:
-              - lambda: notif_set_text("car.battery_charge.icon", "$mdi_car_clock");
+              - lambda: notif_set_text("car_batterycharge_icon", "$mdi_car_clock");
 
   - platform: homeassistant
     id: ioniq_ev_16_19_door_lock
@@ -99,7 +99,7 @@ sensor:
               } else {
                 id(ev_range) = id(ioniq_ev_16_19_ev_battery_level).state * id(ev_factor);
               }
-        - lambda: notif_set("car.battery_level", "Ladestand", "$mdi_car_battery", string_format("%.0f%%", x));
+        - lambda: notif_set("car_batterylevel", "Ladestand", "$mdi_car_battery", string_format("%.0f%%", x));
         - if:
             condition:
               sensor.in_range:
@@ -107,12 +107,12 @@ sensor:
                 below: 30
             then:
               - lambda: |-
-                  warn_set("car.battery_level", string_format("%.0f%%", x), "$mdi_car_battery", 8);
-                  notif_set_color("car.battery_level", red);
+                  warn_set("car_batterylevel", string_format("%.0f%%", x), "$mdi_car_battery", 8);
+                  notif_set_color("car_batterylevel", red);
             else:
               - lambda: |-
-                  warn_clear("car.battery_level");
-                  notif_set_color("car.battery_level", white);
+                  warn_clear("car_batterylevel");
+                  notif_set_color("car_batterylevel", white);
 
   - platform: homeassistant
     id: ioniq_ev_16_19_ev_range
@@ -129,28 +129,28 @@ sensor:
         - logger.log: 
             format: 'EV factor: %.2f'
             args: [ 'id(ev_factor)' ]
-        - lambda: notif_set("car.ev_range", "Reichweite", "$mdi_ev_station", string_format("%.0f km", id(ev_range)));
+        - lambda: notif_set("car_evrange", "Reichweite", "$mdi_ev_station", string_format("%.0f km", id(ev_range)));
 
   - platform: homeassistant
     id: ioniq_ev_16_19_estimated_station_charge_duration
     entity_id: sensor.ioniq_ev_16_19_estimated_station_charge_duration
     on_value:
       then:
-        - lambda: notif_set_text("car.battery_charge.name", "Ladezeit");
+        - lambda: notif_set_text("car_batterycharge_name", "Ladezeit");
         - if:
             condition:
               binary_sensor.is_on: ioniq_ev_16_19_ev_battery_charge
             then:
-              - lambda: notif_set_text("car.battery_charge", string_format("%.0f min", x));
+              - lambda: notif_set_text("car_batterycharge", string_format("%.0f min", x));
             else:
-              - lambda: notif_set_text("car.battery_charge", "-");
+              - lambda: notif_set_text("car_batterycharge", "-");
 
   - platform: homeassistant
     id: myenergi_zappi_16097935_charge_added_session
     entity_id: sensor.myenergi_zappi_16097935_charge_added_session
     on_value:
       then:
-        - lambda: notif_set("car.charge_added_session", "Wallbox", "$mdi_ev_station", string_format("%.1f kWh", x));
+        - lambda: notif_set("car_chargeaddedsession", "Wallbox", "$mdi_ev_station", string_format("%.1f kWh", x));
 
 switch:
   - platform: homeassistant

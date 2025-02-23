@@ -21,74 +21,54 @@ lvgl:
                 pad_row: 4px
             widgets:
             - label:
-                id: warnings_i1
-                <<: !include { file: ../cell.yaml, vars: { row: 0, col: 0, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 0, col: 0, id: warnings_i1}}
             - label:
-                id: warnings_t1
-                <<: !include { file: ../cell.yaml, vars: { row: 0, col: 1, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 0, col: 1, id: warnings_t1}}
 
             - label:
-                id: warnings_i2
-                <<: !include { file: ../cell.yaml, vars: { row: 1, col: 0, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 1, col: 0, id: warnings_i2}}
             - label:
-                id: warnings_t2
-                <<: !include { file: ../cell.yaml, vars: { row: 1, col: 1, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 1, col: 1, id: warnings_t2}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
-                id: warnings_i3
-                <<: !include { file: ../cell.yaml, vars: { row: 2, col: 0, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 2, col: 0, id: warnings_i3}}
             - label:
-                id: warnings_t3
-                <<: !include { file: ../cell.yaml, vars: { row: 2, col: 1, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 2, col: 1, id: warnings_t3}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
-                id: warnings_i4
-                <<: !include { file: ../cell.yaml, vars: { row: 3, col: 0, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 3, col: 0, id: warnings_i4}}
             - label:
-                id: warnings_t4
-                <<: !include { file: ../cell.yaml, vars: { row: 3, col: 1, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 3, col: 1, id: warnings_t4}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
-                id: warnings_i5
-                <<: !include { file: ../cell.yaml, vars: { row: 4, col: 0, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 4, col: 0, id: warnings_i5}}
             - label:
-                id: warnings_t5
-                <<: !include { file: ../cell.yaml, vars: { row: 4, col: 1, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 4, col: 1, id: warnings_t5}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
-                id: warnings_i6
-                <<: !include { file: ../cell.yaml, vars: { row: 5, col: 0, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 5, col: 0, id: warnings_i6}}
             - label:
-                id: warnings_t6
-                <<: !include { file: ../cell.yaml, vars: { row: 5, col: 1, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 5, col: 1, id: warnings_t6}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
 
             - label:
-                id: warnings_i7
-                <<: !include { file: ../cell.yaml, vars: { row: 6, col: 0, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 6, col: 0, id: warnings_i7}}
             - label:
-                id: warnings_t7
-                <<: !include { file: ../cell.yaml, vars: { row: 6, col: 1, text: " "}}
+                <<: !include { file: ../cell_id.yaml, vars: { row: 6, col: 1, id: warnings_t7}}
                 text_font: font_mid2
                 long_mode: WRAP
                 recolor: true
-
-esphome:
-  on_boot:
-    priority: -100.0
-    then:
-      - lambda: notif_initialize(weather_warnings_page);

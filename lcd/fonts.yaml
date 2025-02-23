@@ -24,6 +24,9 @@ font:
       "$mdi_weather_sunny",
       "$mdi_weather_windy",
     ]
+    extras:
+      - file: "gfonts://Montserrat@medium"
+        glyphs: [ " " ]
 
   - file:
       type: gfonts

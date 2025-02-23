@@ -10,7 +10,11 @@ esphome:
     then:
       - script.execute: update_footer
       - script.execute: consider_deep_sleep
-      - lambda: notif_initialize(weather_card);
+      - lambda: |-
+          notif_init("weather_cloudcoverage", nullptr, card_weather_cloudcoverage_icon, card_weather_cloudcoverage_text);
+          notif_init("weather_humidity",      nullptr, card_weather_humidity_icon,      card_weather_humidity_text);
+          notif_init("weather_temperature",   nullptr, card_weather_temperature_icon,   card_weather_temperature_text);
+          notif_init("weather_condition",     nullptr, card_weather_condition_icon);
 
 lvgl:
   id: lvglmain

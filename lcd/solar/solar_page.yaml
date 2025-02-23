@@ -2,7 +2,7 @@ image:
   - file: "images/solar.png"
     id: image_solar
     type: RGB565
-    use_transparency: true
+    transparency: alpha_channel
 
 lvgl:
   pages:
@@ -31,32 +31,38 @@ lvgl:
               pad_row: 0px
               pad_column: 10px
             widgets:
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 0, text: "#solar.current_power.name"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "#solar.current_power.icon"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#solar.current_power"}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 0, id: solar_currentpower_name}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 1, id: solar_currentpower_icon}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 2, id: solar_currentpower_text}}
 
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 0, text: "#solar.energy_today.name"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "#solar.energy_today.icon"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#solar.energy_today"}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 0, id: solar_energytoday_name}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 1, id: solar_energytoday_icon}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 2, id: solar_energytoday_text}}
 
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 0, text: "#solar.grid_power.name"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#solar.grid_power.icon"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#solar.grid_power"}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 0, id: solar_gridpower_name}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 1, id: solar_gridpower_icon}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 2, id: solar_gridpower_text}}
 
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 0, text: "#solar.peak_time_today.name"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 1, text: "#solar.peak_time_today.icon"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 2, text: "#solar.peak_time_today"}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 0, id: solar_peaktimetoday_name}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 1, id: solar_peaktimetoday_icon}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 2, id: solar_peaktimetoday_text}}
 
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 0, text: "#solar.self_sufficiency.name"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 1, text: "#solar.self_sufficiency.icon"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 2, text: "#solar.self_sufficiency"}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 0, id: solar_selfsufficiency_name}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 1, id: solar_selfsufficiency_icon}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 2, id: solar_selfsufficiency_text}}
 
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 0, text: "#solar.energy_year.name"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 1, text: "#solar.energy_year.icon"}}
-              - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 2, text: "#solar.energy_year"}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 0, id: solar_energyyear_name}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 1, id: solar_energyyear_icon}}
+              - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 2, id: solar_energyyear_text}}
 
 esphome:
   on_boot:
-    priority: -100.0
+    priority: -90.0
     then:
-      - lambda: notif_initialize(solar_page);
+      - lambda: |-
+          notif_init("solar_currentpower",    solar_currentpower_name,    solar_currentpower_icon,    solar_currentpower_text);
+          notif_init("solar_energytoday",     solar_energytoday_name,     solar_energytoday_icon,     solar_energytoday_text);
+          notif_init("solar_gridpower",       solar_gridpower_name,       solar_gridpower_icon,       solar_gridpower_text);
+          notif_init("solar_peaktimetoday",   solar_peaktimetoday_name,   solar_peaktimetoday_icon,   solar_peaktimetoday_text);
+          notif_init("solar_selfsufficiency", solar_selfsufficiency_name, solar_selfsufficiency_icon, solar_selfsufficiency_text);
+          notif_init("solar_energyyear",      solar_energyyear_name,      solar_energyyear_icon,      solar_energyyear_text);

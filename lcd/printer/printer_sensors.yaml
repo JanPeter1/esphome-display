@@ -5,7 +5,7 @@ sensor:
     on_value:
       then:
         - lvgl.bar.update:
-            id: drucker_black_bk
+            id: printer_blackbk
             value: !lambda return x;
 
   - platform: homeassistant
@@ -14,7 +14,7 @@ sensor:
     on_value:
       then:
         - lvgl.bar.update:
-            id: drucker_cyan
+            id: printer_cyan
             value: !lambda return x;
 
   - platform: homeassistant
@@ -23,7 +23,7 @@ sensor:
     on_value:
       then:
         - lvgl.bar.update:
-            id: drucker_magenta
+            id: printer_magenta
             value: !lambda return x;
 
   - platform: homeassistant
@@ -32,7 +32,7 @@ sensor:
     on_value:
       then:
         - lvgl.bar.update:
-            id: drucker_yellow
+            id: printer_yellow
             value: !lambda return x;
 
   - platform: homeassistant
@@ -41,7 +41,7 @@ sensor:
     on_value:
       then:
         - lvgl.bar.update:
-            id: drucker_black_pgbk
+            id: printer_blackpgbk
             value: !lambda return x;
 
   - platform: homeassistant
@@ -49,35 +49,35 @@ sensor:
     entity_id: input_number.druckervorrat_black_bk
     on_value:
       then:
-        - lambda: notif_set_text("printer.vorrat_black_bk", string_format("%.0f", x));
+        - lambda: notif_set_text("printer_invblack_bk", string_format("%.0f", x));
 
   - platform: homeassistant
     id: druckervorrat_cyan
     entity_id: input_number.druckervorrat_cyan
     on_value:
       then:
-        - lambda: notif_set_text("printer.vorrat_cyan", string_format("%.0f", x));
+        - lambda: notif_set_text("printer_invcyan", string_format("%.0f", x));
 
   - platform: homeassistant
     id: druckervorrat_magenta
     entity_id: input_number.druckervorrat_magenta
     on_value:
       then:
-        - lambda: notif_set_text("printer.vorrat_magenta", string_format("%.0f", x));
+        - lambda: notif_set_text("printer_invmagenta", string_format("%.0f", x));
 
   - platform: homeassistant
     id: druckervorrat_yellow
     entity_id: input_number.druckervorrat_yellow
     on_value:
       then:
-        - lambda: notif_set_text("printer.vorrat_yellow", string_format("%.0f", x));
+        - lambda: notif_set_text("printer_invyellow", string_format("%.0f", x));
 
   - platform: homeassistant
     id: druckervorrat_black_pgbk
     entity_id: input_number.druckervorrat_black_pgbk
     on_value:
       then:
-        - lambda: notif_set_text("printer.vorrat_black_pgbk", string_format("%.0f", x));
+        - lambda: notif_set_text("printer_invblackpgbk", string_format("%.0f", x));
 
 text_sensor:
   - platform: homeassistant
@@ -88,10 +88,4 @@ text_sensor:
         - unavailable ->  
     on_value:
       then:
-        - lambda: notif_set_text("printer.state", x);
-
-image:
-  - file: "images/printer.png"
-    id: image_printer
-    type: RGB565
-    use_transparency: true
+        - lambda: notif_set_text("printer_state", x);

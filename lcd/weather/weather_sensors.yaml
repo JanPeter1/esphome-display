@@ -10,7 +10,7 @@ sensor:
     attribute: humidity
     on_value:
       then:
-        - lambda: notif_set("weather.humidity", "Luftfeuchtigkeit", "$mdi_water_percent", string_format("%.0f%%", x));
+        - lambda: notif_set("weather_humidity", "Luftfeuchtigkeit", "$mdi_water_percent", string_format("%.0f%%", x));
 
   - platform: homeassistant
     id: weather_cloud_coverage
@@ -19,7 +19,7 @@ sensor:
     attribute: cloud_coverage
     on_value:
       then:
-        - lambda: notif_set("weather.cloud_coverage", "Bewölkung", "$mdi_weather_cloudy", string_format("%.0f%%", x));
+        - lambda: notif_set("weather_cloudcoverage", "Bewölkung", "$mdi_weather_cloudy", string_format("%.0f%%", x));
 
   - platform: homeassistant
     id: weather_uv
@@ -28,7 +28,7 @@ sensor:
     attribute: uv_index
     on_value:
       then:
-        - lambda: notif_set("weather.uv_index", "UV Index", "$mdi_sun_shield_outline", string_format("%.1f", x));
+        - lambda: notif_set("weather_uvindex", "UV Index", "$mdi_sun_shield_outline", string_format("%.1f", x));
         - if:
             condition:
               sensor.in_range:
@@ -36,8 +36,8 @@ sensor:
                 below: 3
             then:
               - lambda: |-
-                  notif_set_color("weather.uv_index", white);
-                  warn_clear("weather.uv_index");
+                  notif_set_color("weather_uvindex", white);
+                  warn_clear("weather_uvindex");
         - if:
             condition:
               sensor.in_range:
@@ -46,8 +46,8 @@ sensor:
                 below: 5
             then:
               - lambda: |-
-                  notif_set_color("weather.uv_index", yellow);
-                  warn_set("weather.uv_index", string_format("UV Index: %.1f", x), "$mdi_sun_shield_outline", 4);
+                  notif_set_color("weather_uvindex", yellow);
+                  warn_set("weather_uvindex", string_format("UV Index: %.1f", x), "$mdi_sun_shield_outline", 4);
         - if:
             condition:
               sensor.in_range:
@@ -55,8 +55,8 @@ sensor:
                 above: 5
             then:
               - lambda: |-
-                  notif_set_color("weather.uv_index", red);
-                  warn_set("weather.uv_index", string_format("UV Index: %.1f", x), "$mdi_sun_shield_outline", 7);
+                  notif_set_color("weather_uvindex", red);
+                  warn_set("weather_uvindex", string_format("UV Index: %.1f", x), "$mdi_sun_shield_outline", 7);
 
   - platform: homeassistant
     id: weather_pressure
@@ -65,14 +65,14 @@ sensor:
     attribute: pressure
     on_value:
       - then:
-        - lambda: notif_set("weather.pressure", "Luftdruck", "$mdi_cloud_cog_outline", string_format("%.0f hPa", x));
+        - lambda: notif_set("weather_pressure", "Luftdruck", "$mdi_cloud_cog_outline", string_format("%.0f hPa", x));
         - if:
             condition:
               sensor.in_range:
                 id: weather_pressure
                 below: 1010
             then:
-              - lambda: notif_set_text("weather.pressure.icon", "$mdi_cloud_arrow_down_outline");
+              - lambda: notif_set_text("weather_pressure_icon", "$mdi_cloud_arrow_down_outline");
         - if:
             condition:
               sensor.in_range:
@@ -80,14 +80,14 @@ sensor:
                 above: 1010.01
                 below: 1020
             then:
-              - lambda: notif_set_text("weather.pressure.icon", "$mdi_cloud_cog_outline");
+              - lambda: notif_set_text("weather_pressure_icon", "$mdi_cloud_cog_outline");
         - if:
             condition:
               sensor.in_range:
                 id: weather_pressure
                 above: 1020.01
             then:
-              - lambda: notif_set_text("weather.pressure.icon", "$mdi_cloud_arrow_up_outline");
+              - lambda: notif_set_text("weather_pressure_icon", "$mdi_cloud_arrow_up_outline");
 
   - platform: homeassistant
     id: weather_dew_point
@@ -96,7 +96,7 @@ sensor:
     attribute: dew_point
     on_value:
       then:
-        - lambda: notif_set("weather.dew_point", "Taupunkt", "$mdi_thermometer_water", string_format("%.0f °C", x));
+        - lambda: notif_set("weather_dewpoint", "Taupunkt", "$mdi_thermometer_water", string_format("%.0f °C", x));
 
   - platform: homeassistant
     id: weather_wind_speed
@@ -105,7 +105,7 @@ sensor:
     attribute: wind_speed
     on_value:
       then:
-        - lambda: notif_set("weather.wind_speed", "Windgeschw.", "$mdi_wind", string_format("%.0f km/h", x));
+        - lambda: notif_set("weather_windspeed", "Windgeschw.", "$mdi_wind", string_format("%.0f km/h", x));
         - if:
             condition:
               sensor.in_range:
@@ -113,21 +113,21 @@ sensor:
                 above: 50.01
                 below: 88
             then:
-              - lambda: notif_set_color("weather.wind_speed", yellow);
+              - lambda: notif_set_color("weather_windspeed", yellow);
         - if:
             condition:
               sensor.in_range:
                 id: weather_wind_speed
                 above: 88.01
             then:
-              - lambda: notif_set_color("weather.wind_speed", red);
+              - lambda: notif_set_color("weather_windspeed", red);
         - if:
             condition:
               sensor.in_range:
                 id: weather_wind_speed
                 below: 50
             then:
-              - lambda: notif_set_color("weather.wind_speed", white);
+              - lambda: notif_set_color("weather_windspeed", white);
 
   - platform: homeassistant
     id: weather_wind_bearing
@@ -138,38 +138,38 @@ sensor:
       - above: 0
         below: 22.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_down_thin_circle_outline", string_format("N (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_down_thin_circle_outline", string_format("N (%.0f°)", x));
       - above: 22.5
         below: 67.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_bottom_left_thin_circle_outline", string_format("NO (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_bottom_left_thin_circle_outline", string_format("NO (%.0f°)", x));
       - above: 67.5
         below: 112.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_left_thin_circle_outline", string_format("O (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_left_thin_circle_outline", string_format("O (%.0f°)", x));
       - above: 112.5
         below: 157.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_top_left_thin_circle_outline", string_format("SO (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_top_left_thin_circle_outline", string_format("SO (%.0f°)", x));
       - above: 157.5
         below: 202.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_up_thin_circle_outline", string_format("S (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_up_thin_circle_outline", string_format("S (%.0f°)", x));
       - above: 202.5
         below: 247.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_top_right_thin_circle_outline", string_format("SW (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_top_right_thin_circle_outline", string_format("SW (%.0f°)", x));
       - above: 247.5
         below: 292.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_right_thin_circle_outline", string_format("W (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_right_thin_circle_outline", string_format("W (%.0f°)", x));
       - above: 292.5
         below: 337.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_bottom_right_thin_circle_outline", string_format("NW (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_bottom_right_thin_circle_outline", string_format("NW (%.0f°)", x));
       - above: 337.5
         then:
-          - lambda: notif_set("weather.wind_bearing", "Windrichtung", "$mdi_arrow_down_thin_circle_outline", string_format("N (%.0f°)", x));
+          - lambda: notif_set("weather_windbearing", "Windrichtung", "$mdi_arrow_down_thin_circle_outline", string_format("N (%.0f°)", x));
 
 text_sensor:
   - platform: homeassistant
@@ -179,7 +179,7 @@ text_sensor:
     attribute: temperature
     on_value:
       then:
-        - lambda: notif_set("weather.temperature", "Temperatur", "$mdi_thermometer", string_format("%s °C", id(weather_temperature).state.c_str()));
+        - lambda: notif_set("weather_temperature", "Temperatur", "$mdi_thermometer", string_format("%s °C", id(weather_temperature).state.c_str()));
 
   - platform: homeassistant
     id: weather_condition
@@ -199,7 +199,7 @@ text_sensor:
         - partlycloudy -> $mdi_weather_partly_cloudy Teilweise Bewölkt
     on_value:
       then:
-        - lambda: notif_set("weather.state", "Wetter", x.substr(0, x.find(" ")), x.substr(x.find(" ") + 1));
+        - lambda: notif_set("weather_condition", "Wetter", x.substr(0, x.find(" ")), x.substr(x.find(" ") + 1));
 
   - platform: homeassistant
     id: daily_forecast

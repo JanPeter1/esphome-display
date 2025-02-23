@@ -2,7 +2,7 @@ image:
   - file: "images/car.png"
     id: image_car
     type: RGB565
-    use_transparency: true
+    transparency: alpha_channel
 
 lvgl:
   pages:
@@ -31,17 +31,17 @@ lvgl:
               pad_row: 0px
               pad_column: 10px
             widgets:
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 0, col: 0, text: "#car.battery_level.name"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 0, col: 1, text: "#car.battery_level.icon"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 0, col: 2, text: "#car.battery_level"}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 0, col: 0, id: car_batterylevel_name}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 0, col: 1, id: car_batterylevel_icon}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 0, col: 2, id: car_batterylevel_text}}
 
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 1, col: 0, text: "#car.ev_range.name"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 1, col: 1, text: "#car.ev_range.icon"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 1, col: 2, text: "#car.ev_range"}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 1, col: 0, id: car_evrange_name}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 1, col: 1, id: car_evrange_icon}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 1, col: 2, id: car_evrange_text}}
 
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 2, col: 0, text: "#car.battery_charge.name"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 2, col: 1, text: "#car.battery_charge.icon"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 2, col: 2, text: "#car.battery_charge"}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 2, col: 0, id: car_batterycharge_name}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 2, col: 1, id: car_batterycharge_icon}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 2, col: 2, id: car_batterycharge_text}}
 
               - label:
                   id: car_lock
@@ -139,12 +139,16 @@ lvgl:
                       - homeassistant.action:
                           action: kia_uvo.force_update
 
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 7, col: 0, text: "#car.charge_added_session.name"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 7, col: 1, text: "#car.charge_added_session.icon"}}
-              - <<: !include {file: ../label_cell.yaml, vars: {row: 7, col: 2, text: "#car.charge_added_session"}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 7, col: 0, id: car_chargeaddedsession_name}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 7, col: 1, id: car_chargeaddedsession_icon}}
+              - <<: !include {file: ../label_cell_id.yaml, vars: {row: 7, col: 2, id: car_chargeaddedsession_text}}
 
 esphome:
   on_boot:
-    priority: -100.0
+    priority: -90.0
     then:
-      - lambda: notif_initialize(car_page);
+      - lambda: |- 
+          notif_init("car_batterylevel",       car_batterylevel_name,       car_batterylevel_icon,       car_batterylevel_text);
+          notif_init("car_evrange",            car_evrange_name,            car_evrange_icon,            car_evrange_text);
+          notif_init("car_batterycharge",      car_batterycharge_name,      car_batterycharge_icon,      car_batterycharge_text);
+          notif_init("car_chargeaddedsession", car_chargeaddedsession_name, car_chargeaddedsession_icon, car_chargeaddedsession_text);

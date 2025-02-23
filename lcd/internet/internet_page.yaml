@@ -19,36 +19,43 @@ lvgl:
                 grid_rows: [ 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
                 grid_columns: [220, 30, 255 ]
             widgets:
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 0, text: "#internet.ssid.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "#internet.ssid.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#internet.ssid"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 0, id: internet_ssid_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 1, id: internet_ssid_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 2, id: internet_ssid_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 0, text: "#internet.ip_address.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "#internet.ip_address.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#internet.ip_address"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 0, id: internet_ipaddress_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 1, id: internet_ipaddress_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 2, id: internet_ipaddress_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 0, text: "#internet.signal.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#internet.signal.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#internet.signal"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 0, id: internet_signal_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 1, id: internet_signal_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 2, id: internet_signal_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 0, text: "#internet.download.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 1, text: "#internet.download.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 2, text: "#internet.download"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 0, id: internet_download_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 1, id: internet_download_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 2, id: internet_download_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 0, text: "#internet.upload.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 1, text: "#internet.upload.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 2, text: "#internet.upload"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 0, id: internet_upload_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 1, id: internet_upload_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 2, id: internet_upload_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 0, text: "#internet.rates.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 1, text: "#internet.rates.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 2, text: "#internet.rates"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 0, id: internet_rates_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 1, id: internet_rates_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 2, id: internet_rates_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 0, text: "#internet.today.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 1, text: "#internet.today.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 2, text: "#internet.today"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 6, col: 0, id: internet_today_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 6, col: 1, id: internet_today_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 6, col: 2, id: internet_today_text}}
 
 esphome:
   on_boot:
-    priority: -100.0
+    priority: -90.0
     then:
-      - lambda: notif_initialize(internet_page);
+      - lambda: |-
+          notif_init("internet_ssid",        internet_ssid_name,        internet_ssid_icon,        internet_ssid_text);
+          notif_init("internet_ipaddress",   internet_ipaddress_name,   internet_ipaddress_icon,   internet_ipaddress_text);
+          notif_init("internet_signal",      internet_signal_name,      internet_signal_icon,      internet_signal_text);
+          notif_init("internet_download",    internet_download_name,    internet_download_icon,    internet_download_text);
+          notif_init("internet_upload",      internet_upload_name,      internet_upload_icon,      internet_upload_text);
+          notif_init("internet_rates",       internet_rates_name,       internet_rates_icon,       internet_rates_text);
+          notif_init("internet_today",       internet_today_name,       internet_today_icon,       internet_today_text);

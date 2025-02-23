@@ -1,3 +1,9 @@
+image:
+  - file: "images/printer.png"
+    id: image_printer
+    type: RGB565
+    transparency: alpha_channel
+
 lvgl:
   pages:
     - id: printer_page
@@ -37,7 +43,7 @@ lvgl:
                     flex_align_main: CENTER
                   widgets:
                     - bar:
-                        id: drucker_black_bk
+                        id: printer_blackbk
                         height: 40
                         width: 20
                         value: 0
@@ -48,7 +54,7 @@ lvgl:
                           radius: 0
                           bg_color: black
                     - bar:
-                        id: drucker_cyan
+                        id: printer_cyan
                         height: 40
                         width: 20
                         value: 0
@@ -59,7 +65,7 @@ lvgl:
                           radius: 0
                           bg_color: cyan
                     - bar:
-                        id: drucker_magenta
+                        id: printer_magenta
                         height: 40
                         width: 20
                         value: 0
@@ -70,7 +76,7 @@ lvgl:
                           radius: 0
                           bg_color: magenta
                     - bar:
-                        id: drucker_yellow
+                        id: printer_yellow
                         height: 40
                         width: 20
                         value: 0
@@ -81,7 +87,7 @@ lvgl:
                           radius: 0
                           bg_color: yellow
                     - bar:
-                        id: drucker_black_pgbk
+                        id: printer_blackpgbk
                         height: 40
                         width: 25
                         value: 0
@@ -139,33 +145,44 @@ lvgl:
                   text_color: white
                   widgets:
                     - label:
-                        text: "#printer.vorrat_black_bk"
+                        id: printer_invblackbk_text
+                        text: " "
                         text_font: font_small
                         width: 20
                     - label:
-                        text: "#printer.vorrat_cyan"
+                        id: printer_invcyan_text
+                        text: " "
                         text_font: font_small
                         width: 20
                     - label:
-                        text: "#printer.vorrat_magenta"
+                        id: printer_invmagenta_text
+                        text: " "
                         text_font: font_small
                         width: 20
                     - label:
-                        text: "#printer.vorrat_yellow"
+                        id: printer_invyellow_text
+                        text: " "
                         text_font: font_small
                         width: 20
                     - label:
-                        text: "#printer.vorrat_black_pgbk"
+                        id: printer_invblackpgbk_text
+                        text: " "
                         text_font: font_small
                         width: 25
               - label:
-                  text: "#printer.state"
+                  id: printer_state
+                  text: " "
                   text_align: CENTER
                   text_font: font_mid
                   width: 165
 
 esphome:
   on_boot:
-    priority: -100.0
+    priority: -90.0
     then:
-      - lambda: notif_initialize(printer_page);
+      - lambda: |-
+          notif_init("printer_invblackbk",   nullptr, nullptr, printer_invblackbk_text);
+          notif_init("printer_invcyan",      nullptr, nullptr, printer_invcyan_text);
+          notif_init("printer_invmagenta",   nullptr, nullptr, printer_invmagenta_text);
+          notif_init("printer_invyellow",    nullptr, nullptr, printer_invyellow_text);
+          notif_init("printer_invblackpgbk", nullptr, nullptr, printer_invblackpgbk_text);

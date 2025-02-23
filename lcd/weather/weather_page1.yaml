@@ -18,45 +18,56 @@ lvgl:
                 type: grid
                 grid_rows: [ 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 ]
                 grid_columns: [220, 30, 255 ]
+            scrollbar_mode: "OFF"
             widgets:
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 0, text: "#weather.temperature.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 1, text: "#weather.temperature.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 0, col: 2, text: "#weather.temperature"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 0, id: weather_temperature_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 1, id: weather_temperature_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 2, id: weather_temperature_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 0, text: "#weather.state.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 1, text: "#weather.state.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 1, col: 2, text: "#weather.state"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 0, id: weather_condition_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 1, id: weather_condition_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 2, id: weather_condition_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 0, text: "#weather.humidity.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 1, text: "#weather.humidity.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 2, col: 2, text: "#weather.humidity"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 0, id: weather_humidity_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 1, id: weather_humidity_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 2, id: weather_humidity_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 0, text: "#weather.dew_point.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 1, text: "#weather.dew_point.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 3, col: 2, text: "#weather.dew_point"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 0, id: weather_dewpoint_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 1, id: weather_dewpoint_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 2, id: weather_dewpoint_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 0, text: "#weather.uv_index.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 1, text: "#weather.uv_index.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 4, col: 2, text: "#weather.uv_index"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 0, id: weather_uvindex_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 1, id: weather_uvindex_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 4, col: 2, id: weather_uvindex_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 0, text: "#weather.pressure.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 1, text: "#weather.pressure.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 5, col: 2, text: "#weather.pressure"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 0, id: weather_pressure_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 1, id: weather_pressure_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 5, col: 2, id: weather_pressure_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 0, text: "#weather.wind_speed.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 1, text: "#weather.wind_speed.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 6, col: 2, text: "#weather.wind_speed"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 6, col: 0, id: weather_windspeed_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 6, col: 1, id: weather_windspeed_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 6, col: 2, id: weather_windspeed_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 7, col: 0, text: "#weather.wind_bearing.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 7, col: 1, text: "#weather.wind_bearing.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 7, col: 2, text: "#weather.wind_bearing"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 7, col: 0, id: weather_windbearing_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 7, col: 1, id: weather_windbearing_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 7, col: 2, id: weather_windbearing_text}}
 
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 8, col: 0, text: "#weather.cloud_coverage.name"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 8, col: 1, text: "#weather.cloud_coverage.icon"}}
-            - <<: !include { file: ../label_cell.yaml, vars: { row: 8, col: 2, text: "#weather.cloud_coverage"}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 8, col: 0, id: weather_cloudcoverage_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 8, col: 1, id: weather_cloudcoverage_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 8, col: 2, id: weather_cloudcoverage_text}}
 
 esphome:
   on_boot:
-    priority: -100.0
+    priority: -90.0
     then:
-      - lambda: notif_initialize(weather_page1);
+      - lambda: |-
+          notif_init("weather_cloudcoverage", weather_cloudcoverage_name, weather_cloudcoverage_icon, weather_cloudcoverage_text);
+          notif_init("weather_condition",     weather_condition_name,     weather_condition_icon,     weather_condition_text);
+          notif_init("weather_dewpoint",      weather_dewpoint_name,      weather_dewpoint_icon,      weather_dewpoint_text);
+          notif_init("weather_humidity",      weather_humidity_name,      weather_humidity_icon,      weather_humidity_text);
+          notif_init("weather_pressure",      weather_pressure_name,      weather_pressure_icon,      weather_pressure_text);
+          notif_init("weather_temperature",   weather_temperature_name,   weather_temperature_icon,   weather_temperature_text);
+          notif_init("weather_uvindex",       weather_uvindex_name,       weather_uvindex_icon,       weather_uvindex_text);
+          notif_init("weather_windbearing",   weather_windbearing_name,   weather_windbearing_icon,   weather_windbearing_text);
+          notif_init("weather_windspeed",     weather_windspeed_name,     weather_windspeed_icon,     weather_windspeed_text);
+
