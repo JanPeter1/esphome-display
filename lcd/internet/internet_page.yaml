@@ -5,10 +5,10 @@ lvgl:
         - label:
             <<: !include {file: ../info_label.yaml, vars: { text: "Internet"}}
         - obj:
-            width: 525
-            height: 300
-            x: 20
-            y: 140
+            width: 560
+            height: 285
+            x: 10
+            y: 155
             border_side: NONE
             pad_all: 10px
             pad_top: 5px

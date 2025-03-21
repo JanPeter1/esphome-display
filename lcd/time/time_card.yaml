@@ -1,7 +1,8 @@
 x: 570
 y: 10
 width: 220
-height: 130
+height: 135
+id: time_card
 border_side: NONE
 pad_all: 3px
 pad_top: 0px

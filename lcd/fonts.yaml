@@ -128,6 +128,8 @@ font:
     glyphs: [
       "$mdi_play",
       "$mdi_stop",
+      "$mdi_ghost",
+      "$mdi_ghost_outline",
       "$mdi_home",
       "$mdi_chevron_left",
       "$mdi_chevron_right",

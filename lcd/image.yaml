@@ -4,23 +4,25 @@ api:
     - delay: 15s
     - script.execute: update_bg_image
 
+#image:
+#  - file: "images/background.jpg"
+#    id: default_background
+#    type: RGB565
+
 online_image:
   - id: bg_image
     url: "http://homeassistant.local:8123/local/bg_images/black.jpg"
     format: JPG
     type: RGB565
     resize: 800x480
+#    placeholder: default_background
     on_download_finished:
       - logger.log: "bg_image downloaded!"
       - lvgl.update:
           disp_bg_image: bg_image
-#      - online_image.release: bg_image
     on_error: 
       - logger.log: "bg_image download failed!"
       - online_image.release: bg_image
-#      - delay: 5s
-#        ...free memory...
-#      - component.update: bg_image
 
 interval:
   - interval: 30min

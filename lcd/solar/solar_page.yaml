@@ -15,10 +15,10 @@ lvgl:
             x: 565
             y: 320
         - obj:
-            width: 525
-            height: 265
+            width: 560
+            height: 260
             x: 20
-            y: 150
+            y: 155
             border_side: NONE
             pad_all: 10px
             bg_color: 0x000000

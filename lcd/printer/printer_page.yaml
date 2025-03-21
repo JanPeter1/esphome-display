@@ -16,9 +16,9 @@ lvgl:
             src: image_printer
         - obj:
             width: 200
-            height: 170
-            x: 20
-            y: 150
+            height: 165
+            x: 10
+            y: 155
             border_side: NONE
             pad_all: 10px
             bg_color: black

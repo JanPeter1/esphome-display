@@ -1,7 +1,7 @@
 x: 10
 y: 10
 width: 220
-height: 130
+height: 135
 id: weather_card
 border_side: NONE
 pad_all: 10px

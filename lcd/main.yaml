@@ -3,6 +3,10 @@ globals:
     type: bool
     restore_value: yes
     initial_value: 'true'
+  - id: hide_pages
+    type: bool
+    restore_value: yes
+    initial_value: 'false'
 
 esphome:
   on_boot:
@@ -92,6 +96,26 @@ lvgl:
                   then:
                     - online_image.release: bg_image
                     - script.execute: update_bg_image
+              - id: page_hide
+                text: "$mdi_ghost"
+                width: 1
+                on_press:
+                  then:
+                    - lambda: |-
+                        id(hide_pages) = !id(hide_pages);
+                        if (id(hide_pages)) {
+                          id(auto_pages) = false;
+                          lv_obj_add_flag(weather_card, LV_OBJ_FLAG_HIDDEN);
+                          lv_obj_add_flag(time_card, LV_OBJ_FLAG_HIDDEN);
+                          lv_obj_add_flag(message_card, LV_OBJ_FLAG_HIDDEN);
+                        } else {
+                          id(auto_pages) = true;
+                          lv_obj_clear_flag(weather_card, LV_OBJ_FLAG_HIDDEN);
+                          lv_obj_clear_flag(time_card, LV_OBJ_FLAG_HIDDEN);
+                          lv_obj_clear_flag(message_card, LV_OBJ_FLAG_HIDDEN);
+                        }
+                        lv_scr_load(start_page->obj);
+                    - script.execute: update_footer
               - id: page_autoplay
                 text: "$mdi_stop"
                 width: 1
@@ -115,8 +139,9 @@ script:
   - id: update_footer
     then:
       lambda: |-
-        static const char * button_texts[] = {"$mdi_chevron_left", "$mdi_home", "$mdi_refresh", "$mdi_stop", "$mdi_chevron_right", nullptr};
-        button_texts[page_autoplay] = id(auto_pages)?"$mdi_stop":"$mdi_play";
+        static const char * button_texts[] = {"$mdi_chevron_left", "$mdi_home", "$mdi_refresh", "$mdi_ghost", "$mdi_stop", "$mdi_chevron_right", nullptr};
+        button_texts[3] = id(hide_pages)?"$mdi_ghost":"$mdi_ghost_outline";
+        button_texts[4] = id(auto_pages)?"$mdi_stop":"$mdi_play";
         lv_btnmatrix_set_map(lvbuttonmatrixtype_id->obj, button_texts);
 
 interval:

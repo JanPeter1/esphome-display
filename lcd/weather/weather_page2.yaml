@@ -8,7 +8,7 @@ lvgl:
             width: 335
             height: 285
             x: 10
-            y: 150
+            y: 155
             pad_all: 10px
             pad_right: 40px
             border_width: 0

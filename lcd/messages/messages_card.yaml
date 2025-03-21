@@ -1,7 +1,8 @@
 x: 240
 y: 10
 width: 320
-height: 130
+height: 135
+id: message_card
 border_side: NONE
 pad_all: 5px
 bg_color: 0x000000

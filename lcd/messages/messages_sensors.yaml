@@ -53,26 +53,21 @@ text_sensor:
                 if (strptime(text.substr(0, 10).c_str(),  "%Y-%m-%d", &start_time) == NULL) { ESP_LOGD("messages", "error parsing start date"); continue; };
                 if (strptime(text.substr(11, 10).c_str(), "%Y-%m-%d", &end_time) == NULL) { ESP_LOGD("messages", "error parsing end date"); continue; };
               }
+
               time_t t1 = mktime(&start_time);
               time_t t2 = mktime(&end_time);
-              double diffSecs = difftime(t2, t1);
-
+              double diffSecs = difftime(t2, t1);          // diff between start time and end time
+              double secsFromNow = difftime(t1, current);  // diff until start date
               bool today = false;
               bool tomorrow = false;
-              if ((start_time.tm_mday == current_time->tm_mday) && (start_time.tm_mon == current_time->tm_mon) && (start_time.tm_year == current_time->tm_year)) {
-                today = true;
-              } else if (((start_time.tm_mday == current_time->tm_mday+1) && (start_time.tm_mon == current_time->tm_mon)   && (start_time.tm_year == current_time->tm_year)) ||
-                         ((start_time.tm_mday == 1)                       && (start_time.tm_mon == current_time->tm_mon+1) && (start_time.tm_year == current_time->tm_year)) ||
-                         ((start_time.tm_mday == 1)                       && (start_time.tm_mon == 1)                      && (start_time.tm_year == current_time->tm_year+1))) {
-                tomorrow = true;
-              }
-
               
-              if (today) {
+              if (secsFromNow < 60*60*24) {
                 date = "Heute";
-              } else if (tomorrow) {
+                today = true;
+              } else if (secsFromNow < 60*60*24*2) {
                 date = "Morgen";
-              } else if (diffSecs < 60*60*24*7) {
+                tomorrow = true;
+              } else if (secsFromNow < 60*60*24*6) {
                 // less than one week - just show the weekday
                 date = string_format("%s", dayOfWeek[start_time.tm_wday]);
               } else {

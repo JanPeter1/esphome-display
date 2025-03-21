@@ -6,9 +6,9 @@ lvgl:
             <<: !include {file: ../info_label.yaml, vars: { text: "Debug"}}
         - obj:
             width: 780
-            height: 300
+            height: 285
             x: 10
-            y: 140
+            y: 155
             border_side: NONE
             pad_all: 10px
             pad_top: 5px
