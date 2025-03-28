@@ -1,0 +1,34 @@
+text_sensor:
+  - platform: homeassistant
+    id: geschirrspuler_programm_endzeit
+    entity_id: sensor.geschirrspuler_programm_endzeit
+    on_value:
+      then:
+        - lambda:
+            ESPTime tim;
+            ESPTime::strptime(x, tim);
+            notif_set("dwash_remaining", "Spülm. fertig", "$mdi_dishwasher", tim.strftime("%H:%M:%S"));
+
+  - platform: homeassistant
+    id: geschirrspuler_salz_fast_leer
+    entity_id: sensor.geschirrspuler_salz_fast_leer
+    on_value:
+      then:
+        - lambda: notif_set("dwash_salt", "Salz", (x == "off") ? "$mdi_dishwasher_off":"$mdi_dishwasher_alert", (x == "off") ? "OK":"Nachfüllen");
+        - lambda: if (x == "on") warn_add("kitchen.salt", "Salz nachfüllen", "$mdi_dishwasher_alert", 6);
+
+  - platform: homeassistant
+    id: geschirrspuler_klarspuler_fast_leer
+    entity_id: sensor.geschirrspuler_klarspuler_fast_leer
+    on_value:
+      then:
+        - lambda: notif_set("dwash_cleaner", "Klarspüler", (x == "off") ? "$mdi_dishwasher_off":"$mdi_dishwasher_alert", (x == "off") ? "OK":"Nachfüllen");
+        - lambda: if (x == "on") warn_add("kitchen.cleaner", "Klarspüler nachfüllen", "$mdi_dishwasher_alert", 6);
+
+sensor:
+  - platform: homeassistant
+    id: geschirrspuler_programm_fortschritt
+    entity_id: sensor.geschirrspuler_programm_fortschritt
+    on_value:
+      then:
+        - lambda: notif_set("dwash_progress", "Spülm. Fortschritt", "$mdi_dishwasher", string_format("%.0f%%", x));

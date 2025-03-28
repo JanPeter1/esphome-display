@@ -61,10 +61,12 @@ text_sensor:
               bool today = false;
               bool tomorrow = false;
               
-              if (secsFromNow < 60*60*24) {
+              if ((start_time.tm_mday == current_time->tm_mday) && (start_time.tm_mon == current_time->tm_mon) && (start_time.tm_year == current_time->tm_year)) {
                 date = "Heute";
                 today = true;
-              } else if (secsFromNow < 60*60*24*2) {
+              } else if (((start_time.tm_mday == current_time->tm_mday+1) && (start_time.tm_mon == current_time->tm_mon)   && (start_time.tm_year == current_time->tm_year)) ||
+                          ((start_time.tm_mday == 1)                       && (start_time.tm_mon == current_time->tm_mon+1) && (start_time.tm_year == current_time->tm_year)) ||
+                          ((start_time.tm_mday == 1)                       && (start_time.tm_mon == 1)                      && (start_time.tm_year == current_time->tm_year+1))) {
                 date = "Morgen";
                 tomorrow = true;
               } else if (secsFromNow < 60*60*24*6) {

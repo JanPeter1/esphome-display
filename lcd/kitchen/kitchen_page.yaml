@@ -1,0 +1,46 @@
+lvgl:
+  pages:
+    - id: kitchen_page
+      widgets:
+        - label:
+            <<: !include {file: ../info_label.yaml, vars: { text: "Küche"}}
+        - obj:
+            width: 560
+            height: 285
+            x: 10
+            y: 155
+            border_side: NONE
+            pad_all: 10px
+            pad_top: 5px
+            bg_color: 0x000000
+            bg_opa: 40%
+            layout:
+                type: grid
+                grid_rows: [ 30, 30, 30, 30, 30, 30, 30, 30, 30 ]
+                grid_columns: [220, 30, 255 ]
+            widgets:
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 0, id: dwash_remaining_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 1, id: dwash_remaining_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 0, col: 2, id: dwash_remaining_text}}
+
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 0, id: dwash_progress_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 1, id: dwash_progress_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 1, col: 2, id: dwash_progress_text}}
+
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 0, id: dwash_salt_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 1, id: dwash_salt_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 2, col: 2, id: dwash_salt_text}}
+
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 0, id: dwash_cleaner_name}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 1, id: dwash_cleaner_icon}}
+            - <<: !include { file: ../label_cell_id.yaml, vars: { row: 3, col: 2, id: dwash_cleaner_text}}
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: |-
+          notif_init("dwash_remaining", dwash_remaining_name, dwash_remaining_icon, dwash_remaining_text);
+          notif_init("dwash_progress",  dwash_progress_name,  dwash_progress_icon,  dwash_progress_text);
+          notif_init("dwash_salt",      dwash_salt_name,      dwash_salt_icon,      dwash_salt_text);
+          notif_init("dwash_cleaner",   dwash_cleaner_name,   dwash_cleaner_icon,   dwash_cleaner_text);

@@ -1,0 +1,3 @@
+packages:
+  kitchen_sensors:  !include kitchen_sensors.yaml
+  kitchen_page:     !include kitchen_page.yaml
