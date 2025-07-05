@@ -37,7 +37,7 @@ script:
           url: !lambda |-
             std::string base = "http://homeassistant.local:8123/local/bg_images/"; 
             std::srand(std::time(0));
-            auto filename = base + "bg_image_" + std::to_string(rand() % 87 + 1) + ".jpg";
+            auto filename = base + "bg_image_" + std::to_string(rand() % static_cast<int>(id(image_count).state) + 1) + ".jpg";
             ESP_LOGD("main", filename.c_str());
             return filename;
 

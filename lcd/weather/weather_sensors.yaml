@@ -243,8 +243,8 @@ text_sensor:
               cnt++;
               if (cnt > 4) break;
             }
-            lv_line_set_points(temp_line, mlv_point_t_id, 5);
-            lv_line_set_points(templow_line, mlv_pointlow_t_id, 5);
+            lv_line_set_points(temp_line->obj, mlv_point_t_id, 5);
+            lv_line_set_points(templow_line->obj, mlv_pointlow_t_id, 5);
 
   - platform: homeassistant
     id: hourly_forecast
@@ -297,7 +297,7 @@ text_sensor:
               cnt++;
               if (cnt > 23) break;
             }
-            lv_line_set_points(temphour_line, mlv_pointhour_t_id, 24);
+            lv_line_set_points(temphour_line->obj, mlv_pointhour_t_id, 24);
 
   - platform: homeassistant
     id: wetterwarnungen
